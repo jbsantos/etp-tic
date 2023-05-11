@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Carrossel em HTML</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Adiciona os arquivos CSS do Bootstrap -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Carrossel em HTML</h1>
+		<!-- Define o carrossel -->
+		<div id="meuCarrossel" class="carousel slide" data-ride="carousel">
+			<!-- Define os slides do carrossel -->
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="https://picsum.photos/800/400?random=1" class="d-block w-100" alt="Slide 1">
+				</div>
+				<div class="carousel-item">
+					<img src="https://picsum.photos/800/400?random=2" class="d-block w-100" alt="Slide 2">
+				</div>
+				<div class="carousel-item">
+					<img src="https://picsum.photos/800/400?random=3" class="d-block w-100" alt="Slide 3">
+				</div>
+			</div>
+			<!-- Define os controles do carrossel -->
+			<a class="carousel-control-prev" href="#meuCarrossel" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Anterior</span>
+			</a>
+			<a class="carousel-control-next" href="#meuCarrossel" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Próximo</span>
+			</a>
+		</div>
+	</div>
+	<!-- Adiciona os arquivos JavaScript do Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
