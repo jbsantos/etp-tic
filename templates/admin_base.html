@@ -1,0 +1,23 @@
+{% extends 'admin/base.html' %}
+
+{% block tail_css %}
+    {{ super() }}
+    <style>
+        .navigation-buttons {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .navigation-buttons button {
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="navigation-buttons">
+        <button onclick="history.back()" class="btn btn-default">Voltar</button>
+        <button onclick="window.location.href = '{{ url_for('admin.next_page') }}'" class="btn btn-primary">Próximo</button>
+    </div>
+    {{ super() }}
+{% endblock %}
+ 

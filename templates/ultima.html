@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concluir</title>
+</head>
+<body>
+    <h1>Última Rota </h1>
+    {% if request.path != '/rota1' %}
+    <a href="/rota1">Voltar</a>
+ 
+    {% endif %}
+
+    {% if request.path == '/ultima' %}
+    <a href="/admin">Fim</a>
+ 
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Início</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+ 
+
+</head>
+<body>
+    <h1></h1>
+
+    <form id="confirmacao-form" action="/rota1" method="post">
+        <div>
+            <textarea id="editor" name="conteudo" readonly > 
+     
+                ETP DIGITAL TIC Quando Usar
+                1. MATERIAIS E EQUIPAMENTOS DE TIC
+                São considerados recursos de TIC equipamentos e dispositivos baseados em técnica digital, com funções de coleta, tratamento, estruturação, armazenamento, comutação, transmissão, recuperação ou apresentação da informação, a exemplo de: desktops, notebooks, coletores de dados do tipo personal digital assistant - PDA, equipamentos de coleta de dados satelitais, monitores de vídeo, impressoras, impressoras térmicas, scanners de documentos, tablets, incluindo-se serviços de manutenção e suporte desses equipamentos;
+                6. COMUNICAÇÃO DE DADOS
+                São considerados recursos de TIC a transmissão digital de dados e informações entre dispositivos, sistemas e redes de comunicação, incluindo acesso à Internet (como links MPLS, WAN/LAN), soluções de videoconferência, de transmissão e recebimento de mensagens de texto (SMS) e de recebimento ou processamento de dados satelitais;
+                2. DESENVOLVIMENTO E SUSTENTAÇÃO DE SISTEMAS
+                São considerados recursos de TIC serviços de desenvolvimento, manutenção preventiva ou corretiva, sustentação, testes, inclusive de segurança, qualidade, engenharia de dados, customização e evolução de software e sistemas computacionais e aplicativos móveis, incluindo elaboração, manutenção e sustentação de painéis e outros produtos de Business Intelligence.
+                3. HOSPEDAGEM DE SISTEMAS
+                São considerados recursos de TIC a disponibilização de sistemas, aplicativos ou sítios eletrônicos em servidores próprios ou de terceiros por meio de modelo de hosting, co-location ou outros.
+                4. SUPORTE E ATENDIMENTO A USUÁRIO DE TIC
+                São considerados recursos de TIC os serviços de atendimento a requisições de suporte a infraestrutura de TIC, resolução de incidentes e investigação de problemas e suporte técnico de microinformática a usuários de TIC;
+                5. INFRAESTRUTURA DE TIC
+                São considerados recursos de TIC os serviços associados ao conjunto de componentes técnicos, hardware, software, bancos de dados implantados, procedimentos e documentação técnica usados para disponibilizar informações, incluindo serviços de segurança digital (controle lógico e biométrico), certificação digital, operação e suporte técnico;
+                13.ANÁLISE DE DADOS, APRENDIZADO DE MÁQUINA E INTELIGÊNCIA ARTIFICIAL
+                São considerados recursos de TIC os serviços de Inteligência de Negócio (Business Intelligence), Inteligência Artificial, Aprendizado de Máquina, Big Data, governança de dados, arquitetura de dados e soluções de geoprocessamento.
+                11. INTERNET DAS COISAS - loT
+                São considerados recursos de TIC apenas os dispositivos ou serviços que utilizem tecnologia loT conectados ou que integrem um ou mais sistemas de informação desenvolvidos ou mantidos pelo órgão, enviando, processando, recebendo ou armazenando dados.
+                12. SEGURANÇA DA INFORMAÇÃO E PRIVACIDADE
+                São considerados recursos de TIC os serviços de avaliação e testes de segurança (a exemplo de testes de intrusão, pentest, simulação de adversários), gestão de vulnerabilidades e tratamento de incidentes, Security as a Service - SECaaS, segurança de redes, Serviço de Monitoria de eventos de segurança - SOC e serviços técnicos de consultoria em segurança da informação e privacidade;
+                10. COMPUTAÇÃO EM NUVEM
+                São considerados recursos de TIC os serviços de computação em nuvem, tais como Infrastructure as a Service - IaaS, Platform as a Service - PaaS, Software as a Service - SaaS, DataBase as a Service - DBaaS, Device as a Service - DaaS, Containers as a Service - CaaS, Function as a Service - FaaS e BigData as a Service - BDaaS, serviços de orquestração de multi-nuvem, suporte e brokerage de nuvem.
+                9.CONSULTORIA EM TIC
+                São considerados recursos de TIC serviços de consultoria e aconselhamento em TIC
+                8.IMPRESSÃO E DIGITALIZAÇÃO
+                São considerados recursos de TIC serviços de impressão, cópia e digitalização de documentos;
+                7. SOFTWARE E APLICATIVOS
+                São considerados recursos de TIC programas de computador que realizam ou suportam o processamento de informações digitais, independente da forma de licenciamento (a exemplo de perpétuo, subscrição, cessão temporária);
+
+
+
+
+
+
+            </textarea>
+        </div>
+       
+        <label>
+            <input type="checkbox" id="confirmacao-checkbox" required>
+            Eu li e entendi o conteúdo.
+        </label>
+        <br>
+        <button type="submit" id="proxima-rota">Próxima Rota</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+    <script>
+        document.getElementById('confirmacao-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Confirmação',
+                text: 'Você leu e entendeu o conteúdo?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Não'
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    document.getElementById('confirmacao-form').submit();
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            CKEDITOR.replace('editor');
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showTermsAndConditions = async () => {
+                const { value: accept } = await Swal.fire({
+                    title: 'Terms and conditions',
+                    input: 'checkbox',
+                    inputValue: 1,
+                    inputPlaceholder: 'I agree with the terms and conditions',
+                    confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                    inputValidator: (result) => {
+                        return !result && 'You need to agree with T&C';
+                    }
+                });
+
+                if (accept) {
+                    Swal.fire('You agreed with T&C :)');
+                }
+            };
+
+            showTermsAndConditions();
+        });
+    </script>
+</body>
+</html>

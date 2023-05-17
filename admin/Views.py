@@ -124,6 +124,22 @@ class RoleView(ModelView):
             self.can_delete = True
             return current_user.is_authenticated
 
+
+class PaginasView(ModelView):
+    can_view_details = True
+    create_modal = True
+    edit_modal = True
+    column_display_pk = True
+    can_view_details = True
+
+    base_template = 'admin_base.html'
+    def is_accessible(self):
+        role = current_user.role
+        if role == 1:
+            self.can_create = True
+            self.can_edit = True
+            self.can_delete = True
+            return current_user.is_authenticated
     def inaccessible_callback(self,name,**kwargs):
         if current_user.is_authenticated:
             return redirect('/admin')
@@ -131,6 +147,7 @@ class RoleView(ModelView):
             return redirect('/login')
 
 class CategoryView(ModelView):
+    base_template = 'admin_base.html'
     can_view_details = True
 
     def is_accessible(self):
@@ -153,6 +170,7 @@ class CategoryView(ModelView):
             return redirect('/login')
 
 class ProductView(ModelView):
+    base_template = 'admin_base.html'
     can_view_details = True
     
     def is_accessible(self):

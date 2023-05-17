@@ -8,8 +8,9 @@ from model.Role import Role
 from model.User import User
 from model.Category import Category
 from model.Product import Product
+from model.Paginas import Paginas
 
-from admin.Views import UserView, HomeView, RoleView, CategoryView, ProductView
+from admin.Views import UserView, HomeView, RoleView, CategoryView, ProductView, PaginasView
 
 def start_views(app, db):
     admin = Admin(app, name='Igreja Lapaz', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
@@ -18,5 +19,7 @@ def start_views(app, db):
     admin.add_view(UserView(User, db.session, "Usuários", category="Usuários"))
     admin.add_view(CategoryView(Category, db.session, 'Categorias', category="Financeiro"))
     admin.add_view(ProductView(Product, db.session, "Despesas", category="Financeiro"))
+    admin.add_view(PaginasView(Paginas, db.session, 'Paginas', category="indice"))
+
 
     admin.add_link(MenuLink(name='Logout', url='/logout'))
