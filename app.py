@@ -3,7 +3,6 @@ from flask import Flask, request, redirect, render_template, Response, json, abo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
-
 from functools import wraps
 
 # config import
@@ -14,31 +13,40 @@ from controller.User import UserController
 from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
-
+import os
 config = app_config[app_active]
 
 def create_app(config_name):
+    config = app_config[config_name]
     app = Flask(__name__, template_folder='templates')
 
     login_manager = LoginManager()
     login_manager.init_app(app)
-
+    with app.test_request_context():
+        for rule in app.url_map.iter_rules():
+            print(rule.__dict__, 'kasjdflajsdlçfjsdlçajkçl')
     app.secret_key = config.SECRET
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SQLALCHEMY_RECORD_QUERIES"] = True
     app.config['FLASK_ADMIN_SWATCH'] = 'paper'
+    
     db = SQLAlchemy(config.APP)
+    db.init_app(app)
     migrate = Migrate(app, db)
     start_views(app,db)
+
     Bootstrap(app)
 
-    db.init_app(app)
+    #db.create_all()
 
     @app.after_request
     def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        #response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
@@ -60,8 +68,29 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return render_template('vendas.html')
+        return render_template('etp.html')
+    
+    @app.route('/rota1', methods=['POST', 'GET'])
+    def rota1():
+        return render_template('rota1.html')
 
+    @app.route('/rota2', methods=['POST', 'GET'])
+    def rota2():
+        return render_template('rota2.html')
+
+    @app.route('/ultima')
+    def rota3():
+        return render_template('ultima.html')
+
+    @app.route('/rota4')
+    def rota4():
+        return render_template('rota4.html')
+
+    @app.route('/rota5')
+    def rota5():
+        return render_template('rota5.html')
+        
+    
     @app.route('/login/')
     def login():
         return render_template('login.html', data={'status': 200, 'msg': None, 'type': None})
