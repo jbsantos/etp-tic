@@ -1,53 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rota 1</title>
+    <title>Informação básica</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
     <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 
 </head>
 <body>
-    <h1>Rota 1</h1>
-    {% if request.path != '/rota1' %}
-        <a href="/rota1">Voltar</a>
-    {% endif %}
+    <h1>Informação básica</h1>
+
     <form id="confirmacao-form" action="/rota2" method="post">
         <div>
             <textarea id="editor" name="conteudo"></textarea>
         </div>
-       
-        <label>
-            <input type="checkbox" id="confirmacao-checkbox" required>
-            Eu li e entendi o conteúdo.
-        </label>
-        <br>
-        <button type="submit" id="proxima-rota">Próxima Rota</button>
+
+        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+            Próxima Rota
+        </button>
+
     </form>
 
-    <script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const showTermsAndConditions = async () => {
                     const { value: accept } = await Swal.fire({
-                        title: 'Terms and conditions',
+                        title: 'Iniciando com as Informações básicas do ETP',
+                        html: `
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            
+                            <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                        </div>
+                    `,
+                        focusConfirm: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
                         input: 'checkbox',
                         inputValue: 1,
-                        inputPlaceholder: 'I agree with the terms and conditions',
+                        inputPlaceholder: 'Estou ciente.',
                         confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
                         inputValidator: (result) => {
-                            return !result && 'You need to agree with T&C';
+                            return !result && 'Confirme a leitura';
                         }
                     });
     
-                    if (accept) {
-                        Swal.fire('You agreed with T&C :)');
-                    }
+                  //  if (accept) {
+                    //    Swal.fire('Obrigado :)');
+                   // }
                 };
     
                 showTermsAndConditions();
             });
         </script>
-    </script>
     <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 
     <script>
