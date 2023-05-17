@@ -17,9 +17,10 @@ def start_views(app, db):
 
     admin.add_view(RoleView(Role, db.session, "Funções",  category="Usuários"))
     admin.add_view(UserView(User, db.session, "Usuários", category="Usuários"))
-    admin.add_view(CategoryView(Category, db.session, 'Categorias', category="Financeiro"))
-    admin.add_view(ProductView(Product, db.session, "Despesas", category="Financeiro"))
-    admin.add_view(PaginasView(Paginas, db.session, 'Paginas', category="indice"))
+    admin.add_view(CategoryView(Category, db.session, 'Categorias', category="ETP DIGITAL"))
+    admin.add_view(ProductView(Product, db.session, "Cadastro", category="ETP DIGITAL"))
+    admin.add_view(PaginasView(Paginas, db.session, 'Manual', category="Informações"))
+
 
 
     admin.add_link(MenuLink(name='Logout', url='/logout'))
