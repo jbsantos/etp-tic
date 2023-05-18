@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Concluir</title>
+    <title>Exibição de PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
 </head>
 <body>
-    <h1>Última Rota </h1>
-    {% if request.path != '/rota1' %}
-    <a href="/rota1">Voltar</a>
- 
-    {% endif %}
-
-    {% if request.path == '/ultima' %}
-    <a href="/admin">Fim</a>
- 
-    {% endif %}
-
+    <button onclick="window.location.href = '/admin'">Voltar para a página inicial</button>
+    <a href="{{ url_for('static', filename='formulario/ETP-IN-40-2020.pdf') }}" download>
+        <button>Download do PDF</button>
+      </a>
+      
+    <div id="pdf-container"></div>
+      
+    <script>
+        // URL do arquivo PDF
+        const pdfUrl = "{{ url_for('static', filename='formulario/ETP-IN-40-2020.pdf') }}";
+      
+        // Função para carregar e renderizar o PDF
+        const renderPDF = async () => {
+          const loadingTask = pdfjsLib.getDocument(pdfUrl);
+          const pdf = await loadingTask.promise;
+        
+          const container = document.getElementById("pdf-container");
+        
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1.5 });
+        
+            const canvas = document.createElement("canvas");
+            canvas.style.display = "block";
+            canvas.style.margin = "10px auto";
+        
+            const context = canvas.getContext("2d");
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+        
+            const renderContext = {
+              canvasContext: context,
+              viewport: viewport,
+            };
+        
+            container.appendChild(canvas);
+        
+            await page.render(renderContext).promise;
+          }
+        };
+        
+        // Chame a função para carregar e renderizar o PDF
+        renderPDF();
+      </script>
+      
 </body>
 </html>

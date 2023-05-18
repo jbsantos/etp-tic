@@ -78,8 +78,8 @@ def create_app(config_name):
     def rota2():
         return render_template('rota2.html')
 
-    @app.route('/ultima')
-    def rota3():
+    @app.route('/ultima', methods=['POST'])
+    def ultima():
         return render_template('ultima.html')
 
     @app.route('/rota4')
