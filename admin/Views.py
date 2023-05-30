@@ -172,6 +172,7 @@ class CategoryView(ModelView):
 class ProductView(ModelView):
     base_template = 'admin_base.html'
     can_view_details = True
+    column_editable_list = ['date_created']
     
     def is_accessible(self):
         role = current_user.role

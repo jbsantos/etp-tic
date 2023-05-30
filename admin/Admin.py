@@ -13,7 +13,7 @@ from model.Paginas import Paginas
 from admin.Views import UserView, HomeView, RoleView, CategoryView, ProductView, PaginasView
 
 def start_views(app, db):
-    admin = Admin(app, name='Igreja Lapaz', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
+    admin = Admin(app, name='ETP ', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
 
     admin.add_view(RoleView(Role, db.session, "Funções",  category="Usuários"))
     admin.add_view(UserView(User, db.session, "Usuários", category="Usuários"))
