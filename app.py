@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request, redirect, render_template, Response, json, abort
+from flask import Flask, request, redirect, render_template, Response, json, abort, session, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
@@ -33,6 +33,8 @@ def create_app(config_name):
     app.config["SQLALCHEMY_ECHO"] = True
     app.config["SQLALCHEMY_RECORD_QUERIES"] = True
     app.config['FLASK_ADMIN_SWATCH'] = 'paper'
+    app.config['BABEL_DEFAULT_LOCALE'] = 'pt_BR'
+    app.config['BABEL_DEFAULT_TIMEZONE'] = 'America/Sao_Paulo'
     
     db = SQLAlchemy(config.APP)
     db.init_app(app)
@@ -71,15 +73,34 @@ def create_app(config_name):
         return render_template('etp.html')
     
     @app.route('/rota1', methods=['POST', 'GET'])
+    
     def rota1():
-        return render_template('rota1.html')
+        if request.method == 'POST':
+            conteudo = request.form.get('conteudo')
+            session['conteudo'] = conteudo
+            print(conteudo)
+            return redirect('/rota1')
+
+    # Verificar se a informação está armazenada na sessão
+        conteudo = session.get('conteudo')
+
+        return render_template('rota1.html', conteudo=conteudo)
+        #return render_template('rota1.html')
 
     @app.route('/rota2', methods=['POST', 'GET'])
     def rota2():
-        return render_template('rota2.html')
+        if request.method == 'POST':
+            conteudo = request.form.get('conteudo')
+            session['conteudo'] = conteudo
+        return render_template('rota2.html', conteudo=conteudo)
+        #return render_template('rota2.html')
 
     @app.route('/ultima', methods=['POST'])
     def ultima():
+        print(session)
+        conteudo = session.get('conteudo')
+        print(conteudo)
+        session.pop('conteudo', None)
         return render_template('ultima.html')
 
     @app.route('/rota4')

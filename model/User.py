@@ -23,6 +23,7 @@ class User(db.Model, UserMixin):
     endereco = db.Column(db.String(420), unique=False, nullable=True)
     celular = db.Column(db.String(12), nullable=False)
     data_nascimento = db.Column(db.DateTime(6), default=db.func.current_timestamp(), nullable=True)
+    
     role = db.Column(db.Integer, db.ForeignKey(Role.id), nullable=False)
     funcao = relationship(Role)
     

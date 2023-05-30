@@ -4,6 +4,9 @@ from flask_admin.contrib.sqla import ModelView
 # Capítulo 10
 from flask_login import current_user
 from flask import redirect
+from wtforms.widgets import DateTimeInput
+from wtforms.fields import DateTimeField
+from datetime import datetime
 
 from config import app_config, app_active
 
@@ -46,8 +49,15 @@ class HomeView(AdminIndexView):
             return redirect('/admin')
         else:
             return redirect('/login')
+        
 
+            
 class UserView(ModelView):
+    def date_created_formatter(view, context, model, name):
+        if model.date_created:
+            return model.date_created.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        return ''
+
     column_labels = {
         'funcao': 'Função',
         'username': 'Nome de usuário',
@@ -77,6 +87,7 @@ class UserView(ModelView):
         }
     }
 
+
     can_set_page_size = True
     can_view_details = True
     column_searchable_list = ['username', 'email']
@@ -91,7 +102,13 @@ class UserView(ModelView):
     column_export_exclude_list = ['password', 'recovery_code']
 
     export_types = ['json', 'yaml', 'csv', 'xls', 'df']
-
+    column_formatters = {
+        'date_created': date_created_formatter
+    }
+    
+    
+    
+    
     def on_model_change(self, form, User, is_created):
         if 'password' in form:
             if form.password.data is not None:

@@ -11,15 +11,18 @@
   
     <form id="confirmacao-form" action="/ultima" method="post">
         <div>
-            <textarea id="editor" name="conteudo"></textarea>
+            <textarea id="editor" name="conteudo">{{session['conteudo']}}</textarea>
         </div>
        
         <span>
             {% if request.path != '/rota1' %}
-       
+            
             <a href="/rota1" class="swal2-confirm swal2-styled" style="text-decoration: none;">
                 Rota Anterior
             </a>
+            <!-- <a href="/rota1" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Rota Anterior
+            </a> -->
             
         {% endif %}
 
