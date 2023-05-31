@@ -28,7 +28,7 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     IP_HOST = 'localhost' # Aqui geralmente é um IP de um servidor na nuvem e não o endereço da máquina local
-    PORT_HOST = 8080
+    PORT_HOST = 8000
     URL_MAIN = 'http://%s:%s/' % (IP_HOST, PORT_HOST)
 
 app_config = {

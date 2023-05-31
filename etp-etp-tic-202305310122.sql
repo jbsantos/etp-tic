@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.33, for Linux (x86_64)
 --
--- Host: 191.252.185.216    Database: igreja
+-- Host: localhost    Database: etp-tic
 -- ------------------------------------------------------
--- Server version	8.0.32-0ubuntu0.20.04.2
+-- Server version	8.0.33-0ubuntu0.20.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -47,11 +47,11 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `description` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,8 +60,33 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Calçados',''),(2,'Ortopédico','Materiais usado na ortopedia '),(3,'Aluguel','Informação sobre o alugueis'),(4,'Energia','Celpe'),(5,'Água','gasto com águas.'),(6,'Pastores','Despensas com pastores e auxiliares'),(7,'ação social','Gasto com ajuda financeira');
+INSERT INTO `category` VALUES (9,'ETP - 40','INFORMÁTICA GERAL'),(10,'ETP - 94','INFORMÁTICA ESPECIFICO'),(11,'ETP - 40 e ETP 94','TEM NAS DUAS ETP');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `paginas`
+--
+
+DROP TABLE IF EXISTS `paginas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paginas` (
+  `nome` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paginas`
+--
+
+LOCK TABLES `paginas` WRITE;
+/*!40000 ALTER TABLE `paginas` DISABLE KEYS */;
+INSERT INTO `paginas` VALUES ('informacao',1,''),('necessidade',2,'Descrever as necessidades');
+/*!40000 ALTER TABLE `paginas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -75,11 +100,6 @@ CREATE TABLE `product` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `description` text NOT NULL,
-  `qtd` int DEFAULT NULL,
-  `image` text,
-  `price` decimal(10,2) NOT NULL,
-  `date_created` datetime NOT NULL,
-  `last_update` datetime DEFAULT NULL,
   `status` int DEFAULT NULL,
   `user_created` int NOT NULL,
   `category` int NOT NULL,
@@ -89,7 +109,7 @@ CREATE TABLE `product` (
   KEY `user_created` (`user_created`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category`) REFERENCES `category` (`id`),
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`user_created`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +118,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Tênis','Calçado',20,'',149.90,'2019-03-02 19:32:00','2019-03-02 19:32:00',1,2,1),(2,'Sapato Social','Calçado',38,'',249.90,'2019-03-02 21:17:00','2023-03-28 16:34:19',1,2,1),(3,'Sapatênis','Calçado',200,NULL,350.00,'2019-03-04 12:09:42','2019-03-02 21:20:26',1,2,1),(4,'Sandália','Calçado',30,'',300.00,'2019-03-04 22:53:00','2019-03-04 22:53:00',1,2,1),(5,'Chinelo','Calçado',40,'',1900.00,'2019-03-04 22:54:00','2019-03-04 22:54:00',1,2,1),(6,'Teste ortopedista ','Teste',5,'',260.00,'2023-03-28 13:30:00','2023-03-28 13:30:00',1,2,2),(7,'teste 1','teste12',22,'',25.00,'2023-03-29 14:10:00','2023-03-29 14:10:00',1,5,1),(8,'Aluguel do Cajá ','mês de julho',1,'comprovante',600.00,'2023-03-29 14:44:00','2023-03-29 14:44:00',1,2,3);
+INSERT INTO `product` VALUES (11,'Informação básica','Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação',NULL,7,11),(12,'3. Área Requisitante','Aqui você deve informar o nome do(s) órgão(s), setor(es) ou área(s) que solicitou(aram) a contratação.',NULL,7,11);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +143,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Admin'),(2,'Administração'),(3,'Diáconos'),(4,'membros');
+INSERT INTO `role` VALUES (1,'Admin'),(2,'Gerente'),(3,'Secretária'),(4,'usuários');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +172,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `username` (`username`),
   KEY `role` (`role`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,12 +181,12 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'admin','admin@email.com','$pbkdf2-sha256$29000$4vwf41zL.V/rvTcmxLj33g$KiPwlnxJFJUK5EB1qD3cotArGsl8oYaVv3qN1ZQJjr0','2019-03-02 13:33:00','2019-03-10 15:59:55',1,1,'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0aWFnb2x1aXpycyIsImV4cCI6MTU1MjI0NDQ5Mn0.S0L7LiRIWgNRT3Mf16-g1ZU6azeSF0QINyw8zVzlJyY',NULL,NULL,NULL),(4,'gerente','gerente@email','$pbkdf2-sha256$29000$KKX0HsN4b60VwnjPmZNSig$C3M1g9k6w/ETive5KK1RgoidALPodfUZhs1ofehBSP4','2019-03-07 17:53:00','2023-03-28 16:29:41',2,1,NULL,NULL,NULL,NULL),(5,'loginsta','logista@email','$pbkdf2-sha256$29000$4vwf41zL.V/rvTcmxLj33g$KiPwlnxJFJUK5EB1qD3cotArGsl8oYaVv3qN1ZQJjr0','2019-03-07 17:53:00','2019-03-08 09:23:27',3,1,NULL,NULL,NULL,NULL),(6,'admin@email.com','usuario@email','$pbkdf2-sha256$29000$9D7nvLfWeq81ptS69x6DsA$bcjYayfbN/w6HIMZjZa4rQj9w2V3UF.Cgu1K5IK1xkw','2019-03-07 17:53:00','2023-03-28 16:31:58',4,1,'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJ1c3VhcmlvIiwiZXhwIjoxNTU1MzU2NDI3fQ.Huf6P-pr4qsfLsiVowvm3ZRSsRmNszJmxG_ezD_m2U8',NULL,NULL,NULL),(7,'Pr Jorge','jorge0302@gmail.com','$pbkdf2-sha256$29000$Vqo1pvQeY.z9/x9DqDWmdA$jThCCT.e7yac23K34u1KUcx7Dehf1Gm6scctFeOExDA','2023-03-29 11:58:00',NULL,1,1,NULL,'Av Armindo Moura, 581, QD E, BL 8 APT 101',NULL,'81-986452028'),(8,'Maiara','bilongavendas@gmail.com','$pbkdf2-sha256$29000$I6T0HgNA6L2X0ppTyrl3jg$zTr4cvLFHDVSQZxi4arQhpHccg38JrDtTFHfq7y4jck','2023-03-29 12:51:00',NULL,2,1,NULL,'Av Armindo Moura, 581, QD E bl 8 AP 101','1993-05-22','81945204094'),(9,'Missionária Eunides','misseunides@gmail.com','$pbkdf2-sha256$29000$CMGYU4qxtnYuhTAmxNibcw$IJMik.QPD8ZxbZAZj2vIoc/TFa0gwH4bIkWXdgl9Ktw','2023-03-29 14:15:00',NULL,2,1,NULL,'Ibura','1973-03-07','81-9999999'),(10,'teste','teste@email.com','$pbkdf2-sha256$29000$Tqn1/r/3fg.hdC5lDCGE0A$Rue42ovqRIUFTatBhRobtwov8Wb/dH4vKwVgagbEtRk','2023-03-29 14:36:00',NULL,4,1,NULL,'teste','2023-03-29','teste');
+INSERT INTO `user` VALUES (7,'Pr Jorge','jorge0302@gmail.com','$pbkdf2-sha256$29000$9H7PmfM.Z2xNiRGCUGoN4Q$vZCozBH3OUJCQeuHzOscu2SPK4ftuP0wVUFGU0yoZXw','2023-05-22 00:06:48','2023-05-31 00:06:51',1,1,NULL,'Av Armindo Moura, 581, QD E, BL 8 APT 101','2023-05-30','81-986452028'),(11,'jorge0302@gmail.com','homero@etpdigital.com','$pbkdf2-sha256$29000$vfd.j7H23tv7P.cc49ybsw$KMYme65JpUR5WcX2W/tYYKqeMD9J72McikyYxw3rmjU','2023-05-29 23:49:00','2023-05-31 00:06:08',1,1,NULL,'5434','2023-05-30','34534534'),(12,'ADMIN','admin@admin','$pbkdf2-sha256$29000$HQNgrNVaaw2h1Nq7F2Ks1Q$1SxfzdxwRCqcJ2Ya6OUO4KR93XusiKWJAQaT0UHpPfE','2023-05-31 16:12:00','2023-05-31 00:07:19',1,1,NULL,'123',NULL,'543512');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'igreja'
+-- Dumping routines for database 'etp-tic'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -178,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-15 15:35:30
+-- Dump completed on 2023-05-31  1:22:39

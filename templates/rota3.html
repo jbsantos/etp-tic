@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Informação básica</title>
+    <title>Descrição necessidade</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
     <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 
 </head>
 <body>
-    <h1>Informação básica</h1>
-
-    <form id="confirmacao-form" action="/rota2" method="post">
+    <h1>3. Descrição da necessidade</h1>
+  
+    <form id="confirmacao-form" action="/ultima" method="post">
         <div>
-            <textarea id="editor" name="conteudo">{{conteudo}}</textarea>
+            <textarea id="editor" name="conteudo2">{{session['conteudo3']}}</textarea>
         </div>
+       
+        <span>
+            {% if request.path != '/rota1' %}
+            
+            <a href="/rota2" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Etapa anterior
+            </a>
+            <!-- <a href="/rota1" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Rota Anterior
+            </a> -->
+            
+        {% endif %}
 
-        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-            Próxima etapa
-        </button>
-
-    </form>
+            <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+                Gerar ETP DIGITAL
+            </button>
+        </span>
+       
+        </form>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const showTermsAndConditions = async () => {
                     const { value: accept } = await Swal.fire({
-                        title: 'Iniciando com as Informações básicas do ETP',
+                        title: 'Preenchendo a Descrição da necessidade',
                         html: `
                         <div style="max-height: 400px; overflow-y: auto;">
                             
@@ -33,7 +46,7 @@
                     `,
                         focusConfirm: false,
                         showCancelButton: false,
-                        allowOutsideClick: false,
+                        allowOutsideClick: false,   
                         input: 'checkbox',
                         inputValue: 1,
                         inputPlaceholder: 'Estou ciente.',
@@ -43,9 +56,9 @@
                         }
                     });
     
-                  //  if (accept) {
-                    //    Swal.fire('Obrigado :)');
-                   // }
+                   // if (accept) {
+                  //      Swal.fire('Obrigado :)');
+                 //   }
                 };
     
                 showTermsAndConditions();
