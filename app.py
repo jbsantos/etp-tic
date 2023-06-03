@@ -68,7 +68,15 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return render_template('etp/index.html')
+        return render_template('/etp/index.html')
+    
+    @app.route('/etp94')
+    def etp94():
+        return render_template('/etp/etp94.html')
+    
+    @app.route('/etp40')
+    def etp40():
+        return render_template('/etp/etp40.html')
     
     @app.route('/componet',methods=['GET'])
     def componet():
