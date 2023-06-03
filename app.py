@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request, redirect, render_template, Response, json, abort, session, request
+from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
@@ -19,7 +19,7 @@ config = app_config[app_active]
 def create_app(config_name):
     config = app_config[config_name]
     app = Flask(__name__, template_folder='templates')
-
+    app.url_map.strict_slashes = False
     login_manager = LoginManager()
     login_manager.init_app(app)
     
@@ -68,8 +68,20 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return render_template('etp.html')
+        return render_template('etp/index.html')
     
+    @app.route('/componet',methods=['GET'])
+    def componet():
+        return render_template('etp/info_basico.html')
+    
+    @app.route('/form_element',methods=['GET'])
+    def form_element():
+        return render_template('etp/forms-elements.html')
+    
+    @app.route('/accordion',methods=['GET'])
+    def accordion():
+        return render_template('etp/components-accordion.html')
+       
     @app.route('/rota1', methods=['POST', 'GET'])
     
     def rota1():
