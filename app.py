@@ -72,20 +72,26 @@ def create_app(config_name):
     
     @app.route('/etp94')
     def etp94():
-        return render_template('/etp/etp94.html')
+        return render_template('/etp94/etp94.html')
     
     @app.route('/etp40')
     def etp40():
         return render_template('/etp/etp40.html')
     
-    @app.route('/componet',methods=['GET'])
+    @app.route('/informacao',methods=['GET'])
     def componet():
-        return render_template('etp/info_basico.html')
+
+        return render_template('etp/info_basico_etp40.html')
     
-    @app.route('/form_element',methods=['GET'])
-    def form_element():
-        return render_template('etp/forms-elements.html')
+    @app.route('/descricao',methods=['GET'])
+    def descricao():
+        return render_template('etp/descricao.html')
     
+    @app.route('/area_requisitante',methods=['GET'])
+    def area_requisitante():
+
+        return render_template('etp/forms-layouts.html')
+
     @app.route('/accordion',methods=['GET'])
     def accordion():
         return render_template('etp/components-accordion.html')
@@ -147,14 +153,6 @@ def create_app(config_name):
             session.pop(sessao, None)
         return render_template('ultima.html')
 
-    @app.route('/rota4')
-    def rota4():
-        return render_template('rota4.html')
-
-    @app.route('/rota5')
-    def rota5():
-        return render_template('rota5.html')
-        
     
     @app.route('/login/')
     def login():
@@ -302,5 +300,18 @@ def create_app(config_name):
     def load_user(user_id):
         user = UserController()
         return user.get_admin_login(user_id)
+    
+
+    @app.route('/minha_funcao')
+    def minha_funcao():
+        # Coloque o código que gera o HTML desejado aqui
+        # código_html = "<h1>Exemplo de função em um controlador</h1>"
+        # return codigo_html
+        return render_template('etp/aside.html', minha_funcao=minha_funcao)
+
+    app.jinja_env.globals.update(minha_funcao=minha_funcao)
+
+
+# Registre a função no Jinja2
 
     return app
