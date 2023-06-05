@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request, redirect, render_template, Response, json, abort
+from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
@@ -19,20 +19,20 @@ config = app_config[app_active]
 def create_app(config_name):
     config = app_config[config_name]
     app = Flask(__name__, template_folder='templates')
-
+    app.url_map.strict_slashes = False
     login_manager = LoginManager()
     login_manager.init_app(app)
-    with app.test_request_context():
-        for rule in app.url_map.iter_rules():
-            print(rule.__dict__, 'kasjdflajsdlçfjsdlçajkçl')
+    
     app.secret_key = config.SECRET
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config["SQLALCHEMY_ECHO"] = True
-    app.config["SQLALCHEMY_RECORD_QUERIES"] = True
+   #app.config["SQLALCHEMY_ECHO"] = True
+  #  app.config["SQLALCHEMY_RECORD_QUERIES"] = True
     app.config['FLASK_ADMIN_SWATCH'] = 'paper'
+    app.config['BABEL_DEFAULT_LOCALE'] = 'pt_BR'
+    app.config['BABEL_DEFAULT_TIMEZONE'] = 'America/Sao_Paulo'
     
     db = SQLAlchemy(config.APP)
     db.init_app(app)
@@ -68,18 +68,83 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return render_template('etp.html')
+        return render_template('/etp/index.html')
     
+    @app.route('/etp94')
+    def etp94():
+        return render_template('/etp/etp94.html')
+    
+    @app.route('/etp40')
+    def etp40():
+        return render_template('/etp/etp40.html')
+    
+    @app.route('/componet',methods=['GET'])
+    def componet():
+        return render_template('etp/info_basico.html')
+    
+    @app.route('/form_element',methods=['GET'])
+    def form_element():
+        return render_template('etp/forms-elements.html')
+    
+    @app.route('/accordion',methods=['GET'])
+    def accordion():
+        return render_template('etp/components-accordion.html')
+       
     @app.route('/rota1', methods=['POST', 'GET'])
+    
     def rota1():
-        return render_template('rota1.html')
+        if request.method == 'POST':
+            conteudo = request.form.get('conteudo')
+            session['conteudo'] = conteudo
+     
+            return redirect('/rota1')
+
+    # Verificar se a informação está armazenada na sessão
+        conteudo = session.get('conteudo')
+        
+        return render_template('rota1.html', conteudo=conteudo)
+        #return render_template('rota1.html')
 
     @app.route('/rota2', methods=['POST', 'GET'])
     def rota2():
-        return render_template('rota2.html')
+         if request.method == 'POST':
+            conteudo = request.form.get('conteudo')
+            session['conteudo'] = conteudo
+            #print(conteudo2)
+            return redirect('/rota2')
+
+    # Verificar se a informação está armazenada na sessão
+         conteudo = session.get('conteudo')
+
+         return render_template('rota2.html', conteudo=conteudo)
+     
+     
+     
+    @app.route('/rota3', methods=['POST', 'GET'])
+    def rota3():
+        if request.method == 'POST':
+            conteudo2 = request.form.get('conteudo2')
+            session['conteudo2'] = conteudo2
+            print(conteudo2)
+            return redirect('/rota3')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudo2 = session.get('conteudo2')
+
+        return render_template('rota3.html', conteudo2=conteudo2)
+            #return render_template('rota1.html')
+            
+            #return render_template('rota2.html')
+        #return render_template('rota2.html')
 
     @app.route('/ultima', methods=['POST'])
     def ultima():
+        print(session)
+        conteudo = session.get('conteudo')
+        print(conteudo)
+        sessoes = ['conteudo', 'conteudo2']
+        for sessao in sessoes:
+            session.pop(sessao, None)
         return render_template('ultima.html')
 
     @app.route('/rota4')

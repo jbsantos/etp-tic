@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Descrição necessidade</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+
+</head>
+<body>
+    <h1>3. Descrição da necessidade</h1>
+  
+    <form id="confirmacao-form" action="/ultima" method="post">
+        <div>
+            <textarea id="editor" name="conteudo2">{{session['conteudo3']}}</textarea>
+        </div>
+       
+        <span>
+            {% if request.path != '/rota1' %}
+            
+            <a href="/rota2" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Etapa anterior
+            </a>
+            <!-- <a href="/rota1" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Rota Anterior
+            </a> -->
+            
+        {% endif %}
+
+            <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+                Gerar ETP DIGITAL
+            </button>
+        </span>
+       
+        </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const showTermsAndConditions = async () => {
+                    const { value: accept } = await Swal.fire({
+                        title: 'Preenchendo a Descrição da necessidade',
+                        html: `
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            
+                            <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                        </div>
+                    `,
+                        focusConfirm: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,   
+                        input: 'checkbox',
+                        inputValue: 1,
+                        inputPlaceholder: 'Estou ciente.',
+                        confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                        inputValidator: (result) => {
+                            return !result && 'Confirme a leitura';
+                        }
+                    });
+    
+                   // if (accept) {
+                  //      Swal.fire('Obrigado :)');
+                 //   }
+                };
+    
+                showTermsAndConditions();
+            });
+        </script>
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            CKEDITOR.replace('editor');
+        });
+    </script>
+</body>
+</html>
