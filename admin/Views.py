@@ -18,6 +18,13 @@ from model.Category import Category
 from model.Product import Product
 import datetime
 
+            
+from flask_admin.contrib.sqla import ModelView
+from wtforms import DateTimeLocalField
+from flask_admin.form import DateTimePickerWidget
+from flask import request, redirect
+from flask_login import current_user
+
 #import locale
 #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
 config = app_config[app_active]
@@ -54,12 +61,7 @@ class HomeView(AdminIndexView):
             return redirect('/login')
         
 
-            
-from flask_admin.contrib.sqla import ModelView
-from wtforms import DateTimeLocalField
-from flask_admin.form import DateTimePickerWidget
-from flask import request, redirect
-from flask_login import current_user
+
 
 class UserView(ModelView):
     def on_form_prefill(self, form, id):
@@ -221,10 +223,46 @@ class CategoryView(ModelView):
             return redirect('/login')
 
 class ProductView(ModelView):
+    def on_form_prefill(self, form, id):
+        if request and request.method == 'GET':
+            model = self.get_one(id)
+            form.date_created.data = model.date_created.strftime('%Y-%m-%d %H:%M:%S') if model.date_created else ''
+
+    form_args = {
+        'date_created': {
+            'widget': DateTimeLocalField()
+        }
+    }
+
     base_template = 'admin_base.html'
     can_view_details = True
     column_editable_list = ['date_created']
-    
+
+    form_widget_args = {
+        'date_created': {
+            'widget': widgets.DateTimePickerWidget()
+        }
+    }
+    form_overrides = {
+        'date_created': StringField
+    }
+
+    form_args = {
+        'date_created': {
+            'widget': widgets.DateTimePickerWidget()
+        }
+    }
+
+    def on_model_change(self, form, Product, is_created):
+        if 'date_created' in form:
+                if form.date_created.data:
+                    print(type(form.date_created.data), 'testeeee2')
+                    # Converter a string de data no formato correto
+                    date_created = datetime.datetime.strptime(form.date_created.data, '%Y-%m-%d %H:%M:%S')
+                    # Converter novamente em string no formato desejado
+                    form.date_created.data = date_created.strftime('%Y-%m-%d %H:%M:%S')
+
+        
     def is_accessible(self):
         role = current_user.role
         if role == 1:
