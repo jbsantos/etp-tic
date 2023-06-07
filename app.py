@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
 from functools import wraps
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 
 # config import
 from config import app_config, app_active
@@ -69,7 +69,7 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return render_template('/etp/index.html')
+        return render_template('/etp40/index.html')
     
     @app.route('/etp94')
     def etp94():
@@ -78,7 +78,7 @@ def create_app(config_name):
     @app.route('/etp40')
     def etp40():
     #     # Abrir o arquivo HTML e ler o seu conteúdo
-    #     with open('templates/etp/aside.html', 'r') as file:
+    #     with open('templates/etp40/aside.html', 'r') as file:
     #         html = file.read()
     #     soup = BeautifulSoup(html, 'html.parser')
 
@@ -87,75 +87,79 @@ def create_app(config_name):
 
     #     print(str(href_values))
     #     return render_template('resultado.html', href_values=href_values)
-        return render_template('/etp/etp40.html')
+        return render_template('/etp40/etp40.html')
     
-    @app.route('/informacao',methods=['GET'])
-    def componet():
+    @app.route('/informacoes1-40',methods=['POST', 'GET'])
+    def informacoes1_40():
 
-        return render_template('etp/info_basico_etp40.html')
+        return render_template('etp40/1informacoes-40.html')
     
-    @app.route('/descricao',methods=['GET'])
-    def descricao():
+    @app.route('/necessidade2-40',methods=['POST', 'GET'])
+    def necessidade2_40():
         
-        return render_template('etp/descricao.html')
+        return render_template('etp40/2necessidade-40.html')
     
-    @app.route('/area-requisitante',methods=['GET'])
-    def area_requisitante():
+    @app.route('/necessidade3-40',methods=['POST', 'GET'])
+    def necessidade3_40():
 
-        return render_template('etp/area-requisitante.html')
+        return render_template('etp40/3necessidade-40.html')
     
-    @app.route('/requisito',methods=['GET'])
-    def requisito():
+    @app.route('/necessidade4-40',methods=['POST', 'GET'])
+    def necessidade4_40():
 
-        return render_template('etp/requisito.html')
+        return render_template('etp40/4necessidade-40.html')
 
-    @app.route('/mercado',methods=['GET'])
-    def mercado():
-        return render_template('etp/mercado.html')
+    @app.route('/solucao5-40',methods=['POST', 'GET'])
+    def solucao5_40():
+        return render_template('etp40/5solucao-40.html')
     
-    @app.route('/solucao',methods=['GET'])
-    def solucao():
-        return render_template('etp/solucao.html')
+    @app.route('/solucao6-40',methods=['POST', 'GET'])
+    def solucao6_40():
+        return render_template('etp40/6solucao-40.html')
     
-    @app.route('/estimativa-quantidade',methods=['GET'])
-    def estimativa_quantidade():
-        return render_template('etp/estimativa-quantidade.html')
+    @app.route('/solucao7-40',methods=['POST', 'GET'])
+    def solucao7_40():
+        return render_template('etp40/7solucao-40.html')
        
-    @app.route('/estimativa-valor',methods=['GET'])
-    def estimativa_valor():
-        return render_template('etp/estimativa-valor.html')
+    @app.route('/solucao8-40',methods=['POST', 'GET'])
+    def solucao8_40():
+        return render_template('etp40/8solucao-40.html')
     
-    @app.route('/justificativa',methods=['GET'])
-    def justificativa():
-        return render_template('etp/justificativa.html')
+    @app.route('/solucao9-40',methods=['POST', 'GET'])
+    def solucao9_40():
+        return render_template('etp40/9solucao-40.html')
     
-    @app.route('/contratacoes',methods=['GET'])
-    def contratacoes():
-        return render_template('etp/contratacoes.html')    
+    @app.route('/solucao10-40',methods=['POST', 'GET'])
+    def solucao10_40():
+        return render_template('etp40/10solucao-40.html')    
     
-    @app.route('/alinhamento',methods=['GET'])
-    def alinhamento():
-        return render_template('etp/alinhamento.html')  
+    @app.route('/solucao11-40',methods=['POST', 'GET'])
+    def solucao11_40():
+        return render_template('etp40/11solucao-40.html')  
     
-    @app.route('/beneficios',methods=['GET'])
-    def beneficios():
-        return render_template('etp/beneficios.html') 
+    @app.route('/planejamento12-40',methods=['POST', 'GET'])
+    def planejamento12_40():
+        return render_template('etp40/12planejamento-40.html') 
     
-    @app.route('/providencias',methods=['GET'])
-    def providencias():
-        return render_template('etp/providencias.html') 
+    @app.route('/planejamento13-40',methods=['POST', 'GET'])
+    def planejamento13_40():
+        return render_template('etp40/13planejamento-40.html') 
     
-    @app.route('/impactos',methods=['GET'])
-    def impactos():
-        return render_template('etp/impactos.html') 
+    @app.route('/planejamento14-40',methods=['POST', 'GET'])
+    def planejamento14_40():
+        return render_template('etp40/14planejamento-40.html') 
     
-    @app.route('/declaracao',methods=['GET'])
-    def declaracao():
-        return render_template('etp/declaracao.html') 
+    @app.route('/viabilidade15-40',methods=['POST', 'GET'])
+    def viabilidade15_40():
+        return render_template('etp40/15viabilidade-40.html') 
 
-    @app.route('/responsavel',methods=['GET'])
-    def responsavel():
-        return render_template('etp/responsavel.html') 
+    @app.route('/viabilidade16-40',methods=['POST', 'GET'])
+    def viabilidade16_40():
+        return render_template('etp40/16viabilidade-40.html') 
+    
+    @app.route('/profile',methods=['POST', 'GET'])
+    def profile():
+        return render_template('etp40/users-profile.html') 
     
     @app.route('/rota1', methods=['POST', 'GET'])
     
@@ -367,7 +371,7 @@ def create_app(config_name):
     def minha_funcao():
     # Coloque o código que gera o HTML desejado aqui
         
-        codigo_html = render_template('/etp/aside.html', )
+        codigo_html = render_template('/etp40/aside.html', )
 
         # Realize a modificação no código HTML
         codigo_html = codigo_html.replace('id="' + 'info_basico-nav' + '" class="nav-content collapse', 'id="' + 'info_basico-nav' + '" class="nav-content collapse show')

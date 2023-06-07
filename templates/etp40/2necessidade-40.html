@@ -1,5 +1,5 @@
-{% import 'etp/aside.html' as macros %}
-{% import 'etp/header.html' as header %}
+{% import 'etp40/aside.html' as macros %}
+{% import 'etp40/header.html' as header %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,16 +71,37 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
-          <form id="confirmacao-form" action="/rota2" method="post">
-            <div>
-                <textarea id="editor" name="conteudo">{{conteudo}}</textarea>
-            </div>
+          <form id="confirmacao-form" action="/necessidade2-40" method="post">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Quill Editor Full</h5>
+      
+                <!-- Quill Editor Full -->
+                <p>Quill editor with full toolset</p>
+                <div class="quill-editor-full" style="min-height: 200px;">
+                  <p>Hello World!</p>
+                  <p>This is Quill <strong>full</strong> editor</p>
+                </div>
+                <!-- End Quill Editor Full -->
     
-            <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                Próxima etapa
-            </button>
+                <span>
+                  <a href="/informacoes1-40" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                    Etapa Anterior
+                </a>
+                  <!-- pega o request da página não está cendo utlizado-->
+                {% if request.path == '/necessidade2-40' %}
+                  
+                  {%else %}
+                
+                  
+              {% endif %}
+      
+                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+                      Próxima etapa
+                  </button>
+              </span>
     
-        </form>
+          </form>
     
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
