@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
 from functools import wraps
+from bs4 import BeautifulSoup
 
 # config import
 from config import app_config, app_active
@@ -76,6 +77,16 @@ def create_app(config_name):
     
     @app.route('/etp40')
     def etp40():
+    #     # Abrir o arquivo HTML e ler o seu conteúdo
+    #     with open('templates/etp/aside.html', 'r') as file:
+    #         html = file.read()
+    #     soup = BeautifulSoup(html, 'html.parser')
+
+    # # Encontrar todos os elementos <a> e obter o valor do atributo href
+    #     href_values = [a['href'] for a in soup.find_all('a')]
+
+    #     print(str(href_values))
+    #     return render_template('resultado.html', href_values=href_values)
         return render_template('/etp/etp40.html')
     
     @app.route('/informacao',methods=['GET'])
@@ -85,17 +96,67 @@ def create_app(config_name):
     
     @app.route('/descricao',methods=['GET'])
     def descricao():
+        
         return render_template('etp/descricao.html')
     
-    @app.route('/area_requisitante',methods=['GET'])
+    @app.route('/area-requisitante',methods=['GET'])
     def area_requisitante():
 
-        return render_template('etp/forms-layouts.html')
+        return render_template('etp/area-requisitante.html')
+    
+    @app.route('/requisito',methods=['GET'])
+    def requisito():
 
-    @app.route('/accordion',methods=['GET'])
-    def accordion():
-        return render_template('etp/components-accordion.html')
+        return render_template('etp/requisito.html')
+
+    @app.route('/mercado',methods=['GET'])
+    def mercado():
+        return render_template('etp/mercado.html')
+    
+    @app.route('/solucao',methods=['GET'])
+    def solucao():
+        return render_template('etp/solucao.html')
+    
+    @app.route('/estimativa-quantidade',methods=['GET'])
+    def estimativa_quantidade():
+        return render_template('etp/estimativa-quantidade.html')
        
+    @app.route('/estimativa-valor',methods=['GET'])
+    def estimativa_valor():
+        return render_template('etp/estimativa-valor.html')
+    
+    @app.route('/justificativa',methods=['GET'])
+    def justificativa():
+        return render_template('etp/justificativa.html')
+    
+    @app.route('/contratacoes',methods=['GET'])
+    def contratacoes():
+        return render_template('etp/contratacoes.html')    
+    
+    @app.route('/alinhamento',methods=['GET'])
+    def alinhamento():
+        return render_template('etp/alinhamento.html')  
+    
+    @app.route('/beneficios',methods=['GET'])
+    def beneficios():
+        return render_template('etp/beneficios.html') 
+    
+    @app.route('/providencias',methods=['GET'])
+    def providencias():
+        return render_template('etp/providencias.html') 
+    
+    @app.route('/impactos',methods=['GET'])
+    def impactos():
+        return render_template('etp/impactos.html') 
+    
+    @app.route('/declaracao',methods=['GET'])
+    def declaracao():
+        return render_template('etp/declaracao.html') 
+
+    @app.route('/responsavel',methods=['GET'])
+    def responsavel():
+        return render_template('etp/responsavel.html') 
+    
     @app.route('/rota1', methods=['POST', 'GET'])
     
     def rota1():
@@ -304,10 +365,14 @@ def create_app(config_name):
 
     @app.route('/minha_funcao')
     def minha_funcao():
-        # Coloque o código que gera o HTML desejado aqui
-        # código_html = "<h1>Exemplo de função em um controlador</h1>"
-        # return codigo_html
-        return render_template('etp/aside.html', minha_funcao=minha_funcao)
+    # Coloque o código que gera o HTML desejado aqui
+        
+        codigo_html = render_template('/etp/aside.html', )
+
+        # Realize a modificação no código HTML
+        codigo_html = codigo_html.replace('id="' + 'info_basico-nav' + '" class="nav-content collapse', 'id="' + 'info_basico-nav' + '" class="nav-content collapse show')
+        
+        return codigo_html
 
     app.jinja_env.globals.update(minha_funcao=minha_funcao)
 
