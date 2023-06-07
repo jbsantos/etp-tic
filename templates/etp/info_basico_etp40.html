@@ -64,22 +64,21 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Quill Editor Full</h5>
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
+          <!-- Quill Editor Full -->
+          <p>Quill editor with full toolset</p>
+          <div class="quill-editor-full">
+            <p>Hello World!</p>
+            <p>This is Quill <strong>full</strong> editor</p>
+          </div>
+          <!-- End Quill Editor Full -->
 
-            <form id="confirmacao-form" action="/rota2" method="post">
-                <div>
-                    <textarea id="editor" name="conteudo">{{conteudo}}</textarea>
-                </div>
-        
-                <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                    Próxima etapa
-                </button>
-        
-            </form>
+        </div>
+      </div>
+    </section>
         
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
@@ -114,11 +113,12 @@
                 </script>
             <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
         
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    CKEDITOR.replace('editor');
-                });
-            </script>
+
+
+
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
 
           </div>
         </div>
