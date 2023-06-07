@@ -376,6 +376,248 @@ def create_app(config_name):
 
     app.jinja_env.globals.update(minha_funcao=minha_funcao)
 
+##################################################################
+    @app.route('/informacao1-94', methods=['POST', 'GET'])
+    def informacao1_94():
+        if request.method == 'POST':
+            conteudoinformacao1 = request.form.get('conteudoinformacao1')
+            session['conteudoinformacao1'] = conteudoinformacao1
+            return redirect('/informacao1-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudoinformacao1 = session.get('conteudoinformacao1')
+
+        return render_template('etp94/1informacao-94.html', conteudoinformacao1=conteudoinformacao1)
+    
+    @app.route('/necessidade2-94', methods=['POST', 'GET'])
+    def necessidade2_94():
+        if request.method == 'POST':
+            conteudonecessidade2 = request.form.get('conteudonecessidade2')
+            session['conteudonecessidade2'] = conteudonecessidade2
+            return redirect('/necessidade2-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade2 = session.get('conteudonecessidade2')
+
+        return render_template('etp94/2necessidade-94.html', conteudonecessidade2=conteudonecessidade2)
+    
+    @app.route('/necessidade3-94', methods=['POST', 'GET'])
+    def necessidade3_94():
+        if request.method == 'POST':
+            conteudonecessidade3 = request.form.get('conteudonecessidade3')
+            session['conteudonecessidade3'] = conteudonecessidade3
+            return redirect('/necessidade3-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade3 = session.get('conteudonecessidade3')
+
+        return render_template('etp94/3necessidade-94.html', conteudonecessidade3=conteudonecessidade3)
+    
+    @app.route('/necessidade4-94', methods=['POST', 'GET'])
+    def necessidade4_94():
+        if request.method == 'POST':
+            conteudonecessidade4 = request.form.get('conteudonecessidade4')
+            session['conteudonecessidade4'] = conteudonecessidade4
+            return redirect('/necessidade4-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade4 = session.get('conteudonecessidade4')
+
+        return render_template('etp94/4necessidade-94.html', conteudonecessidade4=conteudonecessidade4)
+    
+    @app.route('/necessidade5-94', methods=['POST', 'GET'])
+    def necessidade5_94():
+        if request.method == 'POST':
+            conteudonecessidade5 = request.form.get('conteudonecessidade5')
+            session['conteudonecessidade5'] = conteudonecessidade5
+            return redirect('/necessidade5-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade5 = session.get('conteudonecessidade5')
+
+        return render_template('etp94/5necessidade-94.html', conteudonecessidade5=conteudonecessidade5)
+    
+    @app.route('/necessidade6-94', methods=['POST', 'GET'])
+    def necessidade6_94():
+        if request.method == 'POST':
+            conteudonecessidade6 = request.form.get('conteudonecessidade6')
+            session['conteudonecessidade6'] = conteudonecessidade6
+            return redirect('/necessidade6-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade6 = session.get('conteudonecessidade6')
+
+        return render_template('etp94/6necessidade-94.html', conteudonecessidade6=conteudonecessidade6)
+    
+    @app.route('/necessidade7-94', methods=['POST', 'GET'])
+    def necessidade7_94():
+        if request.method == 'POST':
+            conteudonecessidade7 = request.form.get('conteudonecessidade7')
+            session['conteudonecessidade7'] = conteudonecessidade7
+            return redirect('/necessidade7-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudonecessidade7 = session.get('conteudonecessidade7')
+
+        return render_template('etp94/7necessidade-94.html', conteudonecessidade7=conteudonecessidade7)
+    
+    @app.route('/solucao8-94', methods=['POST', 'GET'])
+    def solucao8_94():
+        if request.method == 'POST':
+            conteudosolucao8 = request.form.get('conteudosolucao8')
+            session['conteudosolucao8'] = conteudosolucao8
+            return redirect('/solucao8-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao8 = session.get('conteudosolucao8')
+
+        return render_template('etp94/8solucao-94.html', conteudosolucao8=conteudosolucao8)
+    
+    @app.route('/solucao9-94', methods=['POST', 'GET'])
+    def solucao9_94():
+        if request.method == 'POST':
+            conteudosolucao9 = request.form.get('conteudosolucao9')
+            session['conteudosolucao9'] = conteudosolucao9
+            return redirect('/solucao9-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao9 = session.get('conteudosolucao9')
+
+        return render_template('etp94/9solucao-94.html', conteudosolucao9=conteudosolucao9)
+    
+    @app.route('/solucao10-94', methods=['POST', 'GET'])
+    def solucao10_94():
+        if request.method == 'POST':
+            conteudosolucao10 = request.form.get('conteudosolucao10')
+            session['conteudosolucao10'] = conteudosolucao10
+            return redirect('/solucao10-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao10 = session.get('conteudosolucao10')
+
+        return render_template('etp94/10solucao-94.html', conteudosolucao10=conteudosolucao10)
+    
+    @app.route('/solucao11-94', methods=['POST', 'GET'])
+    def solucao11_94():
+        if request.method == 'POST':
+            conteudosolucao11 = request.form.get('conteudosolucao11')
+            session['conteudosolucao11'] = conteudosolucao11
+            return redirect('/solucao11-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao11 = session.get('conteudosolucao11')
+
+        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
+    
+    @app.route('/solucao12-94', methods=['POST', 'GET'])
+    def solucao12_94():
+        if request.method == 'POST':
+            conteudosolucao12 = request.form.get('conteudosolucao12')
+            session['conteudosolucao12'] = conteudosolucao12
+            return redirect('/solucao12-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao12 = session.get('conteudosolucao12')
+
+        return render_template('etp94/12solucao-94.html', conteudosolucao12=conteudosolucao12)
+    
+    @app.route('/solucao13-94', methods=['POST', 'GET'])
+    def solucao13_94():
+        if request.method == 'POST':
+            conteudosolucao13 = request.form.get('conteudosolucao13')
+            session['conteudosolucao13'] = conteudosolucao13
+            return redirect('/solucao13-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao13 = session.get('conteudosolucao13')
+
+        return render_template('etp94/13solucao-94.html', conteudosolucao13=conteudosolucao13)
+    
+    @app.route('/solucao14-94', methods=['POST', 'GET'])
+    def solucao14_94():
+        if request.method == 'POST':
+            conteudosolucao14 = request.form.get('conteudosolucao14')
+            session['conteudosolucao14'] = conteudosolucao14
+            return redirect('/solucao14-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao14 = session.get('conteudosolucao14')
+
+        return render_template('etp94/14solucao-94.html', conteudosolucao14=conteudosolucao14)
+    
+    @app.route('/solucao15-94', methods=['POST', 'GET'])
+    def solucao15_94():
+        if request.method == 'POST':
+            conteudosolucao15 = request.form.get('conteudosolucao15')
+            session['conteudosolucao15'] = conteudosolucao15
+            return redirect('/solucao15-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao15 = session.get('conteudosolucao15')
+
+        return render_template('etp94/15solucao-94.html', conteudosolucao15=conteudosolucao15)
+    
+    @app.route('/planejamento16-94', methods=['POST', 'GET'])
+    def planejamento16_94():
+        if request.method == 'POST':
+            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
+            session['conteudoplanejamento16'] = conteudoplanejamento16
+            return redirect('/planejamento16-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudoplanejamento16 = session.get('conteudoplanejamento16')
+
+        return render_template('etp94/16planejamento-94.html', conteudoplanejamento16=conteudoplanejamento16)
+    
+    @app.route('/planejamento17-94', methods=['POST', 'GET'])
+    def planejamento17_94():
+        if request.method == 'POST':
+            conteudoplanejamento17 = request.form.get('conteudoplanejamento17')
+            session['conteudoplanejamento17'] = conteudoplanejamento17
+            return redirect('/planejamento17-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudoplanejamento17 = session.get('conteudoplanejamento17')
+
+        return render_template('etp94/17planejamento-94.html', conteudoplanejamento17=conteudoplanejamento17)
+       
+    @app.route('/viabilidade18-94', methods=['POST', 'GET'])
+    def viabilidade18_94():
+        if request.method == 'POST':
+            conteudoviabilidade18 = request.form.get('conteudoviabilidade18')
+            session['conteudoviabilidade18'] = conteudoviabilidade18
+            return redirect('/viabilidade18-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudoviabilidade18 = session.get('conteudoviabilidade18')
+
+        return render_template('etp94/18viabilidade-94.html', conteudoviabilidade18=conteudoviabilidade18)
+    
+    @app.route('/viabilidade19-94', methods=['POST', 'GET'])
+    def viabilidade19_94():
+        if request.method == 'POST':
+            conteudoviabilidade19 = request.form.get('conteudoviabilidade19')
+            session['conteudoviabilidade19'] = conteudoviabilidade19
+            return redirect('/viabilidade19-94')
+
+        # Verificar se a informação está armazenada na sessão
+        conteudoviabilidade19 = session.get('conteudoviabilidade19')
+
+        return render_template('etp94/19viabilidade-94.html', conteudoviabilidade19=conteudoviabilidade19)
+    
+    @app.route('/ultima-94', methods=['POST'])
+    def ultima_94():
+        conteudoultimo = session.get('conteudoultimo')
+        sessoes = ['conteudo', 'conteudo2']
+        for sessao in sessoes:
+            session.pop(sessao, None)
+        return render_template('ultima-94.html')
+    
+
+
+
+
+##################################################################
 
 # Registre a função no Jinja2
 
