@@ -1,0 +1,3 @@
+foi adicionado o 
+pip install beautifulsoup4
+após entrar no ambiente virtual install o pip acima
