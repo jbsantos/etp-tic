@@ -1,5 +1,6 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
+{% import 'etp40/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Components / Progress - NiceAdmin Bootstrap Template</title>
+  <title>Forms / Elements - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,6 +39,9 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body>
@@ -53,163 +57,18 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Progress</h1>
+      <h1>Descrição</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Components</li>
-          <li class="breadcrumb-item active">Progress</li>
+          <li class="breadcrumb-item">Forms</li>
+          <li class="breadcrumb-item active">Elements</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Default</h5>
-
-              <!-- Default Progress Bars-->
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div><!-- End Default Progress Bars-->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Labels</h5>
-
-              <!-- Progress Bars with labels-->
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-              </div><!-- End Progress Bars with labels -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Backgrounds</h5>
-
-              <!-- Progress Bars with Backgrounds-->
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div><!-- End Progress Bars with Backgrounds -->
-
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Height</h5>
-              <p>We only set a height value on the .progress, so if you change that value the inner .progress-bar will automatically resize accordingl</p>
-
-              <!-- Progress Bars with heights-->
-              <div class="progress" style="height: 10px;">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3" style="height: 15px;">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3" style="height: 20px;">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3" style="height: 25px;">
-                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div><!-- End Progress Bars with heights -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Striped Backgrounds</h5>
-
-              <!-- Progress Bars with Striped Backgrounds-->
-              <div class="progress">
-                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div><!-- End Progress Bars with Striped Backgrounds -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Striped Animated Backgrounds</h5>
-
-              <!-- Progress Bars with Striped Backgrounds-->
-              <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-              <div class="progress mt-3">
-                <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div><!-- End Progress Bars with Striped Animated Backgrounds -->
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/solucao9-40', '/solucao11-40') }}
+    <!-- ======= End Section ======= -->
 
   </main><!-- End #main -->
 
@@ -228,6 +87,41 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+                title: 'Iniciando com as Informações básicas do ETP',
+                html: `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    
+                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                </div>
+            `,
+                focusConfirm: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                input: 'checkbox',
+                inputValue: 1,
+                inputPlaceholder: 'Estou ciente.',
+                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                inputValidator: (result) => {
+                    return !result && 'Confirme a leitura';
+                }
+            });
+
+          //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+           // }
+        };
+
+        showTermsAndConditions();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>

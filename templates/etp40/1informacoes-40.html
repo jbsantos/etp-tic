@@ -62,65 +62,34 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
+  
     <section class="section dashboard">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Quill Editor Full</h5>
 
-          <!-- Quill Editor Full -->
-          <p>Quill editor with full toolset</p>
-          <div class="quill-editor-full">
-            <p>Hello World!</p>
-            <p>This is Quill <strong>full</strong> editor</p>
+      <form id="confirmacao-form" action="/necessidade2-40" method="post">
+      
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Quill Editor Full</h5>
+    
+              <!-- Quill Editor Full -->
+              <p>Quill editor with full toolset</p>
+              <div class="quill-editor-full" style="min-height: 200px;">
+                <p>Hello World!</p>
+                <p>This is Quill <strong>full</strong> editor</p>
+              </div>
+              <!-- End Quill Editor Full -->
+              <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+                Próxima etapa
+            </button>
+            </div>
           </div>
-          <!-- End Quill Editor Full -->
 
-        </div>
-      </div>
-    </section>
-        
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const showTermsAndConditions = async () => {
-                            const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
-                                html: `
-                                <div style="max-height: 400px; overflow-y: auto;">
-                                    
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
-                                </div>
-                            `,
-                                focusConfirm: false,
-                                showCancelButton: false,
-                                allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
-                                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
-                            });
-            
-                          //  if (accept) {
-                            //    Swal.fire('Obrigado :)');
-                           // }
-                        };
-            
-                        showTermsAndConditions();
-                    });
-                </script>
-            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
-        
-
-
-
-
-
-    </section>
+    </form>
+</section>
 
   </main><!-- End #main -->
+
+
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -137,6 +106,41 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+                title: 'Iniciando com as Informações básicas do ETP',
+                html: `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    
+                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                </div>
+            `,
+                focusConfirm: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                input: 'checkbox',
+                inputValue: 1,
+                inputPlaceholder: 'Estou ciente.',
+                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                inputValidator: (result) => {
+                    return !result && 'Confirme a leitura';
+                }
+            });
+
+          //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+           // }
+        };
+
+        showTermsAndConditions();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
+
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>

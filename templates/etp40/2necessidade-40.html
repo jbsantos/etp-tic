@@ -1,5 +1,6 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
+{% import 'etp40/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,15 +46,13 @@
 
 <body>
 
-
   <!-- ======= Header ======= -->
-  {{ header.pagina_header('area-requisitante-nav', 'area-requisitante') }}
+  {{ header.pagina_header('necessidade-nav', 'descricao') }}
     <!-- ======= End Header ======= -->
 
   <!-- ======= Sidebar ======= -->
   {{ macros.pagina_estatica('necessidade-nav', 'descricao') }}
     <!-- ======= Sidebar ======= -->
-    
 
   <main id="main" class="main">
 
@@ -67,85 +66,9 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-          <form id="confirmacao-form" action="/necessidade2-40" method="post">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Quill Editor Full</h5>
-      
-                <!-- Quill Editor Full -->
-                <p>Quill editor with full toolset</p>
-                <div class="quill-editor-full" style="min-height: 200px;">
-                  <p>Hello World!</p>
-                  <p>This is Quill <strong>full</strong> editor</p>
-                </div>
-                <!-- End Quill Editor Full -->
-    
-                <span>
-                  <a href="/informacoes1-40" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-                    Etapa Anterior
-                </a>
-                  <!-- pega o request da página não está cendo utlizado-->
-                {% if request.path == '/necessidade2-40' %}
-                  
-                  {%else %}
-                
-                  
-              {% endif %}
-      
-                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                      Próxima etapa
-                  </button>
-              </span>
-    
-          </form>
-    
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const showTermsAndConditions = async () => {
-                        const { value: accept } = await Swal.fire({
-                            title: 'Iniciando com as Informações básicas do ETP',
-                            html: `
-                            <div style="max-height: 400px; overflow-y: auto;">
-                                
-                                <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
-                            </div>
-                        `,
-                            focusConfirm: false,
-                            showCancelButton: false,
-                            allowOutsideClick: false,
-                            input: 'checkbox',
-                            inputValue: 1,
-                            inputPlaceholder: 'Estou ciente.',
-                            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                            inputValidator: (result) => {
-                                return !result && 'Confirme a leitura';
-                            }
-                        });
-        
-                      //  if (accept) {
-                        //    Swal.fire('Obrigado :)');
-                       // }
-                    };
-        
-                    showTermsAndConditions();
-                });
-            </script>
-        <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
-    
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                CKEDITOR.replace('editor');
-            });
-        </script>
-          
-    
-        </div>
-      </div>
-    </section>
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/informacoes1-40', '/necessidade3-40') }}
+    <!-- ======= End Section ======= -->
 
   </main><!-- End #main -->
 
@@ -164,6 +87,42 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+                title: 'Iniciando com as Informações básicas do ETP',
+                html: `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    
+                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                </div>
+            `,
+                focusConfirm: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                input: 'checkbox',
+                inputValue: 1,
+                inputPlaceholder: 'Estou ciente.',
+                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                inputValidator: (result) => {
+                    return !result && 'Confirme a leitura';
+                }
+            });
+
+          //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+           // }
+        };
+
+        showTermsAndConditions();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>  
+
+
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>

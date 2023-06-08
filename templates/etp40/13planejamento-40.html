@@ -1,5 +1,6 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
+{% import 'etp40/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +8,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Components / Spinners - NiceAdmin Bootstrap Template</title>
+  <title>Forms / Elements - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,6 +39,9 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body>
@@ -54,204 +58,18 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Spinners</h1>
+      <h1>Descrição</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Components</li>
-          <li class="breadcrumb-item active">Spinners</li>
+          <li class="breadcrumb-item">Forms</li>
+          <li class="breadcrumb-item active">Elements</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Border spinner</h5>
-              <p>Use the border spinners for a lightweight loading indicator.</p>
-
-              <!-- Border spinner -->
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div><!-- End Border spinner -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Colors</h5>
-
-              <!-- Color spinners -->
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-secondary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-success" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-danger" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-warning" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-info" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-light" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-border text-dark" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div><!-- End Color spinners -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Alignment</h5>
-              <p>Use flexbox utilities, float utilities, or text alignment utilities to place spinners exactly where you need them in any situation.</p>
-
-              <!-- Center aligned spinner -->
-              <div class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div><!-- End Center aligned spinner -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Buttons</h5>
-              <p>Use spinners within buttons to indicate an action is currently processing or taking place. You may also swap the text out of the spinner element and utilize button text as needed.</p>
-
-              <!-- Button spinners -->
-              <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span class="visually-hidden">Loading...</span>
-              </button>
-              <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-              </button>
-
-              <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                <span class="visually-hidden">Loading...</span>
-              </button>
-              <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                Loading...
-              </button>
-              <!-- End Button spinners -->
-
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Growing spinner</h5>
-              <p>If you don’t fancy a border spinner, switch to the grow spinner. While it doesn’t technically spin, it does repeatedly grow!</p>
-
-              <!-- Growing spinner -->
-              <div class="spinner-grow" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div><!-- End Growing spinner -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Growing Color spinners</h5>
-
-              <!-- Growing Color spinnersr -->
-              <div class="spinner-grow text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-secondary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-success" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-danger" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-warning" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-info" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-light" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow text-dark" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div><!-- End Growing Color spinners -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Sizes</h5>
-              <p>Add <code>.spinner-border-sm</code> and <code>.spinner-grow-sm</code> to make a smaller spinner that can quickly be used within other components. Or, use custom CSS or inline styles to change the dimensions as needed.</p>
-
-              <!-- Sized spinners -->
-              <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-border" style="width: 30px; height: 30px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-border" style="width: 40px; height: 40px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-border" style="width: 50px; height: 50px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-grow spinner-grow-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-grow" style="width: 30px; height: 30px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-grow" style="width: 40px; height: 40px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-
-              <div class="spinner-grow" style="width: 50px; height: 50px;" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <!-- End Sized spinners -->
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/planejamento12-40', '/planejamento14-40') }}
+    <!-- ======= End Section ======= -->
 
   </main><!-- End #main -->
 
@@ -270,6 +88,41 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+                title: 'Iniciando com as Informações básicas do ETP',
+                html: `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    
+                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                </div>
+            `,
+                focusConfirm: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                input: 'checkbox',
+                inputValue: 1,
+                inputPlaceholder: 'Estou ciente.',
+                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                inputValidator: (result) => {
+                    return !result && 'Confirme a leitura';
+                }
+            });
+
+          //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+           // }
+        };
+
+        showTermsAndConditions();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>

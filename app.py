@@ -157,6 +157,10 @@ def create_app(config_name):
     def viabilidade16_40():
         return render_template('etp40/16viabilidade-40.html') 
     
+    @app.route('/gerar_pdf',methods=['POST', 'GET'])
+    def gerar_pdf():
+        return render_template('pdf_quill40.html') 
+    
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 

@@ -1,0 +1,40 @@
+{% macro pagina_estatica(anterior, proximo) %}
+
+<section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <form id="confirmacao-form" action="{{proximo}}" method="post">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Quill Editor Full</h5>
+    
+              <!-- Quill Editor Full -->
+              <p>Quill editor with full toolset</p>
+              <div class="quill-editor-full" style="min-height: 200px;">
+                <p>Hello World!</p>
+                <p>This is Quill <strong>full</strong> editor</p>
+
+                
+              </div>
+              <!-- End Quill Editor Full -->
+                <span  style="margin-top: 10px";>
+                <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                  Etapa Anterior
+                </a>
+  
+                {% if request.path == '/viabilidade16-40' %}
+                  <!-- Não há botão aqui para essa condição específica -->
+                {% else %}
+                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+                    Próxima etapa
+                  </button>
+                {% endif %}
+              </span>
+  
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+{% endmacro %}
