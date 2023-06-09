@@ -431,7 +431,7 @@ def create_app(config_name):
         return render_template('etp40/editor_session.html')
 
     ##################################################################
-    @app.route('/etp94/termo-de-uso-etptic')
+    @app.route('/termo-de-uso-etptic')
     def quando_usar_ep94():
         return render_template('/etp94/quando-usar-ept94.html')
     
@@ -672,8 +672,5 @@ def create_app(config_name):
         return render_template('ultima-94.html')
     
     ##################################################################
-
-
-
 
     return app
