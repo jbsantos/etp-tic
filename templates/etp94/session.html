@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editor Quill</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>-->
+
+</head>
+<body>
+  <button onclick="window.location.href = '/etp94'">Voltar para a página inicial</button>
+  <a href="#" download>
+    <button>Download do PDF</button>
+  </a>
+  
+  <div id="editores"></div>
+
+  <script>
+    $(document).ready(function() {
+      // Cria os editores Quill para cada etapa/sessão
+      var editores = {};
+      for (var etapa = 1; etapa <= 16; etapa++) {
+        var editorId = 'editor-' + etapa;
+        var editorDiv = $('<div>').attr('id', editorId);
+        $('#editores').append(editorDiv);
+
+        editores[etapa] = new Quill('#' + editorId, {
+          theme: 'snow'
+        });
+
+        // Recupera o conteúdo do editor da sessão correspondente
+        (function(etapa) {
+          $.ajax({
+            url: '/recuperar/' + etapa,
+            method: 'GET',
+            success: function(response) {
+              editores[etapa].root.innerHTML = response;
+            },
+            error: function(error) {
+              console.error('Erro ao recuperar o conteúdo do editor da etapa ' + etapa);
+            }
+          });
+        })(etapa);
+      }
+
+      // Salva as alterações em cada editor a cada 1 minuto
+      setInterval(function() {
+        for (var etapa = 1; etapa <= 16; etapa++) {
+          var editor = editores[etapa];
+          var conteudoEditor = editor.root.innerHTML;
+
+          $.ajax({
+            url: '/salvar/' + etapa,
+            method: 'POST',
+            data: {
+              conteudo_editor: conteudoEditor
+            },
+            success: function(response) {
+              console.log('Alterações salvas com sucesso na etapa ' + etapa);
+            },
+            error: function(error) {
+              console.error('Erro ao salvar as alterações na etapa ' + etapa);
+            }
+          });
+        }
+      }, 10000); // 60000 milissegundos = 1 minuto
+    });
+  </script>
+</body>
+</html>

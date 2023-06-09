@@ -173,6 +173,7 @@ def create_app(config_name):
     def gerar_pdf():
         #return render_template('pdf_quill40.html') 
         return render_template('etp40/session.html') 
+    
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
@@ -663,13 +664,13 @@ def create_app(config_name):
 
         return render_template('etp94/19viabilidade-94.html', conteudoviabilidade19=conteudoviabilidade19)
     
-    @app.route('/ultima-94', methods=['POST'])
-    def ultima_94():
-        conteudoultimo = session.get('conteudoultimo')
-        sessoes = ['conteudo', 'conteudo2']
-        for sessao in sessoes:
-            session.pop(sessao, None)
-        return render_template('ultima-94.html')
+    @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
+    def gerar_pdf_94():
+        return render_template('etp94/session.html')
+    
+    @app.route('/editor-session')
+    def editor_session_94():
+        return render_template('etp94/editor_session.html')
     
     ##################################################################
 
