@@ -1,5 +1,6 @@
 {% import 'etp94/aside.html' as macros %}
 {% import 'etp94/header.html' as header %}
+{% import 'etp94/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,33 +73,16 @@
         <div class="col-lg-12">
           <div class="row">
 
-            <form id="confirmacao-form" action="/necessidade3-94" method="post">
-                <div>
-                    <textarea id="editor" name="conteudonecessidade2">{{conteudonecessidade2}}</textarea>
-                </div>
+            <!-- ======= Section ======= -->
+            {{ section.pagina_estatica('/informacao1-94', '/necessidade3-94') }}
+            <!-- ======= End Section ======= -->
         
-                
-                <span>
-                  {% if request.path != '/informacao1-94' %}
-                  
-                  <a href="/informacao1-94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-                    Etapa Anterior
-                  </a>                  
-                  {% endif %}
-      
-                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                    Próxima Etapa
-                  </button>
-              </span>
-        
-            </form>
-        
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const showTermsAndConditions = async () => {
-                            const { value: accept } = await Swal.fire({
-                                title: 'Preenchendo a Descrição da Necessidade',
-                                html: `
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const showTermsAndConditions = async () => {
+                      const { value: accept } = await Swal.fire({
+                              title: 'Preenchendo a Descrição da Necessidade',
+                              html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
                                     <p> Neste item, você deve descrever a necessidade da compra/contratação, evidenciando o problema identificado e a real necessidade que ele gera, bem como o que se almeja alcançar com a contratação. (inciso I, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório.</p>
@@ -120,7 +104,7 @@
             
                         showTermsAndConditions();
                     });
-                </script>
+            </script>
             <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
         
             <script>

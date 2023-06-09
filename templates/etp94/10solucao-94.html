@@ -1,5 +1,6 @@
 {% import 'etp94/aside.html' as macros %}
 {% import 'etp94/header.html' as header %}
+{% import 'etp94/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,26 +73,9 @@
         <div class="col-lg-12">
           <div class="row">
 
-            <form id="confirmacao-form" action="/solucao11-94" method="post">
-                <div>
-                    <textarea id="editor" name="conteudosolucao10">{{conteudosolucao10}}</textarea>
-                </div>
-        
-                
-                <span>
-                  {% if request.path != '/solucao8-94' %}
-                  
-                  <a href="/solucao8-94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-                    Etapa Anterior
-                  </a>                  
-                  {% endif %}
-      
-                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                    Próxima Etapa
-                  </button>
-              </span>
-        
-            </form>
+            <!-- ======= Section ======= -->
+            {{ section.pagina_estatica('/solucao9-94', '/solucao11-94') }}
+            <!-- ======= End Section ======= -->
         
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
