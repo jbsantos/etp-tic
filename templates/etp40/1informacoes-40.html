@@ -73,10 +73,11 @@
     
               <!-- Quill Editor Full -->
               <p>Quill editor with full toolset</p>
-              <div class="quill-editor-full" style="min-height: 200px;">
+              <div class="quill-editor-full"  id="editor-container" style="min-height: 200px;">
                 <p>Hello World!</p>
                 <p>This is Quill <strong>full</strong> editor</p>
               </div>
+
               <!-- End Quill Editor Full -->
               <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
                 Próxima etapa
@@ -155,7 +156,14 @@
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
 <!-- index.html -->
+<script>
+  var editor = new Quill('#editor-container', {
+    theme: 'snow'
+  });
 
+  var conteudo = editor.getContents();
+
+</script>
 
 </body>
 

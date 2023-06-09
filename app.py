@@ -44,6 +44,7 @@ def create_app(config_name):
 
     #db.create_all()
 
+
     @app.after_request
     def after_request(response):
         #response.headers.add('Access-Control-Allow-Origin', '*')
@@ -66,6 +67,7 @@ def create_app(config_name):
                 abort(401, 'Você precisa enviar um token de acesso')
 
         return verify_token
+    
 
     @app.route('/')
     def index():
@@ -157,10 +159,20 @@ def create_app(config_name):
     def viabilidade16_40():
         return render_template('etp40/16viabilidade-40.html') 
     
+    @app.route('/salvar-conteudo', methods=['POST'])
+    def salvar_conteudo():
+        dados = request.get_json()
+        conteudo = dados.get('conteudo')
+        print(conteudo)
+        # Faça o processamento necessário com o conteúdo recebido
+        # Por exemplo, você pode salvar o conteúdo em um banco de dados ou em um arquivo
+        
+        return 'Conteúdo salvo com sucesso'
+    
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
-        return render_template('pdf_quill40.html') 
-    
+        #return render_template('pdf_quill40.html') 
+        return render_template('etp40/session.html') 
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
@@ -383,8 +395,37 @@ def create_app(config_name):
         return codigo_html
 
     app.jinja_env.globals.update(minha_funcao=minha_funcao)
-
-
 # Registre a função no Jinja2
+
+    # @app.route('/salvar', methods=['POST'])
+    # def salvar():
+    #     conteudo_editor = request.form.get('conteudo_editor')
+    #     session['conteudo_editor'] = conteudo_editor
+    #     print(conteudo_editor)
+    #     return 'OK'
+
+    # @app.route('/recuperar', methods=['GET'])
+    # def recuperar():
+    #     conteudo_editor = session.get('conteudo_editor', '')
+    #     print(conteudo_editor)
+    #     return conteudo_editor
+
+    # Rota para salvar o conteúdo do editor Quill em uma sessão específica
+    @app.route('/salvar/<int:etapa>', methods=['POST'])
+    def salvar(etapa):
+        conteudo_editor = request.form.get('conteudo_editor')
+        print(conteudo_editor)
+        session[str(etapa)] = conteudo_editor
+        return 'OK'
+
+    # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
+    @app.route('/recuperar/<int:etapa>', methods=['GET'])
+    def recuperar(etapa):
+        conteudo_editor = session.get(str(etapa), '')
+        return conteudo_editor
+    
+    @app.route('/editor_session')
+    def editor_session():
+        return render_template('etp40/editor_session.html')
 
     return app
