@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editor Quill</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+  <div id="editor"></div>
+  <script>
+    var editor = new Quill('#editor', {
+      theme: 'snow'
+    });
+
+    setInterval(function() {
+      var conteudoEditor = editor.root.innerHTML;
+
+      $.ajax({
+        url: '/salvar',
+        method: 'POST',
+        data: {
+          conteudo_editor: conteudoEditor
+        },
+        success: function(response) {
+          console.log('Alterações salvas com sucesso');
+        },
+        error: function(error) {
+          console.error('Erro ao salvar as alterações');
+        }
+      });
+    }, 6000); // 60000 milissegundos = 1 minuto
+
+    $(document).ready(function() {
+      $.ajax({
+        url: '/recuperar',
+        method: 'GET',
+        success: function(response) {
+          editor.root.innerHTML = response;
+        },
+        error: function(error) {
+          console.error('Erro ao recuperar o conteúdo do editor');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
