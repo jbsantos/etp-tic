@@ -93,11 +93,12 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Preenchendo a Estimativa das Quantidades a serem Contratadas',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Neste campo é obrigatório que você justifique, em observância ao disposto no Art. 15, § 7°, II, da Lei n° 8.666/93, as quantidades a serem adquiridas devem ser justificadas em função do consumo e provável utilização, devendo a estimativa ser obtida, a partir de fatos concretos (Ex: série histórica do consumo - atendo-se a eventual ocorrência vindoura capaz de impactar o quantitativo demandado, criação de órgão, acréscimo de atividades, necessidade de substituição de bens atualmente disponíveis, etc). A estimativa das quantidades a serem contratadas deve ser acompanhada das memórias de cálculo e dos documentos que lhe dão suporte, considerando a interdependência com outras contratações, de modo a possibilitar economia de escala.
+Adaptação Lei 8666 para 14.133/2021. </p>
                 </div>
             `,
                 focusConfirm: false,

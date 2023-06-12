@@ -92,30 +92,22 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
-            const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
-                html: `
-                <div style="max-height: 400px; overflow-y: auto;">
-                    
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
-                </div>
-            `,
-                focusConfirm: false,
-                showCancelButton: false,
-                allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
-                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
-            });
-
-          //  if (accept) {
-            //    Swal.fire('Obrigado :)');
-           // }
-        };
+          const { value: accept } = await Swal.fire({
+                                title: 'Informando a Área Requisitante',
+                                html: `
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    
+                                    <p> Aqui você deve informar o nome do(s) órgão(s), setor(es) ou área(s) que solicitou(aram) a contratação.</p>
+                                </div>
+                            `,
+                                focusConfirm: false,
+                                showCancelButton: false,
+                                allowOutsideClick: false,
+                                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                                
+                            });
+            
+                        };
 
         showTermsAndConditions();
     });

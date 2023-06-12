@@ -94,28 +94,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Registrando as Providências a Serem Adotadas',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Você deve informar, se houver, todas as providências a serem adotadas pela administração previamente à celebração do contrato, inclusive quanto à capacitação de servidores ou de empregados para fiscalização e gestão contratual ou adequação do ambiente da organização;(inciso XI, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, em caso do não preenchimento deste campo, devem ser apresentadas as devidas justificativas.</p>
                 </div>
             `,
                 focusConfirm: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+                
             });
 
-          //  if (accept) {
-            //    Swal.fire('Obrigado :)');
-           // }
         };
 
         showTermsAndConditions();

@@ -93,11 +93,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Justificando o Parcelamento ou não da Solução',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Neste item, é imprescindível você informar se a divisão do objeto representa, ou não, perda de e conomia d e escala (Súmula 247 do TCU). Por ser o parcelamento a regra, deve haver justificativa quando este não for adotado. No mesmo sentido, e especificamente para compras, o § 7° do art.  23 da Lei n° 8.666, de 1993,  aplicável subsidiariamente ao pregão (art. 9° da Lei n° 10.520, de  2002), prevê a cotação de quantidade  inferior à demandada na licitação, com vistas a ampliação  da competitividade, podendo o edital fixar  quantitativo mínimo para preservar a economia de escala (inciso VII, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. </p>
                 </div>
             `,
                 focusConfirm: false,
