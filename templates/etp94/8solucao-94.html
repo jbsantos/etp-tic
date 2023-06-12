@@ -56,12 +56,12 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Demais Requisitos Necessários e Suficiente à Escolha da Solução de TIC</h1>
+      <h1>Levantamento de Soluções</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/etp94">Início</a></li>
-          <li class="breadcrumb-item">Necessidade</li>
-          <li class="breadcrumb-item active">Demais Requisitos Necessários e Suficiente à Escolha da Solução de TIC</li>
+          <li class="breadcrumb-item">Solução</li>
+          <li class="breadcrumb-item active">Levantamento de Soluções</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -81,23 +81,18 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Levantamento de Soluções',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Neste campo se deve informar a relação de soluções de TIC ofertadas pelo mercado que possuem condições padrões definidas pelo Órgão Central do SISP, podendo incluir o nome da solução, descrição, níveis de serviço, Preço Máximo de Compra de Item de TIC, entre outros; observando sempre como preferência. as soluções já disponíveis no Governo Federal, disponíveis através do catálogo de soluções do SISP. </p>
                                 </div>
                             `,
                                 focusConfirm: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
                                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
+                                
                             });
             
                         };

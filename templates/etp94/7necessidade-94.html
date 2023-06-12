@@ -82,11 +82,11 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Informar Estimativa da Demanda - Quantidade de Bens e Serviços',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Neste campo é obrigatório que você justifique, em observância ao disposto no Art. 18, § 1°, IV, da Lei n° 14.133/2021, as quantidades a serem adquiridas devem ser justificadas em função do consumo e provável utilização, devendo a estimativa ser obtida, a partir de fatos concretos (Ex: série histórica do consumo - atendo-se a eventual ocorrência vindoura capaz de impactar o quantitativo demandado, criação de órgão, acréscimo de atividades, necessidade de substituição de bens atualmente disponíveis, etc). A estimativa das quantidades a serem contratadas deve ser acompanhada das memórias de cálculo e dos documentos que lhe dão suporte, considerando a interdependência com outras contratações, de modo a possibilitar economia de escala.</p>
                                 </div>
                             `,
                                 focusConfirm: false,

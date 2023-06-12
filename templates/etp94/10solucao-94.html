@@ -60,7 +60,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/etp94">Início</a></li>
-          <li class="breadcrumb-item">Necessidade</li>
+          <li class="breadcrumb-item">Solução</li>
           <li class="breadcrumb-item active">Registro de Soluções Consideradas Inviáveis</li>
         </ol>
       </nav>
@@ -81,23 +81,18 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Registrar Soluções Inviáveis',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Registrar soluções inviáveis identificadas na análise comparativa de soluções, dispensando-se a realização dos respectivos cálculos de custo total de propriedade.</p>
                                 </div>
                             `,
                                 focusConfirm: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
                                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
+                                
                             });
             
                         };

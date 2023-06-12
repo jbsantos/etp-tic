@@ -82,23 +82,18 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Informar demais requisitos necessários a e suficientes à escolha da Solução de TIC',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Informar demais requisitos aplicáveis, inclusive, prospectar alternativas de atendimento aos requisitos junto a diferentes fabricantes e viabilizar a participação de revendedores de fabricantes distintos. Item 1.3.3 do Anexo 1 da IN 94.</p>
                                 </div>
                             `,
                                 focusConfirm: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
                                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
+                                
                             });
             
                         };

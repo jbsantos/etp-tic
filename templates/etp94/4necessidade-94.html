@@ -81,23 +81,18 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Informar as Necessidades do Negócio',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Aqui voce deve descrever as necessidades de negócio , contendo de forma detalhada, motivada e justificada, inclusive quanto à forma de cálculo, o quantitativo de bens e serviços necessários para a sua composição. </p>
                                 </div>
                             `,
                                 focusConfirm: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
                                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
+                                
                             });
             
                         };

@@ -60,7 +60,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/etp94">Início</a></li>
-          <li class="breadcrumb-item">Necessidade</li>
+          <li class="breadcrumb-item">Solução</li>
           <li class="breadcrumb-item active">Descrição da Solução de TIC a Ser Contratada</li>
         </ol>
       </nav>
@@ -81,23 +81,18 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
+                                title: 'Descrever a Solução a Ser Contratada',
                                 html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Nesse item voce deve descrever de forma detalhada a solução a ser contratada, elencando o conjunto de características e especificações necessárias que ora foram solicitados,  da necessidade da contratação.</p>
                                 </div>
                             `,
                                 focusConfirm: false,
                                 showCancelButton: false,
                                 allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
                                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
+                                
                             });
             
                         };
