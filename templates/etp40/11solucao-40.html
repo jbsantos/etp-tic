@@ -94,23 +94,18 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Demonstrando o Alinhamento entre a Contratação e o Planejamento',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Aqui é imprescindível que você demonstre o alinhamento entre a contratação e o planejamento do órgão ou entidade, identificando a previsão no Plano Anual de Contratações ou, se for o caso, justificando a ausência de previsão;(inciso IX, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°. Este campo é obrigatório. </p>
                 </div>
             `,
-                focusConfirm: false,
-                showCancelButton: false,
-                allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
-                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                                
             });
 
           //  if (accept) {

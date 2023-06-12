@@ -94,23 +94,18 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Descrevendo os Possíveis Impactos Ambientais',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> É necessário que você descreva os possíveis impactos ambientais e respectivas medidas de tratamento ou mitigadoras buscando sanar os riscos ambientais existentes. (inciso XII, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, em caso do não preenchimento deste campo, devem ser apresentadas as devidas justificativas.</p>
                 </div>
             `,
-                focusConfirm: false,
-                showCancelButton: false,
-                allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
-                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                                
             });
 
           //  if (accept) {

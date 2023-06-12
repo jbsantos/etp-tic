@@ -92,23 +92,18 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Descrevendo dos Requisitos da Contratação',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Aqui você deve especificar quais são os requisitos indispensáveis de que o  objeto a adquirir/contratar deve dispor para atender à demanda, incluindo padrões mínimos de qualidade, de forma a permitir a seleção da proposta  mais vantajosa. Incluir, se possível, critérios e práticas de sustentabilidade  que devem ser veiculados como especificações técnicas do objeto ou  como obrigação da contratada. (inciso II, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, em caso do não preenchimento deste campo, devem ser apresentadas as devidas justificativas. </p>
                 </div>
             `,
-                focusConfirm: false,
-                showCancelButton: false,
-                allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
-                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                                
             });
 
           //  if (accept) {

@@ -94,11 +94,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Preenchendo a Estimativa do Valor da Contratação',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Neste item, é obrigatório que você estime o valor da contratação, acompanhado dos preços unitários referenciais, das memórias de cálculo e dos documentos que lhe dão suporte, que poderão constar de anexo classificado, se a administração optar por preservar o seu sigilo até a conclusão da licitação (inciso, VI, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. </p>
                 </div>
             `,
                 focusConfirm: false,

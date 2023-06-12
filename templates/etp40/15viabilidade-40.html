@@ -94,28 +94,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Declarando a Viabilidade',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> É obrigatório que você declare expressamente se a contratação é viável e razoável (ou  não), justificando com base nos elementos colhidos durante os Estudos Preliminares.(inciso  XIII, art. 7°, IN 40/2020). De acordo com o art. 7°, §2° </p>
                 </div>
             `,
                 focusConfirm: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+                
             });
 
-          //  if (accept) {
-            //    Swal.fire('Obrigado :)');
-           // }
         };
 
         showTermsAndConditions();

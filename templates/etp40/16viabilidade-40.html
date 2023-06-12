@@ -132,28 +132,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Iniciando com as Informações básicas do ETP',
+                title: 'Anexando Documentos',
                 html: `
                 <div style="max-height: 400px; overflow-y: auto;">
                     
-                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                    <p> Imagens e PDF são anexados automaticamente. </p>
                 </div>
             `,
                 focusConfirm: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
-                input: 'checkbox',
-                inputValue: 1,
-                inputPlaceholder: 'Estou ciente.',
                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                inputValidator: (result) => {
-                    return !result && 'Confirme a leitura';
-                }
+                
             });
 
-          //  if (accept) {
-            //    Swal.fire('Obrigado :)');
-           // }
         };
 
         showTermsAndConditions();
