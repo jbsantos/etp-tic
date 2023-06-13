@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request
+from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
@@ -432,6 +432,16 @@ def create_app(config_name):
         return render_template('etp40/editor_session.html')
 
     ##################################################################
+    @app.route('/download_etp40/<path:filename>')
+    def download_file_etp40(filename):
+        directory = 'templates/etp40/assets/documents/'
+        return send_from_directory(directory, filename, as_attachment=True)
+    
+    @app.route('/download_etp94/<path:filename>')
+    def download_file_etp94(filename):
+        directory = 'templates/etp94/assets/documents/'
+        return send_from_directory(directory, filename, as_attachment=True)
+
     @app.route('/termo-de-uso-etptic')
     def quando_usar_ep94():
         return render_template('/etp94/quando-usar-ept94.html')
