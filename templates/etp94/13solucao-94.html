@@ -97,13 +97,28 @@
                   Swal.fire({
                     icon: 'warning',
                     title: 'Valor Informado Não Necessita de ETP',
-                    text: 'Observar o linite de contratação por dispensa de licitação conforme Lei 14.133.',
+                    html: `
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    
+                                    <p> Conforme valor informado anteriormente, segundo o inciso  II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado a modelo de Dispensa de Licitação para aquisição bens e serviços de TIC. <br/> Deseja Continuar?</p>
+                                </div>
+                            `,
                     //});
                     //return false; // Impede o envio do formulário
                     //}
                     //return true; // Permite o envio do formulário
-                  }).then(() => {
-                    window.location.href = '/'; // Redireciona para a rota inicial
+                  //}).then(() => {
+                  //  window.location.href = '/'; // Redireciona para a rota inicial
+                 // });
+                      showCancelButton: true,
+                      confirmButtonText: 'Sim',
+                      cancelButtonText: 'Não'
+                  }).then(function(result) {
+                      if (result.isConfirmed) {
+                          document.getElementById('confirmacao-form').submit();
+                      }else{
+                        window.location.href = '/';
+                      }
                   });
                 }
               }
