@@ -77,55 +77,72 @@
             {{ section.pagina_estatica('/solucao12-94', '/solucao14-94') }}
             <!-- ======= End Section ======= -->
         
+
             <script>
-              /*document.getElementById('confirmacao-form').addEventListener('submit', function(event) {
+              // Função para formatar o valor
+              /*function formatarValor() {
                 var valorInput = document.getElementById('valor').value;
-                if (valorInput <= 50000) {
-                  event.preventDefault(); // Impede o envio do formulário se o valor for menor ou igual a 50000
-                  alert('O valor digitado deve ser maior que 50000');
-                }
-              });*/
-
-
+                var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
+            
+                var valorFormatado = new Intl.NumberFormat('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                }).format(valorNumerico);
+            
+                document.getElementById('valor').value = valorFormatado;
+              }
+            
               // Event listener para o campo de entrada
-              document.getElementById('valor').addEventListener('blur', validarValor);
-
-              // Função para validar o valor após digitar
+              //document.getElementById('valor').addEventListener('input', formatarValor);
+              document.getElementById('valor').addEventListener('input', formatarValor);*/
+            </script>
+            
+            <script>
+              // Função para validar o valor
               function validarValor() {
                 var valorInput = document.getElementById('valor').value;
-                if (valorInput <= 57208.33) {
+                var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
+            
+                if (valorNumerico <= 57208.33) {
                   Swal.fire({
                     icon: 'warning',
                     title: 'Valor Informado Não Necessita de ETP',
                     html: `
-                                <div style="max-height: 400px; overflow-y: auto;">
-                                    
-                                    <p> Conforme valor informado anteriormente, segundo o inciso  II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado a modelo de Dispensa de Licitação para aquisição bens e serviços de TIC. <br/> Deseja Continuar?</p>
-                                </div>
-                            `,
-                    //});
-                    //return false; // Impede o envio do formulário
-                    //}
-                    //return true; // Permite o envio do formulário
-                  //}).then(() => {
-                  //  window.location.href = '/'; // Redireciona para a rota inicial
-                 // });
-                      showCancelButton: true,
-                      confirmButtonText: 'Sim',
-                      cancelButtonText: 'Não'
+                      <div style="max-height: 400px; overflow-y: auto;">
+                        <p> Conforme valor informado anteriormente, segundo o inciso II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado o modelo de Dispensa de Licitação para aquisição de bens e serviços de TIC. <br/> Deseja Continuar?</p>
+                      </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Concordo Seguir',
+                    cancelButtonText: 'Não Concordo'
                   }).then(function(result) {
-                      if (result.isConfirmed) {
-                          document.getElementById('confirmacao-form').submit();
-                      }else{
-                        window.location.href = '/';
-                      }
+                    if (result.isConfirmed) {
+                      document.getElementById('confirmacao-form').submit();
+                    } else {
+                      window.location.href = '/';
+                    }
                   });
                 }
               }
-
-
-            </script>
             
+              // Event listener para o campo de entrada
+              document.getElementById('valor').addEventListener('blur', validarValor);
+            
+              // Event listener para o envio do formulário
+              document.getElementById('confirmacao-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Impede o envio do formulário
+              });
+            
+              // Event listener para capturar o pressionar da tecla "Enter"
+              document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                  event.preventDefault(); // Impede o envio do formulário
+            
+                  validarValor(); // Chama a função de validação
+                }
+              });
+            </script>
+
             <script>
 
                     document.addEventListener('DOMContentLoaded', function() {
