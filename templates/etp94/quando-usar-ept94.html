@@ -98,21 +98,18 @@
                     <br />
       
       
-      
-      
                   </textarea>
               </div>
-             
         
               <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                Concordo
-            </button>
-            {% if request.path != '/' %}
-            
-            <a href="/" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-              Voltar
-            </a>                  
-            {% endif %}
+                  Concordo
+              </button>
+              {% if request.path != '/' %}
+              
+              <a href="/" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                Voltar
+              </a>                  
+              {% endif %}
           </form>
       
           <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>

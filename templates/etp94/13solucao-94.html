@@ -1,6 +1,6 @@
 {% import 'etp94/aside.html' as macros %}
 {% import 'etp94/header.html' as header %}
-{% import 'etp94/section.html' as section %}
+{% import 'etp94/section2.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,7 +77,42 @@
             {{ section.pagina_estatica('/solucao12-94', '/solucao14-94') }}
             <!-- ======= End Section ======= -->
         
-                <script>
+            <script>
+              /*document.getElementById('confirmacao-form').addEventListener('submit', function(event) {
+                var valorInput = document.getElementById('valor').value;
+                if (valorInput <= 50000) {
+                  event.preventDefault(); // Impede o envio do formulário se o valor for menor ou igual a 50000
+                  alert('O valor digitado deve ser maior que 50000');
+                }
+              });*/
+
+
+              // Event listener para o campo de entrada
+              document.getElementById('valor').addEventListener('blur', validarValor);
+
+              // Função para validar o valor após digitar
+              function validarValor() {
+                var valorInput = document.getElementById('valor').value;
+                if (valorInput <= 57208.33) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Valor Informado Não Necessita de ETP',
+                    text: 'Observar o linite de contratação por dispensa de licitação conforme Lei 14.133.',
+                    //});
+                    //return false; // Impede o envio do formulário
+                    //}
+                    //return true; // Permite o envio do formulário
+                  }).then(() => {
+                    window.location.href = '/'; // Redireciona para a rota inicial
+                  });
+                }
+              }
+
+
+            </script>
+            
+            <script>
+
                     document.addEventListener('DOMContentLoaded', function() {
                         const showTermsAndConditions = async () => {
                             const { value: accept } = await Swal.fire({
@@ -103,8 +138,8 @@
                         };
             
                         showTermsAndConditions();
-                    });
-                </script>
+                    })
+            </script>
             <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
         
             <script>
