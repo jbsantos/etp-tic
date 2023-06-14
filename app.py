@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request
+from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
 from functools import wraps
 #from bs4 import BeautifulSoup
-
+# para gerar pdf
+import pdfkit
+import tempfile
 # config import
 from config import app_config, app_active
 
@@ -172,7 +174,39 @@ def create_app(config_name):
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
         #return render_template('pdf_quill40.html') 
-        return render_template('etp40/session.html') 
+        #return render_template('etp40/session.html') 
+        pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
+        for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
+            conteudo_editor = session.get(str(etapa), '')
+            # conteudo_editor = conteudo_editor.encode(encoding='utf-8')
+            
+            pdf_content += f'<h1>Sessão {etapa}</h1>\n' + conteudo_editor + '<br><br>'
+        pdf_content += '</body>\n</html>'
+        pdf_content = pdf_content.encode('utf-8')
+        # Salvar o conteúdo HTML em um arquivo temporário
+        with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
+            temp_file.write(pdf_content)
+            temp_file_path = temp_file.name
+            temp_file.seek(0)
+            print(temp_file.read().decode('utf-8'))
+
+
+        options = {
+            'page-size': 'A4',
+            'margin-top': '0',
+            'margin-right': '0',
+            'margin-bottom': '0',
+            'margin-left': '0',
+        }
+
+        pdfkit.from_file(temp_file_path, 'static/etp40.pdf', options=options)
+
+        # Remover o arquivo temporário
+        os.remove(temp_file_path)
+
+        return render_template('etp40/etp-pdf.html')
+
+
     
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
