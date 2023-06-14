@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file
+from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user
