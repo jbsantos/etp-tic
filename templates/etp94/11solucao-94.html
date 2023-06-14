@@ -18,7 +18,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,8 +41,8 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
-    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body>
@@ -60,62 +62,40 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/etp94">Início</a></li>
-          <li class="breadcrumb-item">Necessidade</li>
+          <li class="breadcrumb-item">Solução</li>
           <li class="breadcrumb-item active">Análise Comparativa de Custo (TCO)</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/solucao10-94', '/solucao12-94','11') }}
+    <!-- ======= End Section ======= -->
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
-
-            <!-- ======= Section ======= -->
-            {{ section.pagina_estatica('/solucao10-94', '/solucao12-94') }}
-            <!-- ======= End Section ======= -->
-        
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const showTermsAndConditions = async () => {
-                            const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações básicas do ETP',
-                                html: `
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const showTermsAndConditions = async () => {
+          const { value: accept } = await Swal.fire({
+            title: 'Descrever Análise Comparativa de Custos (TCO)',
+            html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
-                                    <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
+                                    <p> Descrever a análise comparativa de custos (TCO), considerando apenas soluções técnicas e funcionalmente viáveis, observando as letras a e b do Item III do Art.11 da IN 94.</p>
                                 </div>
                             `,
-                                focusConfirm: false,
-                                showCancelButton: false,
-                                allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
-                                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
-                            });
-            
-                        };
-            
-                        showTermsAndConditions();
-                    });
-                </script>
-            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
-        
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    CKEDITOR.replace('editor');
-                });
-            </script>
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
 
-          </div>
-        </div>
-    </section>
+          });
+
+        };
+
+        showTermsAndConditions();
+      });
+    </script>
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 
   </main><!-- End #main -->
 
@@ -133,7 +113,8 @@
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -147,7 +128,7 @@
 
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
-<!-- index.html -->
+  <!-- index.html -->
 
 
 </body>
