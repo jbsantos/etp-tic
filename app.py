@@ -601,7 +601,7 @@ def create_app(config_name):
             'margin-left': '0',
         }
 
-        pdfkit.from_file(temp_file_path, 'static/etp94.pdf', options=options)
+        pdfkit.from_file(temp_file_path, 'static/pdf/etp94/etp94.pdf', options=options)
 
         # Remover o arquivo temporário
         os.remove(temp_file_path)
