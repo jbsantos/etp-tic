@@ -17,7 +17,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -38,8 +40,8 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
-    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body>
@@ -66,59 +68,49 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
+      <form id="confirmacao-form" action="/necessidade2-94" method="post">
+        <!-- Quill Editor Full -->
+        <div class="quill-editor-full" id="editor-container" style="min-height: 200px;">
+          <p>Hello World!</p>
+          <p>This is Quill <strong>full</strong> editor</p>
+        </div>
 
-            <form id="confirmacao-form" action="/necessidade2-94" method="post">
-              <div class="quill-editor-full"  id="editor-container" style="min-height: 200px;">
-                    <textarea id="editor" name="conteudoinformacao1">{{conteudobasico}}</textarea>
-                </div>
-        
-                <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                    Próxima Etapa
-                </button>
-        
-            </form>
-        
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const showTermsAndConditions = async () => {
-                            const { value: accept } = await Swal.fire({
-                                title: 'Iniciando com as Informações Básicas do ETP',
-                                html: `
+        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+          Próxima Etapa
+        </button>
+
+      </form>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+              title: 'Iniciando com as Informações Básicas do ETP',
+              html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
                                     <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
                                 </div>
                             `,
-                                focusConfirm: false,
-                                showCancelButton: false,
-                                allowOutsideClick: false,
-                                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                
-                            });
-            
-                          //  if (accept) {
-                            //    Swal.fire('Obrigado :)');
-                           // }
-                        };
-            
-                        showTermsAndConditions();
-                    });
-                </script>
-            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
-        
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    CKEDITOR.replace('editor');
-                });
-            </script>
+              focusConfirm: false,
+              showCancelButton: false,
+              allowOutsideClick: false,
+              confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
 
-          </div>
-        </div>
+            });
+
+            //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+            // }
+          };
+
+          showTermsAndConditions();
+        });
+      </script>
+
+      <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
     </section>
 
   </main><!-- End #main -->
@@ -137,7 +129,117 @@
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- JS Recupera -->
+  <script>
+    $(document).ready(function () {
+      var editor = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
+            ['link'],                                          // Opções de inserção de mídia
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
+            [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
+            [{ 'align': [] }],                                 // Opções de alinhamento de texto
+            ['clean']                                          // Limpar formatação
+          ]
+        }
+      });
+
+      // Recupera o conteúdo do editor da sessão
+      $.ajax({
+        url: '/recuperar/1',
+        method: 'GET',
+        success: function (response) {
+          editor.root.innerHTML = response;
+        },
+        error: function (error) {
+          console.error('Erro ao recuperar o conteúdo do editor');
+        }
+      });
+
+      // Salva as alterações no editor a cada 5 segundos
+      setInterval(function () {
+        var conteudoEditor = editor.root.innerHTML;
+
+        $.ajax({
+          url: '/salvar/1',
+          method: 'POST',
+          data: {
+            conteudo_editor: conteudoEditor
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          }
+        });
+      }, 5000); // 5000 milissegundos = 5 segundos
+    });
+  </script>
+  <!-- Fim JS -->
+  <!-- outro -->
+  <script>
+
+    // Função para recuperar o conteúdo do editor da etapa especificada
+    function recuperarConteudo(etapa) {
+      $.ajax({
+        url: '/recuperar/' + etapa,
+        method: 'GET',
+        success: function (response) {
+          editor.root.innerHTML = response;
+          console.log('Conteúdo do editor recuperado para a etapa ' + etapa);
+        },
+        error: function (error) {
+          console.error('Erro ao recuperar o conteúdo do editor da etapa ' + etapa);
+        }
+      });
+    }
+
+    // Recupera o conteúdo do editor para a primeira etapa
+    var etapaAtual = 1;
+    recuperarConteudo(etapaAtual);
+
+    // Função para salvar as alterações no editor
+    function salvarAlteracoes() {
+      var conteudoEditor = editor.root.innerHTML;
+
+      $.ajax({
+        url: '/salvar/' + etapaAtual,
+        method: 'POST',
+        data: {
+          conteudo_editor: conteudoEditor
+        },
+        success: function (response) {
+          console.log('Alterações salvas com sucesso na etapa ' + etapaAtual);
+        },
+        error: function (error) {
+          console.error('Erro ao salvar as alterações na etapa ' + etapaAtual);
+        }
+      });
+    }
+
+    // Define o intervalo para salvar automaticamente a cada 4 segundos
+    setInterval(function () {
+      salvarAlteracoes();
+    }, 4000);
+
+    // Função para avançar para a próxima etapa
+    function proximaEtapa() {
+      etapaAtual++;
+      recuperarConteudo(etapaAtual);
+    }
+
+    // Exemplo de chamada para avançar para a próxima etapa (pode ser chamado em um evento de clique, por exemplo)
+    proximaEtapa();
+
+  </script>
+  <!-- fim -->
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -151,7 +253,7 @@
 
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
-<!-- index.html -->
+  <!-- index.html -->
 
 
 </body>
