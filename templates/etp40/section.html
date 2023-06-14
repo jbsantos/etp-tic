@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% macro pagina_estatica(anterior, proximo) %}
 
 <section class="section">
@@ -26,11 +27,84 @@
                   </button>
                 {% endif %}
               </span>
+=======
+{% macro pagina_estatica(anterior, proxima, etapa) %}
+
+<form id="confirmacao-form" action="{{proxima}}" method="post">
+  <div id="editor"></div>
+  <span  style="margin-top: 10px";>
+    <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+      Etapa Anterior
+    </a>
+
+    {% if etapa =='16' %}
+    <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+      Gerar o ETP
+    </a>
+    {% else %}
+    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+      Próxima etapa
+    </button>
+    {% endif %}
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+>>>>>>> ab61286ed5eaed1a82d12f43f185ad19e1bc4b45
   
-        </form>
+<script>
+  $(document).ready(function() {
+    var editor = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
+          ['link'],                        // Opções de inserção de mídia
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
+          [{ 'indent': '-1'}, { 'indent': '+1' }],           // Opções de recuo de parágrafo
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
+          [{ 'align': [] }],                                 // Opções de alinhamento de texto
+          ['clean']                                          // Limpar formatação
+        ]
+      }
+    });
+    
+    // Recupera o conteúdo do editor da sessão
+    $.ajax({
+      url: '/recuperar/{{etapa}}',
+      method: 'GET',
+      success: function(response) {
+        editor.root.innerHTML = response;
+      },
+      error: function(error) {
+        console.error('Erro ao recuperar o conteúdo do editor');
+      }
+    });
 
-      </div>
-    </div>
-  </section>
+    // Salva as alterações no editor a cada 5 segundos
+    setInterval(function() {
+      var conteudoEditor = editor.root.innerHTML;
 
+      $.ajax({
+        url: '/salvar/{{etapa}}',
+        method: 'POST',
+        data: {
+          conteudo_editor: conteudoEditor
+        },
+        success: function(response) {
+          console.log('Alterações salvas com sucesso');
+        },
+        error: function(error) {
+          console.error('Erro ao salvar as alterações');
+        }
+      });
+    }, 5000); // 5000 milissegundos = 5 segundos
+  });
+</script>
 {% endmacro %}
+
+
+
+
