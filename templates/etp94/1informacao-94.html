@@ -67,49 +67,43 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
+    <form id="confirmacao-form" action="/necessidade2-94" method="post">
+      <div id="editor"></div>
+      <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+        Próxima etapa
+      </button>
+    </form>
 
-      <form id="confirmacao-form" action="/necessidade2-94" method="post">
-        <!-- Quill Editor Full -->
-        <div class="quill-editor-full" id="editor-container" style="min-height: 200px;">
-          <p>Hello World!</p>
-          <p>This is Quill <strong>full</strong> editor</p>
-        </div>
 
-        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-          Próxima Etapa
-        </button>
 
-      </form>
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const showTermsAndConditions = async () => {
-            const { value: accept } = await Swal.fire({
-              title: 'Iniciando com as Informações Básicas do ETP',
-              html: `
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const showTermsAndConditions = async () => {
+          const { value: accept } = await Swal.fire({
+            title: 'Iniciando com as Informações Básicas do ETP',
+            html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
                                     <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
                                 </div>
                             `,
-              focusConfirm: false,
-              showCancelButton: false,
-              allowOutsideClick: false,
-              confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
 
-            });
+          });
 
-            //  if (accept) {
-            //    Swal.fire('Obrigado :)');
-            // }
-          };
+          //  if (accept) {
+          //    Swal.fire('Obrigado :)');
+          // }
+        };
 
-          showTermsAndConditions();
-        });
-      </script>
+        showTermsAndConditions();
+      });
+    </script>
 
-      <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 
     </section>
 
@@ -133,6 +127,10 @@
       class="bi bi-arrow-up-short"></i></a>
 
   <!-- JS Recupera -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
   <script>
     $(document).ready(function () {
       var editor = new Quill('#editor', {
@@ -140,7 +138,7 @@
         modules: {
           toolbar: [
             ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
-            ['link'],                                          // Opções de inserção de mídia
+            ['link'],                        // Opções de inserção de mídia
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
             [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
@@ -152,7 +150,7 @@
 
       // Recupera o conteúdo do editor da sessão
       $.ajax({
-        url: '/recuperar/1',
+        url: '/recuperar-94/1',
         method: 'GET',
         success: function (response) {
           editor.root.innerHTML = response;
@@ -164,13 +162,13 @@
 
       // Salva as alterações no editor a cada 5 segundos
       setInterval(function () {
-        var conteudoEditor = editor.root.innerHTML;
+        var conteudoEditor_94 = editor.root.innerHTML;
 
         $.ajax({
-          url: '/salvar/1',
+          url: '/salvar-94/1',
           method: 'POST',
           data: {
-            conteudo_editor: conteudoEditor
+            conteudo_editor_94: conteudoEditor_94
           },
           success: function (response) {
             console.log('Alterações salvas com sucesso');
@@ -189,7 +187,7 @@
     // Função para recuperar o conteúdo do editor da etapa especificada
     function recuperarConteudo(etapa) {
       $.ajax({
-        url: '/recuperar/' + etapa,
+        url: '/recuperar-94/' + etapa,
         method: 'GET',
         success: function (response) {
           editor.root.innerHTML = response;
@@ -207,13 +205,13 @@
 
     // Função para salvar as alterações no editor
     function salvarAlteracoes() {
-      var conteudoEditor = editor.root.innerHTML;
+      var conteudoEditor_94 = editor.root.innerHTML;
 
       $.ajax({
-        url: '/salvar/' + etapaAtual,
+        url: '/salvar-94/' + etapaAtual,
         method: 'POST',
         data: {
-          conteudo_editor: conteudoEditor
+          conteudo_editor_94: conteudoEditor_94
         },
         success: function (response) {
           console.log('Alterações salvas com sucesso na etapa ' + etapaAtual);

@@ -1,8 +1,12 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
 
 <form id="confirmacao-form" action="{{proxima}}" method="post">
-  <div id="editor" ></div>
-  <div style="margin-top: 20px" ></div>
+  {% if etapa =='8' %}
+  <input type="text" class="form-control" id="valor" name="valor" placeholder="Digite o Valor em Reais" required><br />
+  {% else %}
+  <div id="editor"></div>
+  {% endif %}
+  <div style="margin-top: 20px"></div>
   <span>
     <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Etapa Anterior
@@ -22,39 +26,51 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 <script>
-  $(document).ready(function() {
-    var editor = new Quill('#editor', {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
-          ['link'],                        // Opções de inserção de mídia
-          [{ 'list': 'ordered'}, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
-          [{ 'indent': '-1'}, { 'indent': '+1' }],           // Opções de recuo de parágrafo
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
-          [{ 'align': [] }],                                 // Opções de alinhamento de texto
-          ['clean']                                          // Limpar formatação
-        ]
-      }
-    });
-    
+  $(document).ready(function () {
+    var etapaValue = '{{etapa}}';
+    var editor;
+
+    if (etapaValue === '13') {
+      editor = new Quill('#valor', {
+        theme: 'snow',
+        modules: {
+          toolbar: false  // Desabilita a toolbar quando a etapa é igual a '13'
+        }
+      });
+    } else {
+      editor = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
+            ['link'],                                         // Opções de inserção de mídia
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
+            [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
+            [{ 'align': [] }],                                 // Opções de alinhamento de texto
+            ['clean']                                          // Limpar formatação
+          ]
+        }
+      });
+    }
+
     // Recupera o conteúdo do editor da sessão
     $.ajax({
       url: '/recuperar/{{etapa}}',
       method: 'GET',
-      success: function(response) {
+      success: function (response) {
         editor.root.innerHTML = response;
       },
-      error: function(error) {
+      error: function (error) {
         console.error('Erro ao recuperar o conteúdo do editor');
       }
     });
 
     // Salva as alterações no editor a cada 5 segundos
-    setInterval(function() {
+    setInterval(function () {
       var conteudoEditor = editor.root.innerHTML;
 
       $.ajax({
@@ -63,10 +79,10 @@
         data: {
           conteudo_editor: conteudoEditor
         },
-        success: function(response) {
+        success: function (response) {
           console.log('Alterações salvas com sucesso');
         },
-        error: function(error) {
+        error: function (error) {
           console.error('Erro ao salvar as alterações');
         }
       });
@@ -74,6 +90,3 @@
   });
 </script>
 {% endmacro %}
-
-
-
