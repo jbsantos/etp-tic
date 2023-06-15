@@ -8,6 +8,7 @@ from functools import wraps
 # para gerar pdf
 import pdfkit
 import tempfile
+import time
 # config import
 from config import app_config, app_active
 
@@ -178,9 +179,8 @@ def create_app(config_name):
         pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
         for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
             conteudo_editor = session.get(str(etapa), '')
-            # conteudo_editor = conteudo_editor.encode(encoding='utf-8')
-            
-        pdf_content += f'<h1>Sessão {etapa}</h1>\n' + conteudo_editor + '<br><br>'
+            if conteudo_editor is not None:
+                pdf_content += f'Etapa ção á {etapa}\n' + conteudo_editor + '<br><br>'
         pdf_content += '</body>\n</html>'
         pdf_content = pdf_content.encode('utf-8')
         # Salvar o conteúdo HTML em um arquivo temporário
@@ -189,6 +189,12 @@ def create_app(config_name):
             temp_file_path = temp_file.name
             temp_file.seek(0)
             print(temp_file.read().decode('utf-8'))
+        # Salvar o conteúdo HTML em um arquivo temporário
+        # with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
+        #     temp_file.write(pdf_content)
+        #     temp_file_path = temp_file.name
+        #     temp_file.seek(0)
+        #     print(temp_file.read().decode('utf-8'))
 
 
         options = {
@@ -203,8 +209,8 @@ def create_app(config_name):
 
         # Remover o arquivo temporário
         os.remove(temp_file_path)
-
-        return render_template('etp40/etp-pdf.html')
+        timestamp = int(time.time())  # Obtém o timestamp atual
+        return render_template('etp40/etp-pdf.html', timestamp=timestamp )
 
 
     
@@ -461,6 +467,22 @@ def create_app(config_name):
         conteudo_editor = session.get(str(etapa), '')
         return conteudo_editor
     
+    @app.route('/salvar-94/<int:etapa>', methods=['POST'])
+    def salvar_94(etapa):
+        conteudo_editor_94 = request.form.get('conteudo_editor_94')
+        print(conteudo_editor_94)
+        etapa94 = str(etapa) +'94'
+        session[str(etapa94)] = conteudo_editor_94
+        return 'OK'
+
+    # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
+    @app.route('/recuperar-94/<int:etapa>', methods=['GET'])
+    def recuperar_94(etapa):
+        etapa94 = str(etapa) +'94'
+        print(etapa94)
+        conteudo_editor_94 = session.get(str(etapa94), '')
+        return conteudo_editor_94
+    
     @app.route('/editor_session')
     def editor_session():
         return render_template('etp40/editor_session.html')
@@ -577,17 +599,19 @@ def create_app(config_name):
     
     @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
     def gerar_pdf_94():
-        pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
+        pdf_content_94 = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
         for etapa in range(1, 20):  # Loop para percorrer as 19 sessões
-            conteudo_editor = session.get(str(etapa), '')
+            etapa94 =  str(etapa) +'94'
+            print(etapa94)
+            conteudo_editor_94 = session.get(str(etapa94), '')
             # conteudo_editor = conteudo_editor.encode(encoding='utf-8')
-            
-        pdf_content += f'<h1>Sessão {etapa}</h1>\n' + conteudo_editor + '<br><br>'
-        pdf_content += '</body>\n</html>'
-        pdf_content = pdf_content.encode('utf-8')
+            print(conteudo_editor_94)
+            pdf_content_94 += f'<h1>Sessão {etapa}</h1>\n' + conteudo_editor_94 + '<br><br>'
+        pdf_content_94 += '</body>\n</html>'
+        pdf_content_94 = pdf_content_94.encode('utf-8')
         # Salvar o conteúdo HTML em um arquivo temporário
         with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
-            temp_file.write(pdf_content)
+            temp_file.write(pdf_content_94)
             temp_file_path = temp_file.name
             temp_file.seek(0)
             print(temp_file.read().decode('utf-8'))
@@ -601,12 +625,12 @@ def create_app(config_name):
             'margin-left': '0',
         }
 
-        pdfkit.from_file(temp_file_path, 'static/pdf/etp94/etp94.pdf', options=options)
+        pdfkit.from_file(temp_file_path, 'static/etp94.pdf', options=options)
 
         # Remover o arquivo temporário
         os.remove(temp_file_path)
-
-        return render_template('etp94/etp-pdf.html')
+        timestamp = int(time.time())  # Obtém o timestamp atual
+        return render_template('etp94/etp-pdf.html',timestamp=timestamp)
         #return render_template('etp94/session.html')
     
     @app.route('/editor-session')
