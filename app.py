@@ -174,44 +174,73 @@ def create_app(config_name):
     
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
-        #return render_template('pdf_quill40.html') 
-        #return render_template('etp40/session.html') 
-        pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n'
+        quill_content = {}
+        # Exemplo de uso:
+
+
         for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
             conteudo_editor = session.get(str(etapa), '')
             if conteudo_editor is not None:
-                pdf_content += f'Etapa ção á {etapa}\n' + conteudo_editor + '<br><br>'
-        pdf_content += '</body>\n</html>'
-        pdf_content = pdf_content.encode('utf-8')
-        # Salvar o conteúdo HTML em um arquivo temporário
-        with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
-            temp_file.write(pdf_content)
-            temp_file_path = temp_file.name
-            temp_file.seek(0)
-            print(temp_file.read().decode('utf-8'))
-        # Salvar o conteúdo HTML em um arquivo temporário
-        # with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
-        #     temp_file.write(pdf_content)
-        #     temp_file_path = temp_file.name
-        #     temp_file.seek(0)
-        #     print(temp_file.read().decode('utf-8'))
+                quill_content[str(etapa)] = conteudo_editor
 
+        temp_file_path = 'temp.html'
+        output_path = 'static/pdf/etp40.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 5)),
+            'Solução': list(range(5, 12)),
+            'Planejamento': list(range(12, 15)),
+            'Viabilidade': [15, 16]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da solução como um todo',
+            '7': 'Estimativa das Quantidades a serem contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem alcançados com a contratação',
+            '13': 'Providências a serem adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
 
         options = {
-            'page-size': 'A4',
-            'margin-top': '5',
-            'margin-right': '5',
-            'margin-bottom': '5',
-            'margin-left': '6',
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
             'encoding': 'UTF-8',
         }
 
-        pdfkit.from_file(temp_file_path, 'static/etp40.pdf', options=options)
+        pdfkit.from_file(temp_file_path, output_path, options=options)
 
-        # Remover o arquivo temporário
         os.remove(temp_file_path)
         timestamp = int(time.time())  # Obtém o timestamp atual
-        return render_template('etp40/etp-pdf.html', timestamp=timestamp )
+        return render_template('etp40/etp-pdf.html', timestamp=timestamp)
+
 
 
     
