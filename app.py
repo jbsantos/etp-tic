@@ -176,7 +176,7 @@ def create_app(config_name):
     def gerar_pdf():
         #return render_template('pdf_quill40.html') 
         #return render_template('etp40/session.html') 
-        pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
+        pdf_content = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n'
         for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
             conteudo_editor = session.get(str(etapa), '')
             if conteudo_editor is not None:
@@ -199,10 +199,11 @@ def create_app(config_name):
 
         options = {
             'page-size': 'A4',
-            'margin-top': '0',
-            'margin-right': '0',
-            'margin-bottom': '0',
-            'margin-left': '0',
+            'margin-top': '5',
+            'margin-right': '5',
+            'margin-bottom': '5',
+            'margin-left': '6',
+            'encoding': 'UTF-8',
         }
 
         pdfkit.from_file(temp_file_path, 'static/etp40.pdf', options=options)
@@ -599,7 +600,7 @@ def create_app(config_name):
     
     @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
     def gerar_pdf_94():
-        pdf_content_94 = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="ISO-8859-1">\n</head>\n<body>\n'
+        pdf_content_94 = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n'
         for etapa in range(1, 20):  # Loop para percorrer as 19 sessões
             etapa94 =  str(etapa) +'94'
             print(etapa94)
