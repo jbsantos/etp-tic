@@ -8,6 +8,9 @@ from functools import wraps
 # para gerar pdf
 import pdfkit
 import tempfile
+#gear csv
+import csv
+from bs4 import BeautifulSoup
 import time
 # config import
 from config import app_config, app_active
@@ -171,6 +174,131 @@ def create_app(config_name):
         # Por exemplo, você pode salvar o conteúdo em um banco de dados ou em um arquivo
         
         return 'Conteúdo salvo com sucesso'
+    
+    @app.route('/gear-csv', methods=['GET'])
+    
+    def gerar_csv():
+      
+        
+    # Criar os dados do CSV
+        csv_data = []
+        if '1' in session:
+            csv_data.append(['Informações Básicas',  remove_html_tags(session['1'])])
+        if '2' in session:
+            csv_data.append(['Descrição da necessidade', remove_html_tags(session['2'])])
+        if '3' in session:
+            csv_data.append(['Área Requisitante', remove_html_tags(session['3'])])
+        if '4' in session:
+            csv_data.append(['Descrição dos Requisitos da Contratação', remove_html_tags(session['4'])])
+        if '5' in session:
+            csv_data.append(['Levantamento de Mercado', remove_html_tags(session['5'])])
+        if '6' in session:
+            csv_data.append(['Descrição da solução como um todo', remove_html_tags(session['6'])])
+        if '7' in session:
+            csv_data.append(['Estimativa das Quantidades a serem contratadas', remove_html_tags(session['7'])])
+        if '8' in session:
+            csv_data.append(['Estimativa do Valor da Contratação', remove_html_tags(session['8'])])
+        if '9' in session:
+            csv_data.append(['Justificativa para o Parcelamento ou não da Solução', remove_html_tags(session['9'])])
+        if '10' in session:
+            csv_data.append(['Contratações Correlatas e/ou Interdependentes', remove_html_tags(session['10'])])
+        if '11' in session:
+            csv_data.append(['Alinhamento entre a Contratação e o Planejamento', remove_html_tags(session['11'])])
+        if '12' in session:
+            csv_data.append(['Benefícios a serem alcançados com a contratação', remove_html_tags(session['12'])])
+        if '13' in session:
+            csv_data.append(['Providências a serem adotadas', remove_html_tags(session['13'])])
+        if '14' in session:
+            csv_data.append(['Possíveis Impactos Ambientais', remove_html_tags(session['14'])])
+        if '15' in session:
+            csv_data.append(['Declaração de Viabilidade', remove_html_tags(session['15'])])
+        if '16' in session:
+            csv_data.append(['Responsáveis', remove_html_tags(session['16'])])
+
+        # Nome do arquivo CSV
+        csv_filename = 'data.csv'
+
+        # Cria o arquivo CSV
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(csv_data)
+  
+        
+        return send_file(csv_filename, as_attachment=True)
+    
+    
+    def remove_html_tags(text):
+        soup = BeautifulSoup(text, 'html.parser')
+        return soup.get_text()
+    
+    @app.route('/download', methods=['GET'])
+    def download_file():
+        
+        quill_content = {
+        '1': 'Informações Básicas',
+        '2': 'Descrição da necessidade',
+        '3': 'Área Requisitante',   
+        '4': 'Descrição dos Requisitos da Contratação',
+        '5': 'Levantamento de Mercado',
+        '6': 'Descrição da solução como um todo',
+        '7': 'Estimativa das Quantidades a serem contratadas',
+        '8': 'Estimativa do Valor da Contratação',
+        '9': 'Justificativa para o Parcelamento ou não da Solução',
+        '10': 'Contratações Correlatas e/ou Interdependentes',
+        '11': 'Alinhamento entre a Contratação e o Planejamento',
+        '12': 'Benefícios a serem alcançados com a contratação',
+        '13': 'Providências a serem adotadas',
+        '14': 'Possíveis Impactos Ambientais',
+        '15': 'Declaração de Viabilidade',
+        '16': 'Responsáveis'
+    }
+        # Criar os dados do CSV
+        csv_data = []
+        if '1' in quill_content:
+            csv_data.append(['Informações Básicas', quill_content['1']])
+        if '2' in session:
+            csv_data.append(['Descrição da necessidade', session['2']])
+        if '3' in session:
+            csv_data.append(['Área Requisitante', session['3']])
+        if '4' in session:
+            csv_data.append(['Descrição dos Requisitos da Contratação', session['4']])
+        if '5' in session:
+            csv_data.append(['Levantamento de Mercado', session['5']])
+        if '6' in session:
+            csv_data.append(['Descrição da solução como um todo', session['6']])
+        if '7' in session:
+            csv_data.append(['Estimativa das Quantidades a serem contratadas', session['7']])
+        if '8' in session:
+            csv_data.append(['Estimativa do Valor da Contratação', session['8']])
+        if '9' in session:
+            csv_data.append(['Justificativa para o Parcelamento ou não da Solução', session['9']])
+        if '10' in session:
+            csv_data.append(['Contratações Correlatas e/ou Interdependentes', session['10']])
+        if '11' in session:
+            csv_data.append(['Alinhamento entre a Contratação e o Planejamento', session['11']])
+        if '12' in session:
+            csv_data.append(['Benefícios a serem alcançados com a contratação', session['12']])
+        if '13' in session:
+            csv_data.append(['Providências a serem adotadas', session['13']])
+        if '14' in session:
+            csv_data.append(['Possíveis Impactos Ambientais', session['14']])
+        if '15' in session:
+            csv_data.append(['Declaração de Viabilidade', session['15']])
+        if '16' in session:
+            csv_data.append(['Responsáveis', session['16']])
+
+        # Nome do arquivo CSV
+        csv_filename = 'data.csv'
+
+        # Cria o arquivo CSV
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(csv_data)
+
+        # Retorna o arquivo CSV para download
+        return send_file(csv_filename, as_attachment=True)
+
+    
     
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
