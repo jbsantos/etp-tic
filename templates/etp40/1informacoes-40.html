@@ -60,34 +60,16 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Início</a></li>
-          <li class="breadcrumb-item">Informação</li>
           <li class="breadcrumb-item active">Informação Básica</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
   
-    <section class="section dashboard">
-
-      <form id="confirmacao-form" action="/necessidade2-40" method="post">
-      
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Quill Editor Full</h5>
-    
-              <!-- Quill Editor Full -->
-              <p>Quill editor with full toolset</p>
-              <div class="quill-editor-full"  id="editor-container" style="min-height: 200px;">
-                <p>Hello World!</p>
-                <p>This is Quill <strong>full</strong> editor</p>
-              </div>
-
-              <!-- End Quill Editor Full -->
-              <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
-                Próxima etapa
-            </button>
-            </div>
-          </div>
-
+    <form id="confirmacao-form" action="necessidade2-40" method="post">
+      <div id="editor"></div>
+      <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+        Próxima etapa
+      </button>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

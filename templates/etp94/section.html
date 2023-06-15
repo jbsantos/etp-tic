@@ -47,7 +47,7 @@
     
     // Recupera o conteúdo do editor da sessão
     $.ajax({
-      url: '/recuperar/{{etapa}}',
+      url: '/recuperar-94/{{etapa}}',
       method: 'GET',
       success: function(response) {
         editor.root.innerHTML = response;
@@ -59,13 +59,13 @@
 
     // Salva as alterações no editor a cada 5 segundos
     setInterval(function() {
-      var conteudoEditor = editor.root.innerHTML;
+      var conteudoEditor_94 = editor.root.innerHTML;
 
       $.ajax({
-        url: '/salvar/{{etapa}}',
+        url: '/salvar-94/{{etapa}}',
         method: 'POST',
         data: {
-          conteudo_editor: conteudoEditor
+          conteudo_editor_94: conteudoEditor_94
         },
         success: function(response) {
           console.log('Alterações salvas com sucesso');

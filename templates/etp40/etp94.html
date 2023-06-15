@@ -93,7 +93,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">ETP-DIGITAL</span>
       </a>
@@ -319,7 +319,192 @@
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
- 
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#info_basico-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Informações Básicas</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="info_basico-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/componet">
+              <i class="bi bi-circle"></i><span>Informações Básicas</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#necessidade-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Necessidades</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="necessidade-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/form_element">
+              <i class="bi bi-circle"></i><span>Descrição da Necessidade</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Área Requitante</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-editors.html">
+              <i class="bi bi-circle"></i><span>Descrição dos Requisitos da Contratação Solução</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#solucao-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Solução</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="solucao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/form_element">
+              <i class="bi bi-circle"></i><span>Levantamento de Mercado</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Descrição da solução como um todo</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-editors.html">
+              <i class="bi bi-circle"></i><span>Estimativa das Quantidades a serem contratadas</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-validation.html">
+              <i class="bi bi-circle"></i><span>Estimativa do Valor da Contratação</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-validation.html">
+              <i class="bi bi-circle"></i><span>Justificativa para o Parcelamento ou não da Solução</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-validation.html">
+              <i class="bi bi-circle"></i><span>Contratações Correlatas e/ou Interdependentes</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-validation.html">
+              <i class="bi bi-circle"></i><span>Alinhamento entre a Contratação e o Planejamento</span>
+            </a>
+          </li>
+
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#planejamento-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Planejamento</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="planejamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/form_element">
+              <i class="bi bi-circle"></i><span>Benefícios a serem alcançados com a contratação</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Providências a serem adotadas</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-editors.html">
+              <i class="bi bi-circle"></i><span>Possíveis Impactos Ambientais</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#viabilidade-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Viabilidade</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="viabilidade-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/form_element">
+              <i class="bi bi-circle"></i><span>Declaração de Viabilidade</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Responsáveis</span>
+            </a>
+          </li> 
+        </ul>
+      </li><!-- End Viabilidade Nav -->
+
+      <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.html">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-faq.html">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-contact.html">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-card-list"></i>
+          <span>Register</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-login.html">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-error-404.html">
+          <i class="bi bi-dash-circle"></i>
+          <span>Error 404</span>
+        </a>
+      </li><!-- End Error 404 Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-blank.html">
+          <i class="bi bi-file-earmark"></i>
+          <span>Blank</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
@@ -361,9 +546,7 @@
             </div>
               <div style="margin-top: 33px" >
                 <a href="/etp40" class="button">ETP-DIGITAL 40</a>
-                  <!-- Chame a função do controlador -->
- 
-                <a href="/termo-de-uso-etptic" class="button">ETP-DIGITAL 94</a>
+                <a href="etp94" class="button">ETP-DIGITAL 94</a>
               </div>
             <div class="card-body pb-0">
             

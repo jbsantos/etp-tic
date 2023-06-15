@@ -1,6 +1,6 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
-{% import 'etp40/section2.html' as section %}
+{% import 'etp40/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,12 +58,12 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Estimativa do Valor da Contratação</h1>
+      <h1>Descrição</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/etp40">Home</a></li>
-          <li class="breadcrumb-item">Solução</li>
-          <li class="breadcrumb-item active">Estimativa do Valor da Contratação</li>
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Forms</li>
+          <li class="breadcrumb-item active">Elements</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -89,78 +89,38 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+
   <script>
-    // Função para validar o valor
-    function validarValor() {
-      var valorInput = document.getElementById('valor').value;
-      var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
+    document.addEventListener('DOMContentLoaded', function() {
+        const showTermsAndConditions = async () => {
+            const { value: accept } = await Swal.fire({
+                title: 'Preenchendo a Estimativa do Valor da Contratação',
+                html: `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    
+                    <p> Neste item, é obrigatório que você estime o valor da contratação, acompanhado dos preços unitários referenciais, das memórias de cálculo e dos documentos que lhe dão suporte, que poderão constar de anexo classificado, se a administração optar por preservar o seu sigilo até a conclusão da licitação (inciso, VI, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. </p>
+                </div>
+            `,
+                focusConfirm: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                input: 'checkbox',
+                inputValue: 1,
+                inputPlaceholder: 'Estou ciente.',
+                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+                inputValidator: (result) => {
+                    return !result && 'Confirme a leitura';
+                }
+            });
 
-      if (valorNumerico <= 57208.33) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Valor Informado Não Necessita de ETP',
-          html: `
-                    <div style="max-height: 400px; overflow-y: auto;">
-                      <p> Conforme valor informado anteriormente, segundo o inciso II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado o modelo de Dispensa de Licitação para aquisição de bens e serviços de TIC. <br/> Deseja Continuar?</p>
-                    </div>
-                  `,
-          showCancelButton: true,
-          confirmButtonText: 'Concordo Seguir',
-          cancelButtonText: 'Não Concordo'
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            document.getElementById('confirmacao-form').submit();
-          } else {
-            window.location.href = '/';
-          }
-        });
-      }
-    }
+          //  if (accept) {
+            //    Swal.fire('Obrigado :)');
+           // }
+        };
 
-    // Event listener para o campo de entrada
-    document.getElementById('valor').addEventListener('blur', validarValor);
-
-    // Event listener para capturar o pressionar da tecla "Enter"
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault(); // Impede o envio do formulário
-
-        validarValor(); // Chama a função de validação
-      }
+        showTermsAndConditions();
     });
-  </script>
-
-  <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const showTermsAndConditions = async () => {
-              const { value: accept } = await Swal.fire({
-                  title: 'Preenchendo a Estimativa do Valor da Contratação',
-                  html: `
-                  <div style="max-height: 400px; overflow-y: auto;">
-                      
-                      <p> Neste item, é obrigatório que você estime o valor da contratação, acompanhado dos preços unitários referenciais, das memórias de cálculo e dos documentos que lhe dão suporte, que poderão constar de anexo classificado, se a administração optar por preservar o seu sigilo até a conclusão da licitação (inciso, VI, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. </p>
-                  </div>
-              `,
-                  focusConfirm: false,
-                  showCancelButton: false,
-                  allowOutsideClick: false,
-                  input: 'checkbox',
-                  inputValue: 1,
-                  inputPlaceholder: 'Estou ciente.',
-                  confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                  inputValidator: (result) => {
-                      return !result && 'Confirme a leitura';
-                  }
-              });
-
-            //  if (accept) {
-              //    Swal.fire('Obrigado :)');
-            // }
-          };
-
-          showTermsAndConditions();
-      });
-  </script>
+</script>
 <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 
 

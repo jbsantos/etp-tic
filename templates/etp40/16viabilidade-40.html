@@ -58,55 +58,17 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Responsáveis</h1>
+      <h1>Descrição</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/etp40">Home</a></li>
-          <li class="breadcrumb-item">Viabilidade</li>
-          <li class="breadcrumb-item active">Responsáveis</li>
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Forms</li>
+          <li class="breadcrumb-item active">Elements</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
     <!-- ======= Section ======= -->
-    <section class="section">
-      
-    <div class="row">
-      <div class="col-lg-12">
-        <form id="confirmacao-form" action="/gerar_pdf" method="post">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Quill Editor Full</h5>
-    
-              <!-- Quill Editor Full -->
-              <p>Quill editor with full toolset</p>
-              <div class="quill-editor-full" style="min-height: 200px;">
-                <p>Hello World!</p>
-                <p>This is Quill <strong>full</strong> editor</p>
-
-                
-              </div>
-              <!-- End Quill Editor Full -->
-                <span  style="margin-top: 10px";>
-                <a href="/viabilidade15-40" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-                  Etapa Anterior
-                </a>
-  
-                {% if request.path == '/viabilidade16-40' %}
-                  <!-- Não há botão aqui para essa condição específica -->
-                {% else %}
-          
-                {% endif %}
-
-                <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-                  Gerar Pdf
-                </button>
-              </span>
-  
-        </form>
-
-      </div>
-    </div>
-  </section>
+    {{ section.pagina_estatica('/viabilidade15-40', '/viabilidade16-40','16') }}
     <!-- ======= End Section ======= -->
 
   </main><!-- End #main -->
