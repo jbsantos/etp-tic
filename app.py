@@ -630,17 +630,30 @@ def create_app(config_name):
     @app.route('/salvar-94/<int:etapa>', methods=['POST'])
     def salvar_94(etapa):
         conteudo_editor_94 = request.form.get('conteudo_editor_94')
-        print(conteudo_editor_94)
-        etapa94 = str(etapa) +'94'
-        session[str(etapa94)] = conteudo_editor_94
+
+        if conteudo_editor_94 is None:
+            conteudo_editor_94 = request.form.get('inputValue_94')
+
+        print('salvar ' + conteudo_editor_94)
+        #etapa94 = str(etapa)
+        session[str(etapa)] = conteudo_editor_94
         return 'OK'
 
     # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
     @app.route('/recuperar-94/<int:etapa>', methods=['GET'])
     def recuperar_94(etapa):
-        etapa94 = str(etapa) +'94'
-        print(etapa94)
-        conteudo_editor_94 = session.get(str(etapa94), '')
+        #etapa94 = str(etapa)
+
+        conteudo_editor_94 = session.get(str(etapa), '')
+        input_value_94 = request.args.get('valor')
+
+        print('recupera conteudo_editor_94 inicio ' + conteudo_editor_94)
+        print('recupera input_value_94 ' + str(input_value_94))
+
+        if input_value_94 is not None:
+            conteudo_editor_94 = input_value_94
+        
+        print('recupera conteudo_editor_94 ' + conteudo_editor_94)
         return conteudo_editor_94
     
     @app.route('/editor_session')
@@ -760,13 +773,23 @@ def create_app(config_name):
     @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
     def gerar_pdf_94():
         quill_content = {}
-        # Exemplo de uso:
 
-
-        for etapa in range(1, 20):  # Loop para percorrer as 16 sessões
+        for etapa in range(1, 20):
             conteudo_editor_94 = session.get(str(etapa), '')
+            if etapa == 13:
+                input_value_94 = request.args.get('valor')
+                if input_value_94 is not None:
+                    conteudo_editor_94 = input_value_94
+
             if conteudo_editor_94 is not None:
-                quill_content[str(etapa)] = conteudo_editor_94
+                if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
+                    conteudo_editor_94 = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor_94 = 'Não Constar Informação'
+
+            quill_content[str(etapa)] = conteudo_editor_94
+
+
 
         temp_file_path = 'temp.html'
         output_path = 'static/pdf/etp94/etp94.pdf'
@@ -809,9 +832,16 @@ def create_app(config_name):
                 for session_number in section_sessions:
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por "Não Constar Informação"
+                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+
+                    if session_content.strip() == '':
+                        session_content = 'Não Constar Informação'
+                    
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
-                
+
                 temp_file.write('</div>\n')
             
             temp_file.write('</body>\n</html>')
@@ -830,12 +860,138 @@ def create_app(config_name):
         os.remove(temp_file_path)
         timestamp = int(time.time())  # Obtém o timestamp atual
         return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
-        #return render_template('etp94/session.html')
-    
+
+
     @app.route('/editor-session')
     def editor_session_94():
         return render_template('etp94/editor_session.html')
     
+    import csv
+
+    @app.route('/gerar-csv-94', methods=['GET'])
+    def gerar_csv__94():
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        
+        csv_data = []
+        
+        for session_number in range(1, 20):
+            if str(session_number) in session:
+                content = session[str(session_number)]
+                content = remove_html_tags(content)  # Remove as tags HTML
+                if content.strip() == '':
+                    content = 'Não Constar Informação'
+                csv_data.append([quill_content[str(session_number)], content])
+
+        csv_filename = 'data-94.csv'
+        
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(csv_data)
+
+        return send_file(csv_filename, as_attachment=True)
+
+
+
+    #def remove_html_tags(text):
+    #    soup = BeautifulSoup(text, 'html.parser')
+    #    return soup.get_text()
+    
+    # @app.route('/download-94', methods=['GET'])
+    # def download_file_94():
+        
+    #     quill_content = {
+    #         '1': 'Informações Básicas',
+    #         '2': 'Descrição da Necessidade',
+    #         '3': 'Área Requisitante',
+    #         '4': 'Necessidades de Negócio',
+    #         '5': 'Necessidades Tecnológicas',
+    #         '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+    #         '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+    #         '8': 'Levantamento de Soluções',
+    #         '9': 'Análise Comparativa de Soluções',
+    #         '10': 'Registro de Soluções Consideradas Inviáveis',
+    #         '11': 'Análise Comparativa de Custos (TCO)',
+    #         '12': 'Descrição da Solução de TIC a Ser Contratada',
+    #         '13': 'Estimativa de Custo Total da Contratação',
+    #         '14': 'Justificativa Técnica da Escolha da Solução',
+    #         '15': 'Justificativa Econômica da Escolha da Solução',
+    #         '16': 'Benefícios a Serem Alcançados com a Contratação',
+    #         '17': 'Providências a Serem Adotadas',
+    #         '18': 'Declaração de Viabilidade',
+    #         '19': 'Responsáveis'
+    # }
+    #     # Criar os dados do CSV
+    #     csv_data = []
+    #     if '1' in session:
+    #         csv_data.append(['Informações Básicas',  session['1']])
+    #     if '2' in session:
+    #         csv_data.append(['Descrição da Necessidade', session['2']])
+    #     if '3' in session:
+    #         csv_data.append(['Área Requisitante', session['3']])
+    #     if '4' in session:
+    #         csv_data.append(['Necessidades de Negócio', session['4']])
+    #     if '5' in session:
+    #         csv_data.append(['Necessidades Tecnológicas', session['5']])
+    #     if '6' in session:
+    #         csv_data.append(['Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC', session['6']])
+    #     if '7' in session:
+    #         csv_data.append(['Estimativa da Demanda - Quantidade de Bens e Serviço', session['7']])
+    #     if '8' in session:
+    #         csv_data.append(['Levantamento de Soluções', session['8']])
+    #     if '9' in session:
+    #         csv_data.append(['Análise Comparativa de Soluções', session['9']])
+    #     if '10' in session:
+    #         csv_data.append(['Registro de Soluções Consideradas Inviáveis', session['10']])
+    #     if '11' in session:
+    #         csv_data.append(['Análise Comparativa de Custos (TCO)', session['11']])
+    #     if '12' in session:
+    #         csv_data.append(['Descrição da Solução de TIC a Ser Contratada', session['12']])
+    #     if '13' in session:
+    #         csv_data.append(['Estimativa de Custo Total da Contratação', session['13']])
+    #     if '14' in session:
+    #         csv_data.append(['Justificativa Técnica da Escolha da Solução', session['14']])
+    #     if '15' in session:
+    #         csv_data.append(['Justificativa Econômica da Escolha da Solução', session['15']])
+    #     if '16' in session:
+    #         csv_data.append(['Benefícios a Serem Alcançados com a Contratação', session['16']])
+    #     if '17' in session:
+    #         csv_data.append(['Providências a Serem Adotadas', session['17']])
+    #     if '18' in session:
+    #         csv_data.append(['Declaração de Viabilidade', session['18']])
+    #     if '19' in session:
+    #         csv_data.append(['Responsáveis', session['19']])
+    #     # Nome do arquivo CSV
+    #     csv_filename = 'data-94.csv'
+
+    #     # Cria o arquivo CSV
+    #     with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+    #         writer = csv.writer(csv_file)
+    #         writer.writerows(csv_data)
+
+    #     # Retorna o arquivo CSV para download
+    #     return send_file(csv_filename, as_attachment=True)
+
+
     ##################################################################
 
     return app
