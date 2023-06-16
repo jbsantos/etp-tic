@@ -175,48 +175,74 @@ def create_app(config_name):
         
         return 'Conteúdo salvo com sucesso'
     
-    @app.route('/gear-csv', methods=['GET'])
-    
+    @app.route('/gerar-csv', methods=['GET'])
     def gerar_csv():
-      
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da necessidade',
+            '3': 'Área Requisitante',   
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da solução como um todo',
+            '7': 'Estimativa das Quantidades a serem contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem alcançados com a contratação',
+            '13': 'Providências a serem adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
         
-    # Criar os dados do CSV
         csv_data = []
-        if '1' in session:
-            csv_data.append(['Informações Básicas',  remove_html_tags(session['1'])])
-        if '2' in session:
-            csv_data.append(['Descrição da necessidade', remove_html_tags(session['2'])])
-        if '3' in session:
-            csv_data.append(['Área Requisitante', remove_html_tags(session['3'])])
-        if '4' in session:
-            csv_data.append(['Descrição dos Requisitos da Contratação', remove_html_tags(session['4'])])
-        if '5' in session:
-            csv_data.append(['Levantamento de Mercado', remove_html_tags(session['5'])])
-        if '6' in session:
-            csv_data.append(['Descrição da solução como um todo', remove_html_tags(session['6'])])
-        if '7' in session:
-            csv_data.append(['Estimativa das Quantidades a serem contratadas', remove_html_tags(session['7'])])
-        if '8' in session:
-            csv_data.append(['Estimativa do Valor da Contratação', remove_html_tags(session['8'])])
-        if '9' in session:
-            csv_data.append(['Justificativa para o Parcelamento ou não da Solução', remove_html_tags(session['9'])])
-        if '10' in session:
-            csv_data.append(['Contratações Correlatas e/ou Interdependentes', remove_html_tags(session['10'])])
-        if '11' in session:
-            csv_data.append(['Alinhamento entre a Contratação e o Planejamento', remove_html_tags(session['11'])])
-        if '12' in session:
-            csv_data.append(['Benefícios a serem alcançados com a contratação', remove_html_tags(session['12'])])
-        if '13' in session:
-            csv_data.append(['Providências a serem adotadas', remove_html_tags(session['13'])])
-        if '14' in session:
-            csv_data.append(['Possíveis Impactos Ambientais', remove_html_tags(session['14'])])
-        if '15' in session:
-            csv_data.append(['Declaração de Viabilidade', remove_html_tags(session['15'])])
-        if '16' in session:
-            csv_data.append(['Responsáveis', remove_html_tags(session['16'])])
+
+        for session_number in range(1, 17):
+            if str(session_number) in session:
+                content = session[str(session_number)]
+                content = remove_html_tags(content)  # Remove as tags HTML
+                if content.strip() == '':
+                    content = 'Não Constar Informação'
+                csv_data.append([quill_content[str(session_number)], content])
+        
+    # # Criar os dados do CSV
+    #     csv_data = []
+    #     if '1' in session:
+    #         csv_data.append(['Informações Básicas',  remove_html_tags(session['1'])])
+    #     if '2' in session:
+    #         csv_data.append(['Descrição da necessidade', remove_html_tags(session['2'])])
+    #     if '3' in session:
+    #         csv_data.append(['Área Requisitante', remove_html_tags(session['3'])])
+    #     if '4' in session:
+    #         csv_data.append(['Descrição dos Requisitos da Contratação', remove_html_tags(session['4'])])
+    #     if '5' in session:
+    #         csv_data.append(['Levantamento de Mercado', remove_html_tags(session['5'])])
+    #     if '6' in session:
+    #         csv_data.append(['Descrição da solução como um todo', remove_html_tags(session['6'])])
+    #     if '7' in session:
+    #         csv_data.append(['Estimativa das Quantidades a serem contratadas', remove_html_tags(session['7'])])
+    #     if '8' in session:
+    #         csv_data.append(['Estimativa do Valor da Contratação', remove_html_tags(session['8'])])
+    #     if '9' in session:
+    #         csv_data.append(['Justificativa para o Parcelamento ou não da Solução', remove_html_tags(session['9'])])
+    #     if '10' in session:
+    #         csv_data.append(['Contratações Correlatas e/ou Interdependentes', remove_html_tags(session['10'])])
+    #     if '11' in session:
+    #         csv_data.append(['Alinhamento entre a Contratação e o Planejamento', remove_html_tags(session['11'])])
+    #     if '12' in session:
+    #         csv_data.append(['Benefícios a serem alcançados com a contratação', remove_html_tags(session['12'])])
+    #     if '13' in session:
+    #         csv_data.append(['Providências a serem adotadas', remove_html_tags(session['13'])])
+    #     if '14' in session:
+    #         csv_data.append(['Possíveis Impactos Ambientais', remove_html_tags(session['14'])])
+    #     if '15' in session:
+    #         csv_data.append(['Declaração de Viabilidade', remove_html_tags(session['15'])])
+    #     if '16' in session:
+    #         csv_data.append(['Responsáveis', remove_html_tags(session['16'])])
 
         # Nome do arquivo CSV
-        csv_filename = 'data.csv'
+        csv_filename = 'data-40.csv'
 
         # Cria o arquivo CSV
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
@@ -308,8 +334,18 @@ def create_app(config_name):
 
         for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
             conteudo_editor = session.get(str(etapa), '')
+            if etapa == 8:
+                input_value = request.args.get('valor')
+                if input_value is not None:
+                    conteudo_editor = input_value
+
             if conteudo_editor is not None:
-                quill_content[str(etapa)] = conteudo_editor
+                if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
+                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor = 'Não Constar Informação'
+
+            quill_content[str(etapa)] = conteudo_editor
 
         temp_file_path = 'temp.html'
         output_path = 'static/pdf/etp40/etp40.pdf'
@@ -349,6 +385,13 @@ def create_app(config_name):
                 for session_number in section_sessions:
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por "Não Constar Informação"
+                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+
+                    if session_content.strip() == '':
+                        session_content = 'Não Constar Informação'
+                    
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
                 
@@ -370,9 +413,6 @@ def create_app(config_name):
         os.remove(temp_file_path)
         timestamp = int(time.time())  # Obtém o timestamp atual
         return render_template('etp40/etp-pdf.html', timestamp=timestamp)
-
-
-
     
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
@@ -406,8 +446,6 @@ def create_app(config_name):
 
          return render_template('rota2.html', conteudo=conteudo)
      
-     
-     
     @app.route('/rota3', methods=['POST', 'GET'])
     def rota3():
         if request.method == 'POST':
@@ -434,7 +472,6 @@ def create_app(config_name):
         for sessao in sessoes:
             session.pop(sessao, None)
         return render_template('ultima.html')
-
     
     @app.route('/login/')
     def login():
@@ -582,7 +619,6 @@ def create_app(config_name):
     def load_user(user_id):
         user = UserController()
         return user.get_admin_login(user_id)
-    
 
     @app.route('/minha_funcao')
     def minha_funcao():
@@ -596,7 +632,6 @@ def create_app(config_name):
         return codigo_html
 
     app.jinja_env.globals.update(minha_funcao=minha_funcao)
-
 
 # Registre a função no Jinja2
 
@@ -617,6 +652,10 @@ def create_app(config_name):
     @app.route('/salvar/<int:etapa>', methods=['POST'])
     def salvar(etapa):
         conteudo_editor = request.form.get('conteudo_editor')
+        
+        if conteudo_editor is None:
+            conteudo_editor = request.form.get('inputValue')
+
         print(conteudo_editor)
         session[str(etapa)] = conteudo_editor
         return 'OK'
@@ -625,6 +664,11 @@ def create_app(config_name):
     @app.route('/recuperar/<int:etapa>', methods=['GET'])
     def recuperar(etapa):
         conteudo_editor = session.get(str(etapa), '')
+        input_value = request.args.get('valor')
+
+        if input_value is not None:
+            conteudo_editor = input_value
+
         return conteudo_editor
     
     @app.route('/salvar-94/<int:etapa>', methods=['POST'])
@@ -646,9 +690,6 @@ def create_app(config_name):
 
         conteudo_editor_94 = session.get(str(etapa), '')
         input_value_94 = request.args.get('valor')
-
-        print('recupera conteudo_editor_94 inicio ' + conteudo_editor_94)
-        print('recupera input_value_94 ' + str(input_value_94))
 
         if input_value_94 is not None:
             conteudo_editor_94 = input_value_94
@@ -789,8 +830,6 @@ def create_app(config_name):
 
             quill_content[str(etapa)] = conteudo_editor_94
 
-
-
         temp_file_path = 'temp.html'
         output_path = 'static/pdf/etp94/etp94.pdf'
         sections = {
@@ -861,15 +900,12 @@ def create_app(config_name):
         timestamp = int(time.time())  # Obtém o timestamp atual
         return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
 
-
     @app.route('/editor-session')
     def editor_session_94():
         return render_template('etp94/editor_session.html')
-    
-    import csv
 
     @app.route('/gerar-csv-94', methods=['GET'])
-    def gerar_csv__94():
+    def gerar_csv_94():
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da Necessidade',
