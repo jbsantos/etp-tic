@@ -99,8 +99,8 @@
       // Função para validar o valor
       function validarValor() {
         var valorInput = document.getElementById('valor').value;
-        var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
-
+        var valorNumerico = parseFloat(valorInput.replace(/[^\d,]/g, '').replace(',', '.'));
+         
         if (valorNumerico <= 57208.33) {
           Swal.fire({
             icon: 'warning',
