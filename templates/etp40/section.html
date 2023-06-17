@@ -1,8 +1,12 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
 
 <form id="confirmacao-form" action="{{proxima}}" method="post">
-  <div id="editor" ></div>
-  <div style="margin-top: 20px" ></div>
+  {% if etapa =='8' %}
+  <input type="text" class="form-control" id="valor" name="valor" required><br />
+  {% else %}
+  <div id="editor"></div><br />
+  {% endif %}
+  <div style="margin-top: 20px"></div>
   <span>
     <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Etapa Anterior
@@ -12,7 +16,7 @@
     <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Gerar o ETP-pdf
     </a>
-    <a href="/gear-csv" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    <a href="/gerar-csv" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Baixar ETP-csv
     </a>
     {% else %}
@@ -25,58 +29,107 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 <script>
-  $(document).ready(function() {
-    var editor = new Quill('#editor', {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
-          ['link'],                        // Opções de inserção de mídia
-          [{ 'list': 'ordered'}, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
-          [{ 'indent': '-1'}, { 'indent': '+1' }],           // Opções de recuo de parágrafo
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
-          [{ 'align': [] }],                                 // Opções de alinhamento de texto
-          ['clean']                                          // Limpar formatação
-        ]
-      }
-    });
-    
-    // Recupera o conteúdo do editor da sessão
-    $.ajax({
-      url: '/recuperar/{{etapa}}',
-      method: 'GET',
-      success: function(response) {
-        editor.root.innerHTML = response;
-      },
-      error: function(error) {
-        console.error('Erro ao recuperar o conteúdo do editor');
-      }
-    });
+  $(document).ready(function () {
+    var etapaValue = '{{etapa}}';
+    var editor;
+    var conteudoEditor; // Variável para armazenar o valor do editor ou do input
 
-    // Salva as alterações no editor a cada 5 segundos
-    setInterval(function() {
-      var conteudoEditor = editor.root.innerHTML;
+    if (etapaValue === '8') {
+      // Verifica se o valor do input é vazio
 
-      $.ajax({
-        url: '/salvar/{{etapa}}',
-        method: 'POST',
-        data: {
-          conteudo_editor: conteudoEditor
-        },
-        success: function(response) {
-          console.log('Alterações salvas com sucesso');
-        },
-        error: function(error) {
-          console.error('Erro ao salvar as alterações');
+      if ($('#valor').val() !== '') {
+        conteudoEditor = $('#valor').val(); // Usa o valor do input
+      }
+    } else {
+      editor = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
+            ['link'],                                         // Opções de inserção de mídia
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
+            [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
+            [{ 'align': [] }],                                 // Opções de alinhamento de texto
+            ['clean']                                          // Limpar formatação
+          ]
         }
       });
+      conteudoEditor = editor.root.innerHTML; // Usa o valor do editor
+    }
+
+    // Recupera o conteúdo do editor da sessão ou do input
+    if (etapaValue === '8') {
+      // Lógica específica para a etapa 8 usando o valor do input
+      $.ajax({
+        url: '/recuperar/8',
+        method: 'GET',
+        data: {
+          inputValue: $('#valor').val() // Valor do input
+        },
+        success: function (response) {
+          $('#valor').val(response);
+        },
+        error: function (error) {
+          console.error('Erro ao recuperar o conteúdo do editor');
+        }
+      });
+    } else {
+      // Lógica padrão usando o valor do editor
+      $.ajax({
+        url: '/recuperar/{{etapa}}',
+        method: 'GET',
+        success: function (response) {
+          editor.root.innerHTML = response;
+        },
+        error: function (error) {
+          console.error('Erro ao recuperar o conteúdo do editor');
+        }
+      });
+    }
+
+    // Salva as alterações no editor a cada 5 segundos ou do input
+    setInterval(function () {
+      if (etapaValue === '8') {
+        // Lógica específica para a etapa 8 usando o valor do input
+        var inputContent = $('#valor').val();
+        $.ajax({
+          url: '/salvar/8',
+          method: 'POST',
+          data: {
+            inputValue: inputContent // Valor do input
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          }
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        var conteudoEditor = editor.root.innerHTML;
+        $.ajax({
+          url: '/salvar/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor: conteudoEditor
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          }
+        });
+      }
     }, 5000); // 5000 milissegundos = 5 segundos
   });
+
 </script>
+
+
 {% endmacro %}
-
-
-

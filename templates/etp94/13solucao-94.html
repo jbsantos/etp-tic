@@ -1,6 +1,6 @@
 {% import 'etp94/aside.html' as macros %}
 {% import 'etp94/header.html' as header %}
-{% import 'etp94/section2.html' as section %}
+{% import 'etp94/section.html' as section %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,66 +72,61 @@
     {{ section.pagina_estatica('/solucao12-94', '/solucao14-94','13') }}
     <!-- ======= End Section ======= -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
 
     <script>
-              // Função para formatar o valor
-      /*function formatarValor() {
-        var valorInput = document.getElementById('valor').value;
-        var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
-    
-        var valorFormatado = new Intl.NumberFormat('pt-BR', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(valorNumerico);
-    
-        document.getElementById('valor').value = valorFormatado;
-      }
-    
-      // Event listener para o campo de entrada
-      //document.getElementById('valor').addEventListener('input', formatarValor);
-      document.getElementById('valor').addEventListener('input', formatarValor);*/
-    </script>
-
-    <script>
-      // Função para validar o valor
-      function validarValor() {
-        var valorInput = document.getElementById('valor').value;
-        var valorNumerico = parseFloat(valorInput.replace(/[^\d,.]/g, '').replace(',', '.'));
-
-        if (valorNumerico <= 57208.33) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Valor Informado Não Necessita de ETP',
-            html: `
-                      <div style="max-height: 400px; overflow-y: auto;">
-                        <p> Conforme valor informado anteriormente, segundo o inciso II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado o modelo de Dispensa de Licitação para aquisição de bens e serviços de TIC. <br/> Deseja Continuar?</p>
-                      </div>
-                    `,
-            showCancelButton: true,
-            confirmButtonText: 'Concordo Seguir',
-            cancelButtonText: 'Não Concordo'
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              document.getElementById('confirmacao-form').submit();
-            } else {
-              window.location.href = '/';
-            }
-          });
+      $(document).ready(function () {
+        // Função para validar o valor
+        function validarValor() {
+          var valorInput = document.getElementById('valor').value;
+          var valorNumerico = parseFloat(valorInput.replace(/[^\d,]/g, '').replace(',', '.'));
+         
+          if (valorNumerico <= 57208.33) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Valor Informado Não Necessita de ETP',
+              html: `
+            <div style="max-height: 400px; overflow-y: auto;">
+              <p> Conforme valor informado anteriormente, segundo o inciso II do Art. 75 da Lei 14.1333, o uso do ETP fica dispensado, podendo ser utilizado o modelo de Dispensa de Licitação para aquisição de bens e serviços de TIC. <br/> Deseja Continuar?</p>
+            </div>
+          `,
+              showCancelButton: true,
+              confirmButtonText: 'Concordo Seguir',
+              cancelButtonText: 'Não Concordo'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                document.getElementById('confirmacao-form').submit();
+              } else {
+                window.location.href = '/';
+              }
+            });
+          }
         }
-      }
 
-      // Event listener para o campo de entrada
-      document.getElementById('valor').addEventListener('blur', validarValor);
+        // Aplica a máscara de valor em reais ao campo de entrada
+        $('#valor').inputmask('currency', {
+          prefix: 'R$ ',
+          groupSeparator: '.',
+          radixPoint: ',',
+          autoGroup: true,
+          digits: 2,
+          rightAlign: false
+        });
 
-      // Event listener para capturar o pressionar da tecla "Enter"
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-          event.preventDefault(); // Impede o envio do formulário
+        // Event listener para o campo de entrada
+        document.getElementById('valor').addEventListener('blur', validarValor);
 
-          validarValor(); // Chama a função de validação
-        }
+        // Event listener para capturar o pressionar da tecla "Enter"
+        document.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault(); // Impede o envio do formulário
+
+            validarValor(); // Chama a função de validação
+          }
+        });
       });
     </script>
+
 
     <script>
 
