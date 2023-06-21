@@ -413,7 +413,7 @@ def create_app(config_name):
 
         os.remove(temp_file_path)
         timestamp = int(time.time())  # Obtém o timestamp atual
-        return render_template('etp40/etp-pdf.html', timestamp=timestamp)
+        return redirect(url_for('admin.index'))
     
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
