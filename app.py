@@ -328,6 +328,7 @@ def create_app(config_name):
     
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
+        
         quill_content = {}
         # Exemplo de uso:
 
@@ -348,7 +349,7 @@ def create_app(config_name):
             quill_content[str(etapa)] = conteudo_editor
 
         temp_file_path = 'temp.html'
-        output_path = 'static/pdf/etp40/etp40.pdf'
+        output_path = 'static/pdf/etp40/etp406.pdf'
         sections = {
             'Informações Básicas': [1],
             'Necessidade': list(range(2, 5)),
@@ -651,13 +652,16 @@ def create_app(config_name):
     # Rota para salvar o conteúdo do editor Quill em uma sessão específica
     @app.route('/salvar/<int:etapa>', methods=['POST'])
     def salvar(etapa):
+        
+        
         conteudo_editor = request.form.get('conteudo_editor')
         
         if conteudo_editor is None:
             conteudo_editor = request.form.get('inputValue')
 
-        print(conteudo_editor)
+        print(conteudo_editor, 'chegou....')
         session[str(etapa)] = conteudo_editor
+
         return 'OK'
 
     # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
