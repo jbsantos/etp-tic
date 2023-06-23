@@ -8,8 +8,7 @@
   {% extends admin_base_template %}
 
   {% block body %}
-
-  <div class="row mb-3">
+<!-- <div class="row mb-3">
       <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-12 py-2">
           <div class="card bg-success text-white h-100">
               <div class="card-body bg-success">
@@ -43,7 +42,7 @@
               </div>
           </div>
       </div>
-  </div>
+  </div> -->
 
   <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -51,18 +50,21 @@
           <table class="table table-striped table-hover ">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nome</th>
+                <th>Processo</th>
+                <th>Usuário</th>
+                <th>Baixar PDF</th>
+                <th>Baixar CSV</th>
 
               </tr>
             </thead>
             <tbody>
-              {% for product in last_products %}
+              {% for etp in etp40 %}
                   <tr>
-                    <td>{{product.id}}</td>
-                    <td>{{product.name}}</td>
-                
-                  </tr>
+                    <td>{{etp.id}}</td>
+                    <td> Usuário {{current_user.username}}</td>
+                    <td><a href='../static/pdf/etp40/etp40{{etp.id}}.pdf'>etp40{{etp.id}}</a></td>
+                    <td><a href='../static/csv/etp40/etp40{{etp.id}}.csv'>etp40{{etp.id}}</a></td>
+                </tr>
               {% endfor %}
             </tbody>
           </table>
@@ -70,8 +72,7 @@
   </div>
 
  <!-- <button onclick="history.back()">Voltar</button>-->
-  <button onclick="window.location.href = '{{ url_for('rota1') }}'">Criar formulário ETP 40</button>
-  <button onclick="window.location.href = '{{ url_for('rota1') }}'">Criar formulário ETP 90</button>
+  <button onclick="window.location.href = '{{ url_for('index') }}'">Criar formulário ETP /IN 40 e 94</button>
 
   {% endblock %}
   </body>
