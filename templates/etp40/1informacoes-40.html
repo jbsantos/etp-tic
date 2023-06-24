@@ -1,6 +1,6 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
-
+{% import 'etp40/section.html' as section %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,66 +68,9 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <form id="confirmacao-form" action="necessidade2-40" method="post">
-      <div id="editor"></div>
-      <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-        Próxima etapa
-      </button>
-    </form>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-    <script>
-      $(document).ready(function () {
-        var editor = new Quill('#editor', {
-          theme: 'snow',
-          modules: {
-            toolbar: [
-              ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
-              ['link'],                        // Opções de inserção de mídia
-              [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
-              [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
-              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
-              [{ 'align': [] }],                                 // Opções de alinhamento de texto
-              ['clean']                                          // Limpar formatação
-            ]
-          }
-        });
-
-        // Recupera o conteúdo do editor da sessão
-        $.ajax({
-          url: '/recuperar/1',
-          method: 'GET',
-          success: function (response) {
-            editor.root.innerHTML = response;
-          },
-          error: function (error) {
-            console.error('Erro ao recuperar o conteúdo do editor');
-          }
-        });
-
-        // Salva as alterações no editor a cada 5 segundos
-        setInterval(function () {
-          var conteudoEditor = editor.root.innerHTML;
-
-          $.ajax({
-            url: '/salvar/1',
-            method: 'POST',
-            data: {
-              conteudo_editor: conteudoEditor
-            },
-            success: function (response) {
-              console.log('Alterações salvas com sucesso');
-            },
-            error: function (error) {
-              console.error('Erro ao salvar as alterações');
-            }
-          });
-        }, 5000); // 5000 milissegundos = 5 segundos
-      });
-    </script>
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/informacoes1-40', '/necessidade2-40', '1') }}
+    <!-- ======= End Section ======= -->
 
   </main><!-- End #main -->
 
@@ -196,62 +139,5 @@
 
 
   <!-- Seu código HTML existente -->
-
-  <script>
-
-    // Função para recuperar o conteúdo do editor da etapa especificada
-    function recuperarConteudo(etapa) {
-      $.ajax({
-        url: '/recuperar/' + etapa,
-        method: 'GET',
-        success: function (response) {
-          editor.root.innerHTML = response;
-          console.log('Conteúdo do editor recuperado para a etapa ' + etapa);
-        },
-        error: function (error) {
-          console.error('Erro ao recuperar o conteúdo do editor da etapa ' + etapa);
-        }
-      });
-    }
-
-    // Recupera o conteúdo do editor para a primeira etapa
-    var etapaAtual = 1;
-    recuperarConteudo(etapaAtual);
-
-    // Função para salvar as alterações no editor
-    function salvarAlteracoes() {
-      var conteudoEditor = editor.root.innerHTML;
-
-      $.ajax({
-        url: '/salvar/' + etapaAtual,
-        method: 'POST',
-        data: {
-          conteudo_editor: conteudoEditor
-        },
-        success: function (response) {
-          console.log('Alterações salvas com sucesso na etapa ' + etapaAtual);
-        },
-        error: function (error) {
-          console.error('Erro ao salvar as alterações na etapa ' + etapaAtual);
-        }
-      });
-    }
-
-    // Define o intervalo para salvar automaticamente a cada 4 segundos
-    setInterval(function () {
-      salvarAlteracoes();
-    }, 4000);
-
-    // Função para avançar para a próxima etapa
-    function proximaEtapa() {
-      etapaAtual++;
-      recuperarConteudo(etapaAtual);
-    }
-
-    // Exemplo de chamada para avançar para a próxima etapa (pode ser chamado em um evento de clique, por exemplo)
-    proximaEtapa();
-
-  </script>
-
 
 </html>

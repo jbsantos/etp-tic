@@ -4,14 +4,16 @@
   {% if etapa =='8' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
   {% else %}
-  <div id="editor"></div><br />
+  <div style="min-height:150px" id="editor"></div><br />
   {% endif %}
+
+  {% if etapa !='1' %}
   <div style="margin-top: 20px"></div>
   <span>
     <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Etapa Anterior
     </a>
-
+    {% endif %}
     {% if etapa =='16' %}
     <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
       Salvar Etapa atual

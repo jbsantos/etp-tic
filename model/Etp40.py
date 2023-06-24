@@ -54,7 +54,6 @@ class Etp40(db.Model):
 
     def get_all(self):
         try:
-     
             res = db.session.query(Etp40).all()
             
         except Exception as e:
@@ -75,6 +74,27 @@ class Etp40(db.Model):
         finally:
             db.session.close()
             return res
+        
+    def get_etp40_formulario_by_id(self, form_id):
+        try:
+            res = db.session.query(Etp40).filter(self.id==form_id).first()
+          
+        except Exception as e:
+            res = []
+            print(e)
+        finally:
+            db.session.close()
+            return res
+        
+    def get_ultimo_id_formulario():
+            try:
+                res = db.session.query(Etp40).order_by(Etp40.id.desc()).first()
+            except Exception as e:
+                res = []
+                print(e)
+            finally:
+                db.session.close()
+                return res    
     
     def save(self):
         print(self)

@@ -349,6 +349,7 @@ def create_app(config_name):
             last_id = 0
         else:
             last_id = ultimo_id.id
+            
         quill_content = {}
         # Exemplo de uso:
 
@@ -430,18 +431,24 @@ def create_app(config_name):
             'encoding': 'UTF-8',
         }
 
-        pdfkit.from_file(temp_file_path, output_path, options=options)
 
-        os.remove(temp_file_path)
-        timestamp = int(time.time())  # Obtém o timestamp atual
+        # timestamp = int(time.time())  # Obtém o timestamp atual
         
-        
+        # salva no banco
         result = Etp40Controller.save_etp40()
+        #caso seja positivo o resultado gerar o csv
         if result:
+            #gera  o pdf no local específico
+            pdfkit.from_file(temp_file_path, output_path, options=options)
+            os.remove(temp_file_path)
+            #gera o csv local específico
             gerar_csv(last_id)
-        # print(result.__dict__)
-        return redirect(url_for('admin.index'))
-    
+        
+            return redirect(url_for('admin.index'))
+        else: 
+            print(result)
+            return "Não foi salvo o ETP 40"
+        
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
@@ -976,89 +983,9 @@ def create_app(config_name):
             writer.writerows(csv_data)
 
         return send_file(csv_filename, as_attachment=True)
+   
+    def limpar_sessoes():
+        session.clear()
 
-
-
-    #def remove_html_tags(text):
-    #    soup = BeautifulSoup(text, 'html.parser')
-    #    return soup.get_text()
-    
-    # @app.route('/download-94', methods=['GET'])
-    # def download_file_94():
-        
-    #     quill_content = {
-    #         '1': 'Informações Básicas',
-    #         '2': 'Descrição da Necessidade',
-    #         '3': 'Área Requisitante',
-    #         '4': 'Necessidades de Negócio',
-    #         '5': 'Necessidades Tecnológicas',
-    #         '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
-    #         '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
-    #         '8': 'Levantamento de Soluções',
-    #         '9': 'Análise Comparativa de Soluções',
-    #         '10': 'Registro de Soluções Consideradas Inviáveis',
-    #         '11': 'Análise Comparativa de Custos (TCO)',
-    #         '12': 'Descrição da Solução de TIC a Ser Contratada',
-    #         '13': 'Estimativa de Custo Total da Contratação',
-    #         '14': 'Justificativa Técnica da Escolha da Solução',
-    #         '15': 'Justificativa Econômica da Escolha da Solução',
-    #         '16': 'Benefícios a Serem Alcançados com a Contratação',
-    #         '17': 'Providências a Serem Adotadas',
-    #         '18': 'Declaração de Viabilidade',
-    #         '19': 'Responsáveis'
-    # }
-    #     # Criar os dados do CSV
-    #     csv_data = []
-    #     if '1' in session:
-    #         csv_data.append(['Informações Básicas',  session['1']])
-    #     if '2' in session:
-    #         csv_data.append(['Descrição da Necessidade', session['2']])
-    #     if '3' in session:
-    #         csv_data.append(['Área Requisitante', session['3']])
-    #     if '4' in session:
-    #         csv_data.append(['Necessidades de Negócio', session['4']])
-    #     if '5' in session:
-    #         csv_data.append(['Necessidades Tecnológicas', session['5']])
-    #     if '6' in session:
-    #         csv_data.append(['Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC', session['6']])
-    #     if '7' in session:
-    #         csv_data.append(['Estimativa da Demanda - Quantidade de Bens e Serviço', session['7']])
-    #     if '8' in session:
-    #         csv_data.append(['Levantamento de Soluções', session['8']])
-    #     if '9' in session:
-    #         csv_data.append(['Análise Comparativa de Soluções', session['9']])
-    #     if '10' in session:
-    #         csv_data.append(['Registro de Soluções Consideradas Inviáveis', session['10']])
-    #     if '11' in session:
-    #         csv_data.append(['Análise Comparativa de Custos (TCO)', session['11']])
-    #     if '12' in session:
-    #         csv_data.append(['Descrição da Solução de TIC a Ser Contratada', session['12']])
-    #     if '13' in session:
-    #         csv_data.append(['Estimativa de Custo Total da Contratação', session['13']])
-    #     if '14' in session:
-    #         csv_data.append(['Justificativa Técnica da Escolha da Solução', session['14']])
-    #     if '15' in session:
-    #         csv_data.append(['Justificativa Econômica da Escolha da Solução', session['15']])
-    #     if '16' in session:
-    #         csv_data.append(['Benefícios a Serem Alcançados com a Contratação', session['16']])
-    #     if '17' in session:
-    #         csv_data.append(['Providências a Serem Adotadas', session['17']])
-    #     if '18' in session:
-    #         csv_data.append(['Declaração de Viabilidade', session['18']])
-    #     if '19' in session:
-    #         csv_data.append(['Responsáveis', session['19']])
-    #     # Nome do arquivo CSV
-    #     csv_filename = 'data-94.csv'
-
-    #     # Cria o arquivo CSV
-    #     with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-    #         writer = csv.writer(csv_file)
-    #         writer.writerows(csv_data)
-
-    #     # Retorna o arquivo CSV para download
-    #     return send_file(csv_filename, as_attachment=True)
-
-
-    ##################################################################
 
     return app

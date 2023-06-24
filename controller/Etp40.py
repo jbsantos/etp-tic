@@ -175,15 +175,41 @@ class Etp40Controller:
         })
 
 
+    def retomar_session_etp40(form_id):
+        try:
+            etp40 = Etp40.get_etp40_formulario_by_id(form_id)  # Recupera o registro da tabela Etp40 com base no ID do formulário
+
+            if etp40 is not None:
+                session['1'] = etp40.informacao1_40
+                session['2'] = etp40.necessidade2_40
+                session['3'] = etp40.necessidade3_40
+                session['4'] = etp40.necessidade4_40
+                session['5'] = etp40.solucao5_40
+                session['6'] = etp40.solucao6_40
+                session['7'] = etp40.solucao7_40
+                session['8'] = etp40.solucao8_40
+                session['9'] = etp40.solucao9_40
+                session['10'] = etp40.solucao10_40
+                session['11'] = etp40.solucao11_40
+                session['12'] = etp40.planejamento12_40
+                session['13'] = etp40.planejamento13_40
+                session['14'] = etp40.planejamento14_40
+                session['15'] = etp40.viabilidade15_40
+                session['16'] = etp40.viabilidade16_40
+
+                return True  # Retorna True para indicar que os dados foram recuperados com sucesso
+            else:
+                return False  # Retorna False se o registro não for encontrado
+
+        except Exception as e:
+            print(e)
+            return False  # Retorna False em caso de erro
+
 
     def ultimo_id_formulario():
-            try:
-                res = db.session.query(Etp40).order_by(Etp40.id.desc()).first()
-            except Exception as e:
-                res = []
-                print(e)
-            finally:
-                db.session.close()
-                return res
+        
+        res = Etp40.get_ultimo_id_formulario()
+
+        return res
             
     
