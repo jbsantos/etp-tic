@@ -2,7 +2,7 @@
 from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user
 from functools import wraps
 # para gerar pdf
 import pdfkit
@@ -339,6 +339,7 @@ def create_app(config_name):
     
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
+     
         ultimo_id = Etp40Controller.ultimo_id_formulario()
 
         last_id = ultimo_id
@@ -434,24 +435,39 @@ def create_app(config_name):
 
         # timestamp = int(time.time())  # Obtém o timestamp atual
         
-        # salva no banco
-        result = Etp40Controller.save_etp40()
-        #caso seja positivo o resultado gerar o csv
-        if result:
-            #gera  o pdf no local específico
-            pdfkit.from_file(temp_file_path, output_path, options=options)
-            os.remove(temp_file_path)
-            #gera o csv local específico
-            gerar_csv(last_id)
-        
-            return redirect(url_for('admin.index'))
-        else: 
-            print(result)
-            return "Não foi salvo o ETP 40"
+        if current_user.is_active:
+                user_id = current_user.id
+                 # salva no banco
+                result = Etp40Controller.save_etp40()
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    #gera  o pdf no local específico
+                    pdfkit.from_file(temp_file_path, output_path, options=options)
+                    os.remove(temp_file_path)
+                    #gera o csv local específico
+                    gerar_csv(last_id)
+                    #fazer uma funcao para verificar se o usuario está logado
+                    # Limpa a sessão
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
         
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
+    
+    @app.route('/registre-se',methods=['POST', 'GET'])
+    def registre_se():
+        return render_template('etp40/pages-register.html') 
+    
     
     @app.route('/rota1', methods=['POST', 'GET'])
     
