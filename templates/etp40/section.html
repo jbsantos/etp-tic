@@ -1,6 +1,7 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
 
-<form id="confirmacao-form" action="{{proxima}}" method="post">
+<form id="confirmacao-form" action="{{proxima}}" method="POST">
+  
   {% if etapa =='8' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
   {% else %}
@@ -14,13 +15,18 @@
       Etapa Anterior
     </a>
     {% endif %}
-    {% if etapa =='16' %}
+    {% if etapa =='16'and proxima !='/salvar_edicao' %}
     <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
       Salvar Etapa atual
     </button>
     <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Finalizar ETP
     </a>
+    {% elif etapa =='16' and proxima =='/salvar_edicao' %}
+ 
+    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+      Salvar Edição
+    </button>
     {% else %}
     <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
       Próxima etapa

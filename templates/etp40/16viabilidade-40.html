@@ -1,6 +1,7 @@
 {% import 'etp40/aside.html' as macros %}
 {% import 'etp40/header.html' as header %}
 {% import 'etp40/section.html' as section %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,9 +68,17 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/viabilidade15-40', '/viabilidade16-40','16') }}
-    <!-- ======= End Section ======= -->
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/viabilidade15-40', '/salvar_edicao','16') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/viabilidade15-40', '/viabilidade16-40','16') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+   
 
   </main><!-- End #main -->
 

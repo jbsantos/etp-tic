@@ -437,6 +437,7 @@ def create_app(config_name):
         
         if current_user.is_active:
                 user_id = current_user.id
+                
                  # salva no banco
                 result = Etp40Controller.save_etp40()
                         #caso seja positivo o resultado gerar o csv
@@ -463,6 +464,40 @@ def create_app(config_name):
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
+    
+    @app.route('/retomar_dados',methods=['POST'])
+    def retomar_dados():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retomar_session_etp40(id_form)
+
+        return render_template('etp40/16viabilidade-40.html', status=status) 
+    
+    
+    
+    @app.route('/salvar_edicao',methods=['POST', 'GET'])
+    def salvar_edicao():
+        id_form = session['id_form']
+        result = Etp40Controller.salvar_edicao_etp40(id_form)
+        
+        if current_user.is_active:
+                user_id = current_user.id
+                if result:
+                    
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo a edição do ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
     
     @app.route('/registre-se',methods=['POST', 'GET'])
     def registre_se():

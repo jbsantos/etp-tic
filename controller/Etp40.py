@@ -12,8 +12,8 @@ config = app_config[app_active]
 db = SQLAlchemy(config.APP)
 
 class Etp40Controller:
-    def __init__(self, etp40_model):
-        self.etp40_model = etp40_model
+    def __init__(self):
+        self.etp40_model = Etp40()
     
     
     def get_etp40(self, limit):    
@@ -178,7 +178,7 @@ class Etp40Controller:
     def retomar_session_etp40(form_id):
         try:
             etp40 = Etp40.get_etp40_formulario_by_id(form_id)  # Recupera o registro da tabela Etp40 com base no ID do formulário
-
+            
             if etp40 is not None:
                 session['1'] = etp40.informacao1_40
                 session['2'] = etp40.necessidade2_40
@@ -204,6 +204,14 @@ class Etp40Controller:
         except Exception as e:
             print(e)
             return False  # Retorna False em caso de erro
+
+
+
+
+    def salvar_edicao_etp40(form_id):
+
+        result = Etp40.salvar_edicao_etp40(form_id)
+        return result
 
 
     def ultimo_id_formulario():
