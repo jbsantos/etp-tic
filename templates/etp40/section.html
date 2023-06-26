@@ -1,5 +1,5 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
-
+{{session['status']}}
 <form id="confirmacao-form" action="{{proxima}}" method="POST">
   
   {% if etapa =='8' %}
