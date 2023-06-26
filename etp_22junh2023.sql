@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `alembic_version`;
 CREATE TABLE `alembic_version` (
   `version_num` varchar(32) NOT NULL,
   PRIMARY KEY (`version_num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,11 +47,11 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `description` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,28 +73,28 @@ DROP TABLE IF EXISTS `etp40`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `etp40` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `informacao1_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `necessidade2_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `necessidade3_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `necessidade4_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao5_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao6_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao7_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao8_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao9_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao10_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `solucao11_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `planejamento12_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `informacao1_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `necessidade2_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `necessidade3_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `necessidade4_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao5_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao6_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao7_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao8_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao9_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao10_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `solucao11_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `planejamento12_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `planejamento13_40` text,
-  `planejamento14_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `viabilidade15_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `viabilidade16_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `planejamento14_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `viabilidade15_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `viabilidade16_40` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `usuario_id` int DEFAULT NULL,
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `etp40_FK` (`usuario_id`),
   CONSTRAINT `etp40_FK` FOREIGN KEY (`usuario_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,11 +115,11 @@ DROP TABLE IF EXISTS `paginas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `paginas` (
-  `nome` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs NOT NULL,
+  `nome` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
   `descricao` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `product` (
   KEY `user_created` (`user_created`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category`) REFERENCES `category` (`id`),
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`user_created`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,7 +177,7 @@ CREATE TABLE `role` (
   `name` varchar(40) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +215,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `username` (`username`),
   KEY `role` (`role`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

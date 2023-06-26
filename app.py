@@ -465,7 +465,7 @@ def create_app(config_name):
     def profile():
         return render_template('etp40/users-profile.html') 
     
-    @app.route('/retomar_dados',methods=['POST'])
+    @app.route('/retomar_dados',methods=['POST', 'GET'])
     def retomar_dados():
         status = ''
         id_form = request.form.get('id_form')
@@ -474,7 +474,7 @@ def create_app(config_name):
         session['status'] = status
         result = Etp40Controller.retomar_session_etp40(id_form)
 
-        return render_template('etp40/16viabilidade-40.html', status=status) 
+        return render_template('etp40/1informacoes-40.html', status=status) 
     
     
     
