@@ -78,6 +78,7 @@ class HomeView(AdminIndexView):
             
 
 
+
 class UserView(ModelView):
     def on_form_prefill(self, form, id):
         if request and request.method == 'GET':

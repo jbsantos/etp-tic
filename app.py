@@ -807,6 +807,10 @@ def create_app(config_name):
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
+        if request.method == 'POST':
+            conteudoinformacao1 = request.form.get('conteudoinformacao1')
+            session['conteudoinformacao1'] = conteudoinformacao1
+            return redirect('/informacao1-94')
 
         return render_template('etp94/1informacao-94.html')
     
@@ -857,8 +861,15 @@ def create_app(config_name):
     
     @app.route('/solucao11-94', methods=['POST', 'GET'])
     def solucao11_94():
+        if request.method == 'POST':
+            conteudosolucao11 = request.form.get('conteudosolucao11')
+            session['conteudosolucao11'] = conteudosolucao11
+            return redirect('/solucao11-94')
 
-        return render_template('etp94/11solucao-94.html')
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao11 = session.get('conteudosolucao11')
+
+        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
     
     @app.route('/solucao12-94', methods=['POST', 'GET'])
     def solucao12_94():
@@ -882,7 +893,13 @@ def create_app(config_name):
     
     @app.route('/planejamento16-94', methods=['POST', 'GET'])
     def planejamento16_94():
+        if request.method == 'POST':
+            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
+            session['conteudoplanejamento16'] = conteudoplanejamento16
+            return redirect('/planejamento16-94')
 
+        return render_template('etp94/16planejamento-94.html')
+    
         return render_template('etp94/16planejamento-94.html')
     
     @app.route('/planejamento17-94', methods=['POST', 'GET'])
