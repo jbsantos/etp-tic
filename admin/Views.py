@@ -16,7 +16,14 @@ from config import app_config, app_active
 from model.User import User
 from model.Category import Category
 from model.Product import Product
+from model.Etp40 import Etp40
 import datetime
+
+from flask_admin.contrib.sqla import ModelView
+from wtforms import DateTimeLocalField
+from flask_admin.form import DateTimePickerWidget
+from flask import request, redirect
+from flask_login import current_user
 
 #import locale
 #locale.setlocale(locale.LC_ALL,'pt_BR.ISO8859-1')
@@ -29,19 +36,33 @@ class HomeView(AdminIndexView):
     def index(self):
         user_model = User()
         category_model = Category()
-        product_model = Product()
+        #product_model = Product()
+        etpa40_model = Etp40()
+       
+        etp40 = etpa40_model.get_all()
+        
+        if len(etp40) == 0:
+            print('etp vazio')
+            etp40 = 'por favor registre'
+     
 
+        
+        etpa40_by_id = etpa40_model.get_etp40_by_id(current_user.id) 
+        if etpa40_by_id == None or etpa40_by_id == '':
+            etpa40_by_id = 'Não há registro'
         users = user_model.get_total_users()
         categories = category_model.get_total_categories()
-        products = product_model.get_total_products()
-        last_products = product_model.get_last_products()
+        #products = product_model.get_total_products()
+        #last_products = product_model.get_last_products()
         data_sistema  = str(datetime.datetime.now().strftime('%B'))
-        
         return self.render('home_admin.html', report={
             'users': users[0],
             'categories': categories[0],
-            'products': products[0]
-        }, last_products=last_products, data_sistema=data_sistema)
+          #  'products': products[0],
+            'etp40': etp40[0],
+            'etp40_id':etpa40_by_id,
+            
+        }, etp40 = etpa40_by_id, data_sistema=data_sistema)
 
 
     def is_accessible(self):
@@ -55,11 +76,8 @@ class HomeView(AdminIndexView):
         
 
             
-from flask_admin.contrib.sqla import ModelView
-from wtforms import DateTimeLocalField
-from flask_admin.form import DateTimePickerWidget
-from flask import request, redirect
-from flask_login import current_user
+
+
 
 class UserView(ModelView):
     def on_form_prefill(self, form, id):
@@ -197,6 +215,27 @@ class PaginasView(ModelView):
         else:
             return redirect('/login')
 
+class Etp40View(ModelView):
+    can_view_details = True
+    create_modal = True
+    edit_modal = True
+    column_display_pk = True
+    can_view_details = True
+
+    base_template = 'admin_base.html'
+    def is_accessible(self):
+        role = current_user.role
+        if role == 1:
+            self.can_create = True
+            self.can_edit = True
+            self.can_delete = True
+            return current_user.is_authenticated
+    def inaccessible_callback(self,name,**kwargs):
+        if current_user.is_authenticated:
+            return redirect('/admin')
+        else:
+            return redirect('/login')
+        
 class CategoryView(ModelView):
     base_template = 'admin_base.html'
     can_view_details = True

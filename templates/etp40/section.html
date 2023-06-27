@@ -1,24 +1,32 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
-
-<form id="confirmacao-form" action="{{proxima}}" method="post">
+{{session['status']}}
+<form id="confirmacao-form" action="{{proxima}}" method="POST">
+  
   {% if etapa =='8' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
   {% else %}
-  <div id="editor"></div><br />
+  <div style="min-height:150px" id="editor"></div><br />
   {% endif %}
+
+  {% if etapa !='1' %}
   <div style="margin-top: 20px"></div>
   <span>
-    <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
       Etapa Anterior
     </a>
-
-    {% if etapa =='16' %}
+    {% endif %}
+    {% if etapa =='16'and proxima !='/salvar_edicao' %}
+    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+      Salvar Etapa atual
+    </button>
     <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-      Gerar o ETP-pdf
+      Finalizar ETP
     </a>
-    <a href="/gerar-csv" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-      Baixar ETP-csv
-    </a>
+    {% elif etapa =='16' and proxima =='/salvar_edicao' %}
+ 
+    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+      Salvar Edição
+    </button>
     {% else %}
     <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
       Próxima etapa
@@ -36,10 +44,9 @@
     var etapaValue = '{{etapa}}';
     var editor;
     var conteudoEditor; // Variável para armazenar o valor do editor ou do input
-
+  
     if (etapaValue === '8') {
       // Verifica se o valor do input é vazio
-
       if ($('#valor').val() !== '') {
         conteudoEditor = $('#valor').val(); // Usa o valor do input
       }
@@ -50,26 +57,23 @@
           toolbar: [
             ['bold', 'italic', 'underline', 'strike'],        // Opções de formatação do texto
             ['link'],                                         // Opções de inserção de mídia
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],      // Opções de listas ordenadas e não ordenadas
-            [{ 'indent': '-1' }, { 'indent': '+1' }],           // Opções de recuo de parágrafo
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],          // Opções de cabeçalhos
-            [{ 'align': [] }],                                 // Opções de alinhamento de texto
-            ['clean']                                          // Limpar formatação
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],    // Opções de listas ordenadas e não ordenadas
+            [{ 'indent': '-1' }, { 'indent': '+1' }],         // Opções de recuo de parágrafo
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],        // Opções de cabeçalhos
+            [{ 'align': [] }],                               // Opções de alinhamento de texto
+            ['clean']                                        // Limpar formatação
           ]
         }
       });
       conteudoEditor = editor.root.innerHTML; // Usa o valor do editor
     }
-
+  
     // Recupera o conteúdo do editor da sessão ou do input
     if (etapaValue === '8') {
       // Lógica específica para a etapa 8 usando o valor do input
       $.ajax({
         url: '/recuperar/8',
         method: 'GET',
-        data: {
-          inputValue: $('#valor').val() // Valor do input
-        },
         success: function (response) {
           $('#valor').val(response);
         },
@@ -90,9 +94,10 @@
         }
       });
     }
-
-    // Salva as alterações no editor a cada 5 segundos ou do input
-    setInterval(function () {
+  
+    $('#proxima-rota').on('click', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+  
       if (etapaValue === '8') {
         // Lógica específica para a etapa 8 usando o valor do input
         var inputContent = $('#valor').val();
@@ -102,12 +107,28 @@
           data: {
             inputValue: inputContent // Valor do input
           },
-          success: function (response) {
+          success: function(response) {
             console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/8',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
           },
-          error: function (error) {
+          error: function(error) {
             console.error('Erro ao salvar as alterações');
-          }
+          },
         });
       } else {
         // Lógica padrão usando o valor do editor
@@ -118,17 +139,151 @@
           data: {
             conteudo_editor: conteudoEditor
           },
-          success: function (response) {
+          success: function(response) {
             console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/{{etapa}}',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
           },
-          error: function (error) {
+          error: function(error) {
             console.error('Erro ao salvar as alterações');
-          }
+          },
         });
       }
-    }, 5000); // 5000 milissegundos = 5 segundos
+    });
+
+
+
+    $('#etapa-anterior').on('click', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+  
+      if (etapaValue === '8') {
+        // Lógica específica para a etapa 8 usando o valor do input
+        var inputContent = $('#valor').val();
+        $.ajax({
+          url: '/salvar/8',
+          method: 'POST',
+          data: {
+            inputValue: inputContent // Valor do input
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/8',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ anterior }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        var conteudoEditor = editor.root.innerHTML;
+        $.ajax({
+          url: '/salvar/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor: conteudoEditor
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/{{etapa}}',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ anterior }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      }
+    });
+
+
+
+
+
+
+
+
+
   });
 
+  // Função para salvar as alterações no editor
+function salvarAlteracoes() {
+  if (etapaValue === '8') {
+    // Lógica específica para a etapa 8 usando o valor do input
+    var inputContent = $('#valor').val();
+    $.ajax({
+      url: '/salvar/8',
+      method: 'POST',
+      data: {
+        inputValue: inputContent // Valor do input
+      },
+      success: function(response) {
+        console.log('Alterações salvas com sucesso');
+      },
+      error: function(error) {
+        console.error('Erro ao salvar as alterações');
+      },
+    });
+  } else {
+    // Lógica padrão usando o valor do editor
+    var conteudoEditor = editor.root.innerHTML;
+    $.ajax({
+      url: '/salvar/{{etapa}}',
+      method: 'POST',
+      data: {
+        conteudo_editor: conteudoEditor
+      },
+      success: function(response) {
+        console.log('Alterações salvas com sucesso');
+      },
+      error: function(error) {
+        console.error('Erro ao salvar as alterações');
+      },
+    });
+  }
+}
+  
 </script>
 
 
