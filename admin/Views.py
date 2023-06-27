@@ -38,10 +38,18 @@ class HomeView(AdminIndexView):
         category_model = Category()
         #product_model = Product()
         etpa40_model = Etp40()
-        
-        etp40 = etpa40_model.get_all()
-        etpa40_by_id = etpa40_model.get_etp40_by_id(current_user.id) 
        
+        etp40 = etpa40_model.get_all()
+        
+        if len(etp40) == 0:
+            print('etp vazio')
+            etp40 = 'por favor registre'
+     
+
+        
+        etpa40_by_id = etpa40_model.get_etp40_by_id(current_user.id) 
+        if etpa40_by_id == None or etpa40_by_id == '':
+            etpa40_by_id = 'Não há registro'
         users = user_model.get_total_users()
         categories = category_model.get_total_categories()
         #products = product_model.get_total_products()
@@ -68,6 +76,7 @@ class HomeView(AdminIndexView):
         
 
             
+
 
 
 class UserView(ModelView):
