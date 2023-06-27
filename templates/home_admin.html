@@ -53,6 +53,8 @@
                 <th>Processo</th>
                 <th>Usuário</th>
                 <th>Baixar PDF</th>
+                <th>Baixar CSV</th>
+                <th>Editar</th>
 
               </tr>
             </thead>
@@ -61,7 +63,15 @@
                   <tr>
                     <td>{{etp.id}}</td>
                     <td> Usuário {{current_user.username}}</td>
-                    <td><a href='static/pdf/etp40/etp40{{etp.id}}.pdf'>etp40{{etp.id}}</a></td>
+                    <td><a href='../static/pdf/etp40/etp40{{etp.id}}.pdf'>etp40{{etp.id}}</a></td>
+                    <td><a href='../static/csv/etp40/etp40{{etp.id}}.csv'>etp40{{etp.id}}</a></td>
+                    <td >
+                        <form action="{{ url_for('retomar_dados') }}" method="POST">
+                            <input type="hidden" name="id_form" value="{{etp.id}}">
+                            <input type="hidden" name="status" value="editar">
+                            <button type="submit">Editar</button>
+                          </form>
+                    </td>
                 </tr>
               {% endfor %}
             </tbody>

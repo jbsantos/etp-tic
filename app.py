@@ -2,9 +2,8 @@
 from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user
 from functools import wraps
-#from bs4 import BeautifulSoup
 # para gerar pdf
 import pdfkit
 import tempfile
@@ -17,6 +16,8 @@ from config import app_config, app_active
 
 # controllers
 from controller.User import UserController
+from controller.Etp40 import Etp40Controller
+
 from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
@@ -175,8 +176,8 @@ def create_app(config_name):
         
         return 'Conteúdo salvo com sucesso'
     
-    @app.route('/gerar-csv', methods=['GET'])
-    def gerar_csv():
+    @app.route('/gerar-csv<Llast_id>', methods=['GET', 'POST'])
+    def gerar_csv(last_id):
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da necessidade',
@@ -242,7 +243,17 @@ def create_app(config_name):
     #         csv_data.append(['Responsáveis', remove_html_tags(session['16'])])
 
         # Nome do arquivo CSV
-        csv_filename = 'data-40.csv'
+        ultimo_id = Etp40Controller.ultimo_id_formulario()
+        last_id = ultimo_id.id
+        print(last_id,'last id')
+        if last_id == None or last_id == '':
+            print(last_id,'last 0')
+            last_id = 0
+        
+        last_id+=1
+        output_path = 'static/csv/etp40/etp40'+str(last_id)+'.csv'
+        print(output_path)
+        csv_filename = output_path
 
         # Cria o arquivo CSV
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
@@ -328,7 +339,18 @@ def create_app(config_name):
     
     @app.route('/gerar_pdf',methods=['POST', 'GET'])
     def gerar_pdf():
+     
+        ultimo_id = Etp40Controller.ultimo_id_formulario()
+
+        last_id = ultimo_id
+        print(last_id,'last id')
         
+        if last_id == None or last_id == '':
+            
+            last_id = 0
+        else:
+            last_id = ultimo_id.id
+            
         quill_content = {}
         # Exemplo de uso:
 
@@ -349,7 +371,8 @@ def create_app(config_name):
             quill_content[str(etapa)] = conteudo_editor
 
         temp_file_path = 'temp.html'
-        output_path = 'static/pdf/etp40/etp406.pdf'
+        last_id+=1
+        output_path = 'static/pdf/etp40/etp40'+str(last_id)+'.pdf'
         sections = {
             'Informações Básicas': [1],
             'Necessidade': list(range(2, 5)),
@@ -409,15 +432,77 @@ def create_app(config_name):
             'encoding': 'UTF-8',
         }
 
-        pdfkit.from_file(temp_file_path, output_path, options=options)
 
-        os.remove(temp_file_path)
-        timestamp = int(time.time())  # Obtém o timestamp atual
-        return redirect(url_for('admin.index'))
-    
+        # timestamp = int(time.time())  # Obtém o timestamp atual
+        
+        if current_user.is_active:
+                user_id = current_user.id
+                
+                 # salva no banco
+                result = Etp40Controller.save_etp40()
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    #gera  o pdf no local específico
+                    pdfkit.from_file(temp_file_path, output_path, options=options)
+                    os.remove(temp_file_path)
+                    #gera o csv local específico
+                    gerar_csv(last_id)
+                    #fazer uma funcao para verificar se o usuario está logado
+                    # Limpa a sessão
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
+        
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
+    
+    @app.route('/retomar_dados',methods=['POST', 'GET'])
+    def retomar_dados():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retomar_session_etp40(id_form)
+
+        return render_template('etp40/1informacoes-40.html', status=status) 
+    
+    
+    
+    @app.route('/salvar_edicao',methods=['POST', 'GET'])
+    def salvar_edicao():
+        id_form = session['id_form']
+        result = Etp40Controller.salvar_edicao_etp40(id_form)
+        
+        if current_user.is_active:
+                user_id = current_user.id
+                if result:
+                    
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo a edição do ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
+    
+    @app.route('/registre-se',methods=['POST', 'GET'])
+    def registre_se():
+        return render_template('etp40/pages-register.html') 
+    
     
     @app.route('/rota1', methods=['POST', 'GET'])
     
@@ -722,6 +807,10 @@ def create_app(config_name):
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
+        if request.method == 'POST':
+            conteudoinformacao1 = request.form.get('conteudoinformacao1')
+            session['conteudoinformacao1'] = conteudoinformacao1
+            return redirect('/informacao1-94')
 
         return render_template('etp94/1informacao-94.html')
     
@@ -772,8 +861,15 @@ def create_app(config_name):
     
     @app.route('/solucao11-94', methods=['POST', 'GET'])
     def solucao11_94():
+        if request.method == 'POST':
+            conteudosolucao11 = request.form.get('conteudosolucao11')
+            session['conteudosolucao11'] = conteudosolucao11
+            return redirect('/solucao11-94')
 
-        return render_template('etp94/11solucao-94.html')
+        # Verificar se a informação está armazenada na sessão
+        conteudosolucao11 = session.get('conteudosolucao11')
+
+        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
     
     @app.route('/solucao12-94', methods=['POST', 'GET'])
     def solucao12_94():
@@ -797,7 +893,13 @@ def create_app(config_name):
     
     @app.route('/planejamento16-94', methods=['POST', 'GET'])
     def planejamento16_94():
+        if request.method == 'POST':
+            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
+            session['conteudoplanejamento16'] = conteudoplanejamento16
+            return redirect('/planejamento16-94')
 
+        return render_template('etp94/16planejamento-94.html')
+    
         return render_template('etp94/16planejamento-94.html')
     
     @app.route('/planejamento17-94', methods=['POST', 'GET'])
@@ -949,89 +1051,9 @@ def create_app(config_name):
             writer.writerows(csv_data)
 
         return send_file(csv_filename, as_attachment=True)
+   
+    def limpar_sessoes():
+        session.clear()
 
-
-
-    #def remove_html_tags(text):
-    #    soup = BeautifulSoup(text, 'html.parser')
-    #    return soup.get_text()
-    
-    # @app.route('/download-94', methods=['GET'])
-    # def download_file_94():
-        
-    #     quill_content = {
-    #         '1': 'Informações Básicas',
-    #         '2': 'Descrição da Necessidade',
-    #         '3': 'Área Requisitante',
-    #         '4': 'Necessidades de Negócio',
-    #         '5': 'Necessidades Tecnológicas',
-    #         '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
-    #         '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
-    #         '8': 'Levantamento de Soluções',
-    #         '9': 'Análise Comparativa de Soluções',
-    #         '10': 'Registro de Soluções Consideradas Inviáveis',
-    #         '11': 'Análise Comparativa de Custos (TCO)',
-    #         '12': 'Descrição da Solução de TIC a Ser Contratada',
-    #         '13': 'Estimativa de Custo Total da Contratação',
-    #         '14': 'Justificativa Técnica da Escolha da Solução',
-    #         '15': 'Justificativa Econômica da Escolha da Solução',
-    #         '16': 'Benefícios a Serem Alcançados com a Contratação',
-    #         '17': 'Providências a Serem Adotadas',
-    #         '18': 'Declaração de Viabilidade',
-    #         '19': 'Responsáveis'
-    # }
-    #     # Criar os dados do CSV
-    #     csv_data = []
-    #     if '1' in session:
-    #         csv_data.append(['Informações Básicas',  session['1']])
-    #     if '2' in session:
-    #         csv_data.append(['Descrição da Necessidade', session['2']])
-    #     if '3' in session:
-    #         csv_data.append(['Área Requisitante', session['3']])
-    #     if '4' in session:
-    #         csv_data.append(['Necessidades de Negócio', session['4']])
-    #     if '5' in session:
-    #         csv_data.append(['Necessidades Tecnológicas', session['5']])
-    #     if '6' in session:
-    #         csv_data.append(['Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC', session['6']])
-    #     if '7' in session:
-    #         csv_data.append(['Estimativa da Demanda - Quantidade de Bens e Serviço', session['7']])
-    #     if '8' in session:
-    #         csv_data.append(['Levantamento de Soluções', session['8']])
-    #     if '9' in session:
-    #         csv_data.append(['Análise Comparativa de Soluções', session['9']])
-    #     if '10' in session:
-    #         csv_data.append(['Registro de Soluções Consideradas Inviáveis', session['10']])
-    #     if '11' in session:
-    #         csv_data.append(['Análise Comparativa de Custos (TCO)', session['11']])
-    #     if '12' in session:
-    #         csv_data.append(['Descrição da Solução de TIC a Ser Contratada', session['12']])
-    #     if '13' in session:
-    #         csv_data.append(['Estimativa de Custo Total da Contratação', session['13']])
-    #     if '14' in session:
-    #         csv_data.append(['Justificativa Técnica da Escolha da Solução', session['14']])
-    #     if '15' in session:
-    #         csv_data.append(['Justificativa Econômica da Escolha da Solução', session['15']])
-    #     if '16' in session:
-    #         csv_data.append(['Benefícios a Serem Alcançados com a Contratação', session['16']])
-    #     if '17' in session:
-    #         csv_data.append(['Providências a Serem Adotadas', session['17']])
-    #     if '18' in session:
-    #         csv_data.append(['Declaração de Viabilidade', session['18']])
-    #     if '19' in session:
-    #         csv_data.append(['Responsáveis', session['19']])
-    #     # Nome do arquivo CSV
-    #     csv_filename = 'data-94.csv'
-
-    #     # Cria o arquivo CSV
-    #     with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-    #         writer = csv.writer(csv_file)
-    #         writer.writerows(csv_data)
-
-    #     # Retorna o arquivo CSV para download
-    #     return send_file(csv_filename, as_attachment=True)
-
-
-    ##################################################################
 
     return app
