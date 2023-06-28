@@ -17,6 +17,7 @@ from model.User import User
 from model.Category import Category
 from model.Product import Product
 from model.Etp40 import Etp40
+from model.Etp94 import Etp94
 import datetime
 
 from flask_admin.contrib.sqla import ModelView
@@ -38,18 +39,28 @@ class HomeView(AdminIndexView):
         category_model = Category()
         #product_model = Product()
         etpa40_model = Etp40()
+        etp94_model = Etp94()
        
         etp40 = etpa40_model.get_all()
+        etp94 = etp94_model.get_all()
         
         if len(etp40) == 0:
             print('etp vazio')
             etp40 = 'por favor registre'
-     
+
+        if len(etp94) == 0:
+            print('etp vazio')
+            etp94 = 'por favor registre'
 
         
         etpa40_by_id = etpa40_model.get_etp40_by_id(current_user.id) 
         if etpa40_by_id == None or etpa40_by_id == '':
             etpa40_by_id = 'Não há registro'
+        
+        etp94_by_id = etp94_model.get_etp94_by_id(current_user.id) 
+        if etp94_by_id == None or etp94_by_id == '':
+            etp94_by_id = 'Não há registro'
+
         users = user_model.get_total_users()
         categories = category_model.get_total_categories()
         #products = product_model.get_total_products()
@@ -61,8 +72,10 @@ class HomeView(AdminIndexView):
           #  'products': products[0],
             'etp40': etp40[0],
             'etp40_id':etpa40_by_id,
+            'etp94': etp94[0],
+            'etp94_id':etp94_by_id,
             
-        }, etp40 = etpa40_by_id, data_sistema=data_sistema)
+        }, etp40 = etpa40_by_id,  etp94 = etp94_by_id, data_sistema=data_sistema)
 
 
     def is_accessible(self):
@@ -235,7 +248,28 @@ class Etp40View(ModelView):
             return redirect('/admin')
         else:
             return redirect('/login')
-        
+   
+class Etp94View(ModelView):
+    can_view_details = True
+    create_modal = True
+    edit_modal = True
+    column_display_pk = True
+    can_view_details = True
+
+    base_template = 'admin_base.html'
+    def is_accessible(self):
+        role = current_user.role
+        if role == 1:
+            self.can_create = True
+            self.can_edit = True
+            self.can_delete = True
+            return current_user.is_authenticated
+    def inaccessible_callback(self,name,**kwargs):
+        if current_user.is_authenticated:
+            return redirect('/admin')
+        else:
+            return redirect('/login')
+       
 class CategoryView(ModelView):
     base_template = 'admin_base.html'
     can_view_details = True

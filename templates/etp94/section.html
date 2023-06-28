@@ -1,25 +1,31 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
-
+{{session['status']}}
 <form id="confirmacao-form" action="{{proxima}}" method="post">
+
   {% if etapa =='13' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
   {% else %}
-  <div style="min-height: 150px" id="editor">
-  </div><br />
+  <div style="min-height: 150px" id="editor"></div><br />
   {% endif %}
 
+  {% if etapa !='1' %}
   <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
     Etapa Anterior
   </a>
+  {% endif %}
 
-  {% if etapa =='19' %}
+  {% if etapa =='19' and proxima !='/salvar-edicao-94' %}
+  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+    Salvar Etapa Atual
+  </button>
   <a href="/gerar-pdf-94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-    Gerar o ETP-pdf
+    Finalizar ETP
   </a>
-  <a href="/gerar-csv-94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-    Baixar ETP-csv
-  </a>
+  {% elif etapa =='19' and proxima =='/salvar-edicao-94' %}
 
+  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+    Salvar Edição
+  </button>
   {% else %}
   <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
     Próxima etapa
@@ -70,7 +76,7 @@
 
     // Recupera o conteúdo do editor da sessão ou do input
     if (etapaValue === '13') {
-      // Lógica específica para a etapa 8 usando o valor do input
+      // Lógica específica para a etapa 13 usando o valor do input
       $.ajax({
         url: '/recuperar-94/13',
         method: 'GET',
@@ -99,43 +105,189 @@
       });
     }
 
-    // Salva as alterações no editor a cada 5 segundos ou do input
-    setInterval(function () {
+    $('#proxima-rota').on('click', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+  
       if (etapaValue === '13') {
-        // Lógica específica para a etapa 8 usando o valor do input
+        // Lógica específica para a etapa 13 usando o valor do input
         var inputContent = $('#valor').val();
         $.ajax({
-          url: '/salvar-94/13',
+          url: '/salvar/13',
           method: 'POST',
           data: {
             inputValue_94: inputContent // Valor do input
           },
-          success: function (response) {
+          success: function(response) {
             console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/13',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
           },
-          error: function (error) {
+          error: function(error) {
             console.error('Erro ao salvar as alterações');
-          }
+          },
         });
       } else {
         // Lógica padrão usando o valor do editor
-        var conteudoEditor_94 = editor.root.innerHTML;
+        conteudoEditor_94 = editor.root.innerHTML;
         $.ajax({
-          url: '/salvar-94/{{etapa}}',
+          url: '/salvar/{{etapa}}',
           method: 'POST',
           data: {
-            conteudo_editor_94: conteudoEditor_94
+            conteudo_editor: conteudoEditor_94
           },
-          success: function (response) {
+          success: function(response) {
             console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/{{etapa}}',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
           },
-          error: function (error) {
+          error: function(error) {
             console.error('Erro ao salvar as alterações');
-          }
+          },
         });
       }
-    }, 5000); // 5000 milissegundos = 5 segundos
+    });
+
+
+
+    $('#etapa-anterior').on('click', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+  
+      if (etapaValue === '13') {
+        // Lógica específica para a etapa 13 usando o valor do input
+        var inputContent = $('#valor').val();
+        $.ajax({
+          url: '/salvar/13',
+          method: 'POST',
+          data: {
+            inputValue_94: inputContent // Valor do input
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/13',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ anterior }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        conteudoEditor_94 = editor.root.innerHTML;
+        $.ajax({
+          url: '/salvar/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor: conteudoEditor_94
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/{{etapa}}',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ anterior }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      }
+    });
+
+
+  
   });
+
+  // Função para salvar as alterações no editor
+  function salvarAlteracoes() {
+  if (etapaValue === '13') {
+    // Lógica específica para a etapa 13 usando o valor do input
+    var inputContent = $('#valor').val();
+    $.ajax({
+      url: '/salvar/13',
+      method: 'POST',
+      data: {
+        inputValue_94: inputContent // Valor do input
+      },
+      success: function(response) {
+        console.log('Alterações salvas com sucesso');
+      },
+      error: function(error) {
+        console.error('Erro ao salvar as alterações');
+      },
+    });
+  } else {
+    // Lógica padrão usando o valor do editor
+    conteudoEditor_94 = editor.root.innerHTML;
+    $.ajax({
+      url: '/salvar/{{etapa}}',
+      method: 'POST',
+      data: {
+        conteudo_editor: conteudoEditor_94
+      },
+      success: function(response) {
+        console.log('Alterações salvas com sucesso');
+      },
+      error: function(error) {
+        console.error('Erro ao salvar as alterações');
+      },
+    });
+  }
+}
+ 
 
 </script>
 

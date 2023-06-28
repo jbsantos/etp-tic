@@ -74,6 +74,21 @@
                     </td>
                 </tr>
               {% endfor %}
+              {% for etp in etp94 %}
+                  <tr>
+                    <td>{{etp.id}}</td>
+                    <td> Usuário {{current_user.username}}</td>
+                    <td><a href='../static/pdf/etp94/etp94{{etp.id}}.pdf'>etp94{{etp.id}}</a></td>
+                    <td><a href='../static/csv/etp94/etp94{{etp.id}}.csv'>etp94{{etp.id}}</a></td>
+                    <td >
+                        <form action="{{ url_for('retomar-dados-94') }}" method="POST">
+                            <input type="hidden" name="id_form" value="{{etp.id}}">
+                            <input type="hidden" name="status" value="editar">
+                            <button type="submit">Editar</button>
+                          </form>
+                    </td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
       </div>
