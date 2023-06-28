@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
+from flask import Flask, request,url_for, make_response, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, current_user
 from functools import wraps
 # para gerar pdf
 import pdfkit
-import tempfile
 #gear csv
 import csv
 from bs4 import BeautifulSoup
@@ -78,6 +77,11 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            limpar_sessoes()
+            session['user_id'] = user_id
+        
         return render_template('/etp40/index.html')
     
     @app.route('/etp94')
@@ -86,17 +90,16 @@ def create_app(config_name):
     
     @app.route('/etp40')
     def etp40():
-    #     # Abrir o arquivo HTML e ler o seu conteúdo
-    #     with open('templates/etp40/aside.html', 'r') as file:
-    #         html = file.read()
-    #     soup = BeautifulSoup(html, 'html.parser')
-
-    # # Encontrar todos os elementos <a> e obter o valor do atributo href
-    #     href_values = [a['href'] for a in soup.find_all('a')]
-
-    #     print(str(href_values))
-    #     return render_template('resultado.html', href_values=href_values)
-        return render_template('/etp40/etp40.html')
+        
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            # limpar_sessoes()
+            session['user_id'] = user_id
+            return render_template('/etp40/etp40.html')
+        else:
+            return render_template('/etp40/etp40.html')
+       
+        
     
     @app.route('/informacoes1-40',methods=['POST', 'GET'])
     def informacoes1_40():
@@ -176,8 +179,10 @@ def create_app(config_name):
         
         return 'Conteúdo salvo com sucesso'
     
-    @app.route('/gerar-csv<Llast_id>', methods=['GET', 'POST'])
-    def gerar_csv(last_id):
+    @app.route('/gerar_csv', methods=['GET', 'POST'])
+    def gerar_csv():
+        carregar_dados = carregar_pdf()
+
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da necessidade',
@@ -207,52 +212,9 @@ def create_app(config_name):
                     content = 'Não Constar Informação'
                 csv_data.append([quill_content[str(session_number)], content])
         
-    # # Criar os dados do CSV
-    #     csv_data = []
-    #     if '1' in session:
-    #         csv_data.append(['Informações Básicas',  remove_html_tags(session['1'])])
-    #     if '2' in session:
-    #         csv_data.append(['Descrição da necessidade', remove_html_tags(session['2'])])
-    #     if '3' in session:
-    #         csv_data.append(['Área Requisitante', remove_html_tags(session['3'])])
-    #     if '4' in session:
-    #         csv_data.append(['Descrição dos Requisitos da Contratação', remove_html_tags(session['4'])])
-    #     if '5' in session:
-    #         csv_data.append(['Levantamento de Mercado', remove_html_tags(session['5'])])
-    #     if '6' in session:
-    #         csv_data.append(['Descrição da solução como um todo', remove_html_tags(session['6'])])
-    #     if '7' in session:
-    #         csv_data.append(['Estimativa das Quantidades a serem contratadas', remove_html_tags(session['7'])])
-    #     if '8' in session:
-    #         csv_data.append(['Estimativa do Valor da Contratação', remove_html_tags(session['8'])])
-    #     if '9' in session:
-    #         csv_data.append(['Justificativa para o Parcelamento ou não da Solução', remove_html_tags(session['9'])])
-    #     if '10' in session:
-    #         csv_data.append(['Contratações Correlatas e/ou Interdependentes', remove_html_tags(session['10'])])
-    #     if '11' in session:
-    #         csv_data.append(['Alinhamento entre a Contratação e o Planejamento', remove_html_tags(session['11'])])
-    #     if '12' in session:
-    #         csv_data.append(['Benefícios a serem alcançados com a contratação', remove_html_tags(session['12'])])
-    #     if '13' in session:
-    #         csv_data.append(['Providências a serem adotadas', remove_html_tags(session['13'])])
-    #     if '14' in session:
-    #         csv_data.append(['Possíveis Impactos Ambientais', remove_html_tags(session['14'])])
-    #     if '15' in session:
-    #         csv_data.append(['Declaração de Viabilidade', remove_html_tags(session['15'])])
-    #     if '16' in session:
-    #         csv_data.append(['Responsáveis', remove_html_tags(session['16'])])
+       
+        output_path = 'static/csv/etp40/etp40.csv'
 
-        # Nome do arquivo CSV
-        ultimo_id = Etp40Controller.ultimo_id_formulario()
-        last_id = ultimo_id.id
-        print(last_id,'last id')
-        if last_id == None or last_id == '':
-            print(last_id,'last 0')
-            last_id = 0
-        
-        last_id+=1
-        output_path = 'static/csv/etp40/etp40'+str(last_id)+'.csv'
-        print(output_path)
         csv_filename = output_path
 
         # Cria o arquivo CSV
@@ -261,99 +223,20 @@ def create_app(config_name):
             writer.writerows(csv_data)
   
         
-        return send_file(csv_filename, as_attachment=True)
+        return send_file(csv_filename, as_attachment=False)
     
     
     def remove_html_tags(text):
         soup = BeautifulSoup(text, 'html.parser')
         return soup.get_text()
     
-    @app.route('/download', methods=['GET'])
-    def download_file():
-        
-        quill_content = {
-        '1': 'Informações Básicas',
-        '2': 'Descrição da necessidade',
-        '3': 'Área Requisitante',   
-        '4': 'Descrição dos Requisitos da Contratação',
-        '5': 'Levantamento de Mercado',
-        '6': 'Descrição da solução como um todo',
-        '7': 'Estimativa das Quantidades a serem contratadas',
-        '8': 'Estimativa do Valor da Contratação',
-        '9': 'Justificativa para o Parcelamento ou não da Solução',
-        '10': 'Contratações Correlatas e/ou Interdependentes',
-        '11': 'Alinhamento entre a Contratação e o Planejamento',
-        '12': 'Benefícios a serem alcançados com a contratação',
-        '13': 'Providências a serem adotadas',
-        '14': 'Possíveis Impactos Ambientais',
-        '15': 'Declaração de Viabilidade',
-        '16': 'Responsáveis'
-    }
-        # Criar os dados do CSV
-        csv_data = []
-        if '1' in quill_content:
-            csv_data.append(['Informações Básicas', quill_content['1']])
-        if '2' in session:
-            csv_data.append(['Descrição da necessidade', session['2']])
-        if '3' in session:
-            csv_data.append(['Área Requisitante', session['3']])
-        if '4' in session:
-            csv_data.append(['Descrição dos Requisitos da Contratação', session['4']])
-        if '5' in session:
-            csv_data.append(['Levantamento de Mercado', session['5']])
-        if '6' in session:
-            csv_data.append(['Descrição da solução como um todo', session['6']])
-        if '7' in session:
-            csv_data.append(['Estimativa das Quantidades a serem contratadas', session['7']])
-        if '8' in session:
-            csv_data.append(['Estimativa do Valor da Contratação', session['8']])
-        if '9' in session:
-            csv_data.append(['Justificativa para o Parcelamento ou não da Solução', session['9']])
-        if '10' in session:
-            csv_data.append(['Contratações Correlatas e/ou Interdependentes', session['10']])
-        if '11' in session:
-            csv_data.append(['Alinhamento entre a Contratação e o Planejamento', session['11']])
-        if '12' in session:
-            csv_data.append(['Benefícios a serem alcançados com a contratação', session['12']])
-        if '13' in session:
-            csv_data.append(['Providências a serem adotadas', session['13']])
-        if '14' in session:
-            csv_data.append(['Possíveis Impactos Ambientais', session['14']])
-        if '15' in session:
-            csv_data.append(['Declaração de Viabilidade', session['15']])
-        if '16' in session:
-            csv_data.append(['Responsáveis', session['16']])
 
-        # Nome do arquivo CSV
-        csv_filename = 'data.csv'
+    @app.route('/baixar_pdf', methods=['POST', 'GET'])
+    def baixar_pdf():
 
-        # Cria o arquivo CSV
-        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerows(csv_data)
-
-        # Retorna o arquivo CSV para download
-        return send_file(csv_filename, as_attachment=True)
-
-    
-    
-    @app.route('/gerar_pdf',methods=['POST', 'GET'])
-    def gerar_pdf():
-     
-        ultimo_id = Etp40Controller.ultimo_id_formulario()
-
-        last_id = ultimo_id
-        print(last_id,'last id')
-        
-        if last_id == None or last_id == '':
-            
-            last_id = 0
-        else:
-            last_id = ultimo_id.id
-            
+        carregar_dados = carregar_pdf()
         quill_content = {}
         # Exemplo de uso:
-
 
         for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
             conteudo_editor = session.get(str(etapa), '')
@@ -371,8 +254,106 @@ def create_app(config_name):
             quill_content[str(etapa)] = conteudo_editor
 
         temp_file_path = 'temp.html'
-        last_id+=1
-        output_path = 'static/pdf/etp40/etp40'+str(last_id)+'.pdf'
+
+        output_path = 'static/pdf/etp40/etp40.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 5)),
+            'Solução': list(range(5, 12)),
+            'Planejamento': list(range(12, 15)),
+            'Viabilidade': [15, 16]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da Solução Como um Todo',
+            '7': 'Estimativa das Quantidades a Serem Contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou Não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem Alcançados com a Contratação',
+            '13': 'Providências a Serem Adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por "Não Constar Informação"
+                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+
+                    if session_content.strip() == '':
+                        session_content = 'Não Constar Informação'
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+        
+
+
+        pdf_bytes = pdfkit.from_file(temp_file_path, False, options=options)
+        # Criar uma resposta com os bytes do PDF
+        response = make_response(pdf_bytes)
+        
+        # Definir o cabeçalho Content-Type para application/pdf
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
+        response.headers['Content-Disposition'] = 'attachment; filename=meu_pdf.pdf'
+        
+        return response
+
+
+    
+    @app.route('/gerar_pdf',methods=['POST', 'GET'])
+    def gerar_pdf():
+            
+        quill_content = {}
+
+        for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
+            conteudo_editor = session.get(str(etapa), '')
+            if etapa == 8:
+                input_value = request.args.get('valor')
+                if input_value is not None:
+                    conteudo_editor = input_value
+
+            if conteudo_editor is not None:
+                if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
+                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor = 'Não Constar Informação'
+
+            quill_content[str(etapa)] = conteudo_editor
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp40/etp40.pdf'
         sections = {
             'Informações Básicas': [1],
             'Necessidade': list(range(2, 5)),
@@ -432,7 +413,6 @@ def create_app(config_name):
             'encoding': 'UTF-8',
         }
 
-
         # timestamp = int(time.time())  # Obtém o timestamp atual
         
         if current_user.is_active:
@@ -442,13 +422,8 @@ def create_app(config_name):
                 result = Etp40Controller.save_etp40()
                         #caso seja positivo o resultado gerar o csv
                 if result:
-                    #gera  o pdf no local específico
-                    pdfkit.from_file(temp_file_path, output_path, options=options)
                     os.remove(temp_file_path)
-                    #gera o csv local específico
-                    gerar_csv(last_id)
-                    #fazer uma funcao para verificar se o usuario está logado
-                    # Limpa a sessão
+
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
@@ -465,6 +440,20 @@ def create_app(config_name):
     def profile():
         return render_template('etp40/users-profile.html') 
     
+
+
+    @app.route('/carregar_pdf',methods=['POST', 'GET'])
+    def carregar_pdf():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retomar_session_etp40(id_form)
+
+        return result
+    
+
     @app.route('/retomar_dados',methods=['POST', 'GET'])
     def retomar_dados():
         status = ''
@@ -545,9 +534,7 @@ def create_app(config_name):
 
         return render_template('rota3.html', conteudo2=conteudo2)
             #return render_template('rota1.html')
-            
-            #return render_template('rota2.html')
-        #return render_template('rota2.html')
+
 
     @app.route('/ultima', methods=['POST'])
     def ultima():
