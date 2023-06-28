@@ -81,7 +81,7 @@
                     <td><a href='../static/pdf/etp94/etp94{{etp.id}}.pdf'>etp94{{etp.id}}</a></td>
                     <td><a href='../static/csv/etp94/etp94{{etp.id}}.csv'>etp94{{etp.id}}</a></td>
                     <td >
-                        <form action="{{ url_for('retomar-dados-94') }}" method="POST">
+                        <form action="{{ url_for('retomar_dados_94') }}" method="POST">
                             <input type="hidden" name="id_form" value="{{etp.id}}">
                             <input type="hidden" name="status" value="editar">
                             <button type="submit">Editar</button>

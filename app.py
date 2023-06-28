@@ -516,8 +516,7 @@ def create_app(config_name):
                         #caso seja positivo o resultado gerar o csv
                 if result:
                     #gera  o pdf no local específico
-                    teste = pdfkit.from_file(temp_file_path, output_path, options=options)
-                    teste.getbuffer()
+                    pdfkit.from_file(temp_file_path, output_path, options=options)
                     os.remove(temp_file_path)
                     #gera o csv local específico
                     gerar_csv(last_id)
@@ -943,15 +942,8 @@ def create_app(config_name):
     
     @app.route('/solucao11-94', methods=['POST', 'GET'])
     def solucao11_94():
-        if request.method == 'POST':
-            conteudosolucao11 = request.form.get('conteudosolucao11')
-            session['conteudosolucao11'] = conteudosolucao11
-            return redirect('/solucao11-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao11 = session.get('conteudosolucao11')
-
-        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
+        return render_template('etp94/11solucao-94.html')
     
     @app.route('/solucao12-94', methods=['POST', 'GET'])
     def solucao12_94():
@@ -975,13 +967,7 @@ def create_app(config_name):
     
     @app.route('/planejamento16-94', methods=['POST', 'GET'])
     def planejamento16_94():
-        if request.method == 'POST':
-            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
-            session['conteudoplanejamento16'] = conteudoplanejamento16
-            return redirect('/planejamento16-94')
 
-        return render_template('etp94/16planejamento-94.html')
-    
         return render_template('etp94/16planejamento-94.html')
     
     @app.route('/planejamento17-94', methods=['POST', 'GET'])
@@ -1008,7 +994,6 @@ def create_app(config_name):
         print(last_id,'last id')
         
         if last_id == None or last_id == '':
-            
             last_id = 0
         else:
             last_id = ultimo_id.id
@@ -1031,7 +1016,10 @@ def create_app(config_name):
             quill_content[str(etapa)] = conteudo_editor_94
 
         temp_file_path = 'temp.html'
-        output_path = 'static/pdf/etp94/etp94.pdf'
+        last_id+=1
+
+        print(last_id,'last id 94 +1')
+        output_path = 'static/pdf/etp94/etp94'+str(last_id)+'.pdf'
         sections = {
             'Informações Básicas': [1],
             'Necessidade': list(range(2, 8)),
@@ -1094,18 +1082,45 @@ def create_app(config_name):
             'encoding': 'UTF-8',
         }
 
-        pdfkit.from_file(temp_file_path, output_path, options=options)
+        # pdfkit.from_file(temp_file_path, output_path, options=options)
 
-        os.remove(temp_file_path)
-        timestamp = int(time.time())  # Obtém o timestamp atual
-        return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
+        # os.remove(temp_file_path)
+        # timestamp = int(time.time())  # Obtém o timestamp atual
+        # return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
+        if current_user.is_active:
+                user_id = current_user.id
+                
+                 # salva no banco
+                result = Etp94Controller.save_etp94()
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    #gera  o pdf no local específico
+                    pdfkit.from_file(temp_file_path, output_path, options=options)
+                    os.remove(temp_file_path)
+                    #gera o csv local específico
+
+                    print(last_id,'last id 94 vai entra no csv')
+                    gerar_csv_94(last_id)
+                    #fazer uma funcao para verificar se o usuario está logado
+                    # Limpa a sessão
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+
 
     @app.route('/editor-session')
     def editor_session_94():
         return render_template('etp94/editor_session.html')
 
-    @app.route('/gerar-csv-94', methods=['GET'])
-    def gerar_csv_94():
+    @app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
+    def gerar_csv_94(last_id):
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da Necessidade',
@@ -1147,7 +1162,7 @@ def create_app(config_name):
             print(last_id,'last 0')
             last_id = 0
         
-        last_id+=1
+        #last_id+=1    # Toda vez estava criando um numero a mais que o necessario
         output_path = 'static/csv/etp94/etp94'+str(last_id)+'.csv'
         print(output_path)
         csv_filename = output_path
@@ -1168,8 +1183,6 @@ def create_app(config_name):
         result = Etp94Controller.retomar_session_etp94(id_form)
 
         return render_template('etp94/1informacao-94.html', status=status) 
-    
-    
     
     @app.route('/salvar-edicao-94',methods=['POST', 'GET'])
     def salvar_edicao_94():

@@ -84,7 +84,6 @@
           inputValue_94: $('#valor').val() // Valor do input
         },
         success: function (response) {
-          //ditor.root.innerHTML = response;
           $('#valor').val(response);
         },
         error: function (error) {
@@ -112,7 +111,7 @@
         // Lógica específica para a etapa 13 usando o valor do input
         var inputContent = $('#valor').val();
         $.ajax({
-          url: '/salvar/13',
+          url: '/salvar-94/13',
           method: 'POST',
           data: {
             inputValue_94: inputContent // Valor do input
@@ -122,7 +121,7 @@
   
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar/13',
+              url: '/recuperar-94/13',
               method: 'GET',
               success: function(response) {
                 // Atualiza o valor do input com as informações recuperadas
@@ -144,17 +143,17 @@
         // Lógica padrão usando o valor do editor
         conteudoEditor_94 = editor.root.innerHTML;
         $.ajax({
-          url: '/salvar/{{etapa}}',
+          url: '/salvar-94/{{etapa}}',
           method: 'POST',
           data: {
-            conteudo_editor: conteudoEditor_94
+            conteudo_editor_94: conteudoEditor_94
           },
           success: function(response) {
             console.log('Alterações salvas com sucesso');
   
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar/{{etapa}}',
+              url: '/recuperar-94/{{etapa}}',
               method: 'GET',
               success: function(response) {
                 // Atualiza o conteúdo do editor com as informações recuperadas
@@ -184,7 +183,7 @@
         // Lógica específica para a etapa 13 usando o valor do input
         var inputContent = $('#valor').val();
         $.ajax({
-          url: '/salvar/13',
+          url: '/salvar-94/13',
           method: 'POST',
           data: {
             inputValue_94: inputContent // Valor do input
@@ -194,7 +193,7 @@
   
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar/13',
+              url: '/recuperar-94/13',
               method: 'GET',
               success: function(response) {
                 // Atualiza o valor do input com as informações recuperadas
@@ -216,17 +215,17 @@
         // Lógica padrão usando o valor do editor
         conteudoEditor_94 = editor.root.innerHTML;
         $.ajax({
-          url: '/salvar/{{etapa}}',
+          url: '/salvar-94/{{etapa}}',
           method: 'POST',
           data: {
-            conteudo_editor: conteudoEditor_94
+            conteudo_editor_94: conteudoEditor_94
           },
           success: function(response) {
             console.log('Alterações salvas com sucesso');
   
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar/{{etapa}}',
+              url: '/recuperar-94/{{etapa}}',
               method: 'GET',
               success: function(response) {
                 // Atualiza o conteúdo do editor com as informações recuperadas
@@ -257,7 +256,7 @@
     // Lógica específica para a etapa 13 usando o valor do input
     var inputContent = $('#valor').val();
     $.ajax({
-      url: '/salvar/13',
+      url: '/salvar-94/13',
       method: 'POST',
       data: {
         inputValue_94: inputContent // Valor do input
@@ -273,10 +272,10 @@
     // Lógica padrão usando o valor do editor
     conteudoEditor_94 = editor.root.innerHTML;
     $.ajax({
-      url: '/salvar/{{etapa}}',
+      url: '/salvar-94/{{etapa}}',
       method: 'POST',
       data: {
-        conteudo_editor: conteudoEditor_94
+        conteudo_editor_94: conteudoEditor_94
       },
       success: function(response) {
         console.log('Alterações salvas com sucesso');
