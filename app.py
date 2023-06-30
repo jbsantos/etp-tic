@@ -87,10 +87,13 @@ def create_app(config_name):
     
     @app.route('/etp94')
     def etp94():
-        user_id = current_user.id
-        limpar_sessoes()
-        session['user_id'] = user_id
-        return render_template('/etp94/etp94.html')
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            limpar_sessoes()
+            session['user_id'] = user_id
+            return render_template('/etp94/etp94.html')
+        else:
+            return render_template('/etp94/etp94.html')
     
     @app.route('/etp40')
     def etp40():

@@ -1,6 +1,6 @@
 {% macro pagina_estatica(anterior, proxima, etapa) %}
 {{session['status']}}
-<form id="confirmacao-form" action="{{proxima}}" method="post">
+<form id="confirmacao-form" action="{{proxima}}" method="POST">
 
   {% if etapa =='13' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
@@ -9,7 +9,8 @@
   {% endif %}
 
   {% if etapa !='1' %}
-  <a href="{{anterior}}" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+  <div style="margin-top: 20px"></div>
+  <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
     Etapa Anterior
   </a>
   {% endif %}
@@ -47,14 +48,8 @@
 
     if (etapaValue === '13') {
       // Verifica se o valor do input é vazio
-      //var valor = $('#valor').val();
-
       if ($('#valor').val() !== '') {
         conteudoEditor_94 = $('#valor').val(); // Usa o valor do input
-        //} else {
-        // Lógica caso o input esteja vazio
-        // Por exemplo, mostrar uma mensagem de erro ou definir um valor padrão
-        //conteudoEditor_94 = 'Valor padrão';
       }
     } else {
       editor = new Quill('#editor', {
@@ -80,9 +75,6 @@
       $.ajax({
         url: '/recuperar-94/13',
         method: 'GET',
-        data: {
-          inputValue_94: $('#valor').val() // Valor do input
-        },
         success: function (response) {
           $('#valor').val(response);
         },
@@ -104,9 +96,158 @@
       });
     }
 
-    $('#proxima-rota').on('click', function(event) {
+    $('#proxima-rota').on('click', function (event) {
       event.preventDefault(); // Evita o envio do formulário
-  
+
+      if (etapaValue === '13') {
+        // Lógica específica para a etapa 13 usando o valor do input
+        var inputContent = $('#valor').val();
+
+        // Verifica se o valor do input está vazio
+        if (inputContent.trim() === '') {
+          // Exibe uma mensagem de erro informando que o valor é obrigatório
+          Swal.fire({
+            icon: 'error',
+            title: 'Campo Obrigatorio',
+            text: 'Por favor, preencha o campo valor antes de avançar para a próxima etapa.',
+          });
+          return; // Interrompe a execução da função e impede o envio do formulário
+        }
+
+        $.ajax({
+          url: '/salvar-94/13',
+          method: 'POST',
+          data: {
+            inputValue_94: inputContent // Valor do input
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar-94/13',
+              method: 'GET',
+              success: function (response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function (error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        conteudoEditor_94 = editor.root.innerHTML;
+
+        if (etapaValue === '2' || etapaValue === '7') {
+          if (conteudoEditor_94.trim() === '' || conteudoEditor_94 === '<p><br></p>') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Campo Obrigatório',
+              text: 'Por favor, preencha o campo antes de avançar para a próxima etapa.',
+            });
+            return;
+          }
+        }
+
+        $.ajax({
+          url: '/salvar-94/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor_94: conteudoEditor_94
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar-94/{{etapa}}',
+              method: 'GET',
+              success: function (response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima }}";
+              },
+              error: function (error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+
+
+        // if (etapaValue === '19' && proxima !== '/salvar-edicao-94') {
+        //   // Lógica para a última etapa antes de finalizar
+        //   var etapasEmBranco = [];
+
+        //   // Verifica todas as etapas anteriores à etapa 19
+        //   for (var i = 1; i < 19; i++) {
+        //     if (i !== 2 && i !== 7) {
+        //       // Ignora as etapas 2 e 7, pois já foram tratadas anteriormente
+        //       var conteudoEtapa = $.ajax({
+        //         url: '/recuperar-94/' + i,
+        //         method: 'GET',
+        //         async: false
+        //       }).responseText;
+
+        //       if (conteudoEtapa.trim() === '' || conteudoEtapa === '<p><br></p>') {
+        //         etapasEmBranco.push(i);
+        //       }
+        //     }
+        //   }
+
+        //   if (etapasEmBranco.length > 0) {
+        //     var mensagem = 'As seguintes etapas estão em branco: ' + etapasEmBranco.join(', ') + '. Deseja continuar mesmo assim?';
+
+        //     Swal.fire({
+        //       icon: 'warning',
+        //       title: 'Etapas em Branco',
+        //       text: mensagem,
+        //       showCancelButton: true,
+        //       confirmButtonText: 'Continuar',
+        //       cancelButtonText: 'Cancelar',
+        //     }).then((result) => {
+        //       if (result.isConfirmed) {
+        //         // Continuar com o processo de finalização
+        //         window.location.href = '/gerar-pdf-94';
+        //       }
+        //     });
+        //   } else {
+        //     // Nenhuma etapa em branco, continuar com o processo de finalização
+        //     window.location.href = '/gerar-pdf-94';
+        //   }
+        // } else {
+        //   // Não é a última etapa antes de finalizar, redirecionar para a próxima etapa
+        //   window.location.href = proxima;
+        // }
+
+
+
+
+
+
+
+      }
+    });
+
+
+
+    $('#etapa-anterior').on('click', function (event) {
+      event.preventDefault(); // Evita o envio do formulário
+
       if (etapaValue === '13') {
         // Lógica específica para a etapa 13 usando o valor do input
         var inputContent = $('#valor').val();
@@ -116,26 +257,26 @@
           data: {
             inputValue_94: inputContent // Valor do input
           },
-          success: function(response) {
+          success: function (response) {
             console.log('Alterações salvas com sucesso');
-  
+
             // Recupera as informações da sessão
             $.ajax({
               url: '/recuperar-94/13',
               method: 'GET',
-              success: function(response) {
+              success: function (response) {
                 // Atualiza o valor do input com as informações recuperadas
                 $('#valor').val(response);
-  
+
                 // Redirecionar para a próxima etapa
-                window.location.href = "{{ proxima }}";
+                window.location.href = "{{ anterior }}";
               },
-              error: function(error) {
+              error: function (error) {
                 console.error('Erro ao recuperar as informações da sessão');
               },
             });
           },
-          error: function(error) {
+          error: function (error) {
             console.error('Erro ao salvar as alterações');
           },
         });
@@ -148,26 +289,26 @@
           data: {
             conteudo_editor_94: conteudoEditor_94
           },
-          success: function(response) {
+          success: function (response) {
             console.log('Alterações salvas com sucesso');
-  
+
             // Recupera as informações da sessão
             $.ajax({
               url: '/recuperar-94/{{etapa}}',
               method: 'GET',
-              success: function(response) {
+              success: function (response) {
                 // Atualiza o conteúdo do editor com as informações recuperadas
                 editor.root.innerHTML = response;
-  
+
                 // Redirecionar para a próxima etapa
-                window.location.href = "{{ proxima }}";
+                window.location.href = "{{ anterior }}";
               },
-              error: function(error) {
+              error: function (error) {
                 console.error('Erro ao recuperar as informações da sessão');
               },
             });
           },
-          error: function(error) {
+          error: function (error) {
             console.error('Erro ao salvar as alterações');
           },
         });
@@ -176,117 +317,45 @@
 
 
 
-    $('#etapa-anterior').on('click', function(event) {
-      event.preventDefault(); // Evita o envio do formulário
-  
-      if (etapaValue === '13') {
-        // Lógica específica para a etapa 13 usando o valor do input
-        var inputContent = $('#valor').val();
-        $.ajax({
-          url: '/salvar-94/13',
-          method: 'POST',
-          data: {
-            inputValue_94: inputContent // Valor do input
-          },
-          success: function(response) {
-            console.log('Alterações salvas com sucesso');
-  
-            // Recupera as informações da sessão
-            $.ajax({
-              url: '/recuperar-94/13',
-              method: 'GET',
-              success: function(response) {
-                // Atualiza o valor do input com as informações recuperadas
-                $('#valor').val(response);
-  
-                // Redirecionar para a próxima etapa
-                window.location.href = "{{ anterior }}";
-              },
-              error: function(error) {
-                console.error('Erro ao recuperar as informações da sessão');
-              },
-            });
-          },
-          error: function(error) {
-            console.error('Erro ao salvar as alterações');
-          },
-        });
-      } else {
-        // Lógica padrão usando o valor do editor
-        conteudoEditor_94 = editor.root.innerHTML;
-        $.ajax({
-          url: '/salvar-94/{{etapa}}',
-          method: 'POST',
-          data: {
-            conteudo_editor_94: conteudoEditor_94
-          },
-          success: function(response) {
-            console.log('Alterações salvas com sucesso');
-  
-            // Recupera as informações da sessão
-            $.ajax({
-              url: '/recuperar-94/{{etapa}}',
-              method: 'GET',
-              success: function(response) {
-                // Atualiza o conteúdo do editor com as informações recuperadas
-                editor.root.innerHTML = response;
-  
-                // Redirecionar para a próxima etapa
-                window.location.href = "{{ anterior }}";
-              },
-              error: function(error) {
-                console.error('Erro ao recuperar as informações da sessão');
-              },
-            });
-          },
-          error: function(error) {
-            console.error('Erro ao salvar as alterações');
-          },
-        });
-      }
-    });
-
-
-  
   });
 
   // Função para salvar as alterações no editor
   function salvarAlteracoes() {
-  if (etapaValue === '13') {
-    // Lógica específica para a etapa 13 usando o valor do input
-    var inputContent = $('#valor').val();
-    $.ajax({
-      url: '/salvar-94/13',
-      method: 'POST',
-      data: {
-        inputValue_94: inputContent // Valor do input
-      },
-      success: function(response) {
-        console.log('Alterações salvas com sucesso');
-      },
-      error: function(error) {
-        console.error('Erro ao salvar as alterações');
-      },
-    });
-  } else {
-    // Lógica padrão usando o valor do editor
-    conteudoEditor_94 = editor.root.innerHTML;
-    $.ajax({
-      url: '/salvar-94/{{etapa}}',
-      method: 'POST',
-      data: {
-        conteudo_editor_94: conteudoEditor_94
-      },
-      success: function(response) {
-        console.log('Alterações salvas com sucesso');
-      },
-      error: function(error) {
-        console.error('Erro ao salvar as alterações');
-      },
-    });
+    if (etapaValue === '13') {
+      // Lógica específica para a etapa 13 usando o valor do input
+      var inputContent = $('#valor').val();
+      $.ajax({
+        url: '/salvar-94/13',
+        method: 'POST',
+        data: {
+          inputValue_94: inputContent // Valor do input
+        },
+        success: function (response) {
+          console.log('Alterações salvas com sucesso');
+        },
+        error: function (error) {
+          console.error('Erro ao salvar as alterações');
+        },
+      });
+    } else {
+      // Lógica padrão usando o valor do editor
+      conteudoEditor_94 = editor.root.innerHTML;
+      $.ajax({
+        url: '/salvar-94/{{etapa}}',
+        method: 'POST',
+        data: {
+          conteudo_editor_94: conteudoEditor_94
+        },
+        success: function (response) {
+          console.log('Alterações salvas com sucesso');
+        },
+        error: function (error) {
+          console.error('Erro ao salvar as alterações');
+        },
+      });
+    }
   }
-}
- 
+
 
 </script>
 
