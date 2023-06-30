@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ETP DIGITAL</title>
 </head>
+
 <body>
 
   {% extends admin_base_template %}
@@ -11,67 +13,80 @@
   <button onclick="window.location.href = '{{ url_for('index') }}'">Criar formulário ETP /IN 40 e 94</button>
 
   <div class="row">
-      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <h3>Documento Gerado</h3>
-          <table class="table table-striped table-hover ">
-            <thead>
-              <tr>
-                <th>Processo</th>
-                <th>Usuário</th>
-                <th>Baixar PDF</th>
-                <th>Baixar CSV</th>
-                <th>Editar</th>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <h3>Documento Gerado</h3>
+      <table class="table table-striped table-hover ">
+        <thead>
+          <tr>
+            <th>Processo</th>
+            <th>Usuário</th>
+            <th>Baixar PDF</th>
+            <th>Baixar CSV</th>
+            <th>Editar</th>
 
-              </tr>
-            </thead>
-            <tbody>
-              {% for etp in etp40 %}
-                  <tr>
-                    <td>{{etp.id}}</td>
-                    <td> Usuário {{current_user.username}}</td>
-                    <td >
-                        <form action="{{ url_for('baixar_pdf') }}" method="POST">
-                            <input type="hidden" name="id_form" value="{{etp.id}}">
-                            <input type="hidden" name="status" value="editar">
-                            <button type="submit">Baixar PDF</button>
-                          </form>
-                    </td>         
-                    <td >
-                        <form action="{{ url_for('gerar_csv') }}" method="POST">
-                            <input type="hidden" name="id_form" value="{{etp.id}}">
-                            <input type="hidden" name="status" value="editar">
-                            <button type="submit">Baixar CSV</button>
-                          </form>
-                    </td>                
-                    <td >
-                        <form action="{{ url_for('retomar_dados') }}" method="POST">
-                            <input type="hidden" name="id_form" value="{{etp.id}}">
-                            <input type="hidden" name="status" value="editar">
-                            <button type="submit">Editar</button>
-                          </form>
-                    </td>
-                </tr>
-              {% endfor %}
-              {% for etp in etp94 %}
-                  <tr>
-                    <td>{{etp.id}}</td>
-                    <td> Usuário {{current_user.username}}</td>
-                    <td><a href='../static/pdf/etp94/etp94{{etp.id}}.pdf'>etp94{{etp.id}}</a></td>
-                    <td><a href='../static/csv/etp94/etp94{{etp.id}}.csv'>etp94{{etp.id}}</a></td>
-                    <td >
-                        <form action="{{ url_for('retomar_dados_94') }}" method="POST">
-                            <input type="hidden" name="id_form" value="{{etp.id}}">
-                            <input type="hidden" name="status" value="editar">
-                            <button type="submit">Editar</button>
-                          </form>
-                    </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {% for etp in etp40 %}
+          <tr>
+            <td>{{etp.id}}</td>
+            <td> Usuário {{current_user.username}}</td>
+            <td>
+              <form action="{{ url_for('baixar_pdf') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Baixar PDF</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('gerar_csv') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Baixar CSV</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('retomar_dados') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Editar</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% for etp in etp94 %}
+          <tr>
+            <td>{{etp.id}}</td>
+            <td> Usuário {{current_user.username}}</td>
+            <td>
+              <form action="{{ url_for('baixar_pdf_94') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Baixar PDF</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('gerar_csv_94') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Baixar CSV</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('retomar_dados_94') }}" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="submit">Editar</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
   {% endblock %}
-  </body>
-  </html>
+</body>
+
+</html>

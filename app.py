@@ -1031,7 +1031,8 @@ def create_app(config_name):
 
     #@app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
     @app.route('/gerar-csv-94', methods=['GET', 'POST'])
-    def gerar_csv_94(last_id):
+    #def gerar_csv_94(last_id):
+    def gerar_csv_94():
         carregar_dados = carregar_pdf_94()
 
         quill_content = {
@@ -1226,7 +1227,7 @@ def create_app(config_name):
         response.headers['Content-Type'] = 'application/pdf'
         
         # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
-        response.headers['Content-Disposition'] = 'attachment; filename=meu_pdf.pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=etp94.pdf'
         
         return response
 
