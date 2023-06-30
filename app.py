@@ -897,15 +897,15 @@ def create_app(config_name):
     @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
     def gerar_pdf_94():
      
-        ultimo_id = Etp94Controller.ultimo_id_formulario()
+        # ultimo_id = Etp94Controller.ultimo_id_formulario()
 
-        last_id = ultimo_id
-        print(last_id,'last id')
+        # last_id = ultimo_id
+        # print(last_id,'last id')
         
-        if last_id == None or last_id == '':
-            last_id = 0
-        else:
-            last_id = ultimo_id.id
+        # if last_id == None or last_id == '':
+        #     last_id = 0
+        # else:
+        #     last_id = ultimo_id.id
             
         quill_content = {}
 
@@ -925,10 +925,11 @@ def create_app(config_name):
             quill_content[str(etapa)] = conteudo_editor_94
 
         temp_file_path = 'temp.html'
-        last_id+=1
+        #last_id+=1
 
-        print(last_id,'last id 94 +1')
-        output_path = 'static/pdf/etp94/etp94'+str(last_id)+'.pdf'
+        #print(last_id,'last id 94 +1')
+        #output_path = 'static/pdf/etp94/etp94'+str(last_id)+'.pdf'
+        output_path = 'static/pdf/etp94/etp94.pdf'
         sections = {
             'Informações Básicas': [1],
             'Necessidade': list(range(2, 8)),
@@ -1004,12 +1005,12 @@ def create_app(config_name):
                         #caso seja positivo o resultado gerar o csv
                 if result:
                     #gera  o pdf no local específico
-                    pdfkit.from_file(temp_file_path, output_path, options=options)
+                    #pdfkit.from_file(temp_file_path, output_path, options=options)
                     os.remove(temp_file_path)
                     #gera o csv local específico
 
-                    print(last_id,'last id 94 vai entra no csv')
-                    gerar_csv_94(last_id)
+                    #print(last_id,'last id 94 vai entra no csv')
+                    #gerar_csv_94(last_id)
                     #fazer uma funcao para verificar se o usuario está logado
                     # Limpa a sessão
                     limpar_sessoes()
@@ -1028,8 +1029,11 @@ def create_app(config_name):
     def editor_session_94():
         return render_template('etp94/editor_session.html')
 
-    @app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
+    #@app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
+    @app.route('/gerar-csv-94', methods=['GET', 'POST'])
     def gerar_csv_94(last_id):
+        carregar_dados = carregar_pdf_94()
+
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da Necessidade',
@@ -1064,15 +1068,16 @@ def create_app(config_name):
 
         #csv_filename = 'data-94.csv'
         # Nome do arquivo CSV
-        ultimo_id = Etp94Controller.ultimo_id_formulario()
-        last_id = ultimo_id.id
-        print(last_id,'last id')
-        if last_id == None or last_id == '':
-            print(last_id,'last 0')
-            last_id = 0
+        # ultimo_id = Etp94Controller.ultimo_id_formulario()
+        # last_id = ultimo_id.id
+        # print(last_id,'last id')
+        # if last_id == None or last_id == '':
+        #     print(last_id,'last 0')
+        #     last_id = 0
         
         #last_id+=1    # Toda vez estava criando um numero a mais que o necessario
-        output_path = 'static/csv/etp94/etp94'+str(last_id)+'.csv'
+        #output_path = 'static/csv/etp94/etp94'+str(last_id)+'.csv'
+        output_path = 'static/csv/etp94/etp94.csv'
         print(output_path)
         csv_filename = output_path
         
@@ -1112,6 +1117,119 @@ def create_app(config_name):
 
         else:
             return redirect('/registre-se')
+
+    @app.route('/carregar_pdf_94',methods=['POST', 'GET'])
+    def carregar_pdf_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+        return result
+    
+    @app.route('/baixar_pdf_94', methods=['POST', 'GET'])
+    def baixar_pdf_94():
+
+        carregar_dados = carregar_pdf_94()
+        quill_content = {}
+        # Exemplo de uso:
+
+        for etapa in range(1, 20):  # Loop para percorrer as 16 sessões
+            conteudo_editor_94 = session.get(str(etapa), '')
+            if etapa == 13:
+                input_value_94 = request.args.get('valor')
+                if input_value_94 is not None:
+                    conteudo_editor_94 = input_value_94
+
+            if conteudo_editor_94 is not None:
+                if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
+                    conteudo_editor_94 = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor_94 = 'Não Constar Informação'
+
+            quill_content[str(etapa)] = conteudo_editor_94
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp94/etp94.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 8)),
+            'Solução': list(range(8, 16)),
+            'Planejamento': list(range(16, 18)),
+            'Viabilidade': [18, 19]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por "Não Constar Informação"
+                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+
+                    if session_content.strip() == '':
+                        session_content = 'Não Constar Informação'
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+        
+
+
+        pdf_bytes = pdfkit.from_file(temp_file_path, False, options=options)
+        # Criar uma resposta com os bytes do PDF
+        response = make_response(pdf_bytes)
+        
+        # Definir o cabeçalho Content-Type para application/pdf
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
+        response.headers['Content-Disposition'] = 'attachment; filename=meu_pdf.pdf'
+        
+        return response
+
        
     def limpar_sessoes():
         session.clear()
