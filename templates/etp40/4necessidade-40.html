@@ -66,8 +66,19 @@
       </nav>
     </div><!-- End Page Title -->
     <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/necessidade3-40', '/solucao5-40','4') }}
     <!-- ======= End Section ======= -->
+
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/necessidade3-40','/salvar_edicao','4', '/solucao5-40') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/necessidade3-40', '/solucao5-40','4') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+
 
   </main><!-- End #main -->
 

@@ -66,10 +66,17 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
+    
+    {%if session['status'] =='editar'%}
+   
     <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/necessidade4-40', '/solucao6-40','5') }}
+    {{ section.pagina_estatica('/necessidade4-40','/salvar_edicao','5', '/solucao6-40') }}
     <!-- ======= End Section ======= -->
-
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/necessidade4-40', '/solucao6-40','5') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

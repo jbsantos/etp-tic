@@ -67,8 +67,18 @@
       </nav>
     </div><!-- End Page Title -->
     <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/necessidade2-40', '/necessidade4-40','3') }}
-    <!-- ======= End Section ======= -->
+
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/necessidade2-40','/salvar_edicao','3', '/necessidade4-40') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/necessidade2-40', '/necessidade4-40','3') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+
 
   </main><!-- End #main -->
 
