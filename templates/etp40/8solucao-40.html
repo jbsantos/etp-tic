@@ -70,9 +70,16 @@
       </nav>
     </div><!-- End Page Title -->
     <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/solucao7-40', '/solucao9-40','8') }}
+    {%if session['status'] =='editar'%}
+   
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/solucao7-40','/salvar_edicao','8', '/solucao9-40') }}
     <!-- ======= End Section ======= -->
-
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/solucao7-40', '/solucao9-40','8') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

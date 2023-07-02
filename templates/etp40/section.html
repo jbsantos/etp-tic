@@ -1,5 +1,7 @@
-{% macro pagina_estatica(anterior, proxima, etapa) %}
-{{session['status']}}
+{% macro pagina_estatica(anterior, proxima, etapa, proxima_edicao='') %}
+
+
+
 <form id="confirmacao-form" action="{{proxima}}" method="POST">
   
   {% if etapa =='8' %}
@@ -15,23 +17,49 @@
       Etapa Anterior
     </a>
     {% endif %}
-    {% if etapa =='16'and proxima !='/salvar_edicao' %}
-    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-      Salvar Etapa atual
-    </button>
-    <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-      Finalizar ETP
-    </a>
-    {% elif etapa =='16' and proxima =='/salvar_edicao' %}
+
+
  
-    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-      Salvar Edição
-    </button>
-    {% else %}
-    <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-      Próxima etapa
-    </button>
+
+
+
+
+
+  {% if etapa =='16'and proxima !='/salvar_edicao' %}
+        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+          Salvar Etapa atual
+        </button>
+        <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+          Finalizar ETP
+        </a>
+
+  {% elif etapa !='1' and proxima =='/salvar_edicao' %}
+
+  <a href="{{proxima_edicao}}" id="proxima_edicao" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    Próxima Etapa edição
+  </a>
+        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+          Finalizar Edição
+        </button>
+
+  {% else %}
+        {% if etapa =='1' and proxima =='/salvar_edicao' %}
+
+            <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+              Próxima etapa2
+            </a>
+            <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+              Salvar e Finalizar
+            </button>
+          
+        {%else %}
+            <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+              Próxima etapa1
+            </button>
+        {% endif  %}
+ 
     {% endif %}
+
 
 </form>
 
@@ -240,6 +268,75 @@
 
 
 
+    $('#proxima_edicao').on('click', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+  
+      if (etapaValue === '8') {
+        // Lógica específica para a etapa 8 usando o valor do input
+        var inputContent = $('#valor').val();
+        $.ajax({
+          url: '/salvar/8',
+          method: 'POST',
+          data: {
+            inputValue: inputContent // Valor do input
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/8',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima_edicao }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        var conteudoEditor = editor.root.innerHTML;
+        $.ajax({
+          url: '/salvar/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor: conteudoEditor
+          },
+          success: function(response) {
+            console.log('Alterações salvas com sucesso');
+  
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar/{{etapa}}',
+              method: 'GET',
+              success: function(response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+  
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima_edicao }}";
+              },
+              error: function(error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function(error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      }
+    });
 
 
 
@@ -288,3 +385,4 @@ function salvarAlteracoes() {
 
 
 {% endmacro %}
+
