@@ -471,7 +471,7 @@ def create_app(config_name):
     def salvar_edicao():
         id_form = session['id_form']
         result = Etp40Controller.salvar_edicao_etp40(id_form)
-        
+
         if current_user.is_active:
                 user_id = current_user.id
                 if result:

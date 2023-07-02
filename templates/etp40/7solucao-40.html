@@ -66,10 +66,17 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/solucao6-40', '/solucao8-40','7') }}
-    <!-- ======= End Section ======= -->
 
+    {%if session['status'] =='editar'%}
+   
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/solucao6-40','/salvar_edicao','7', '/solucao8-40') }}
+    <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/solucao6-40', '/solucao8-40','7') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
