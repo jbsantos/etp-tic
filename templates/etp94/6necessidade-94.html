@@ -69,9 +69,20 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <!-- ======= Section ======= -->
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/necessidade5-94','/salvar_edicao_94','6', '/necessidade7-94') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/necessidade5-94', '/necessidade7-94','6') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+
+    <!-- ======= Section ======= 
     {{ section.pagina_estatica('/necessidade5-94', '/necessidade7-94','6') }}
-    <!-- ======= End Section ======= -->
+     ======= End Section ======= -->
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {

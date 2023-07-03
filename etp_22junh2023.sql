@@ -38,6 +38,8 @@ INSERT INTO `alembic_version` VALUES ('c0e7f698ff99');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+
 --
 -- Table structure for table `category`
 --
@@ -107,6 +109,53 @@ INSERT INTO `etp40` VALUES (1,'1','2','3','4','5','6','7','8','9','10','11','12'
 /*!40000 ALTER TABLE `etp40` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `etp94`
+--
+
+DROP TABLE IF EXISTS `etp94`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `etp94` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `informacao1_94` text,
+  `necessidade2_94` text,
+  `necessidade3_94` text,
+  `necessidade4_94` text,
+  `necessidade5_94` text,
+  `necessidade6_94` text,
+  `necessidade7_94` text,
+  `solucao8_94` text,
+  `solucao9_94` text,
+  `solucao10_94` text,
+  `solucao11_94` text,
+  `solucao12_94` text,
+  `solucao13_94` text,
+  `solucao14_94` text,
+  `solucao15_94` text,
+  `planejamento16_94` text,
+  `planejamento17_94` text,
+  `viabilidade18_94` text,
+  `viabilidade19_94` text,
+  `usuario_id` int(11) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `etp94_FK` (`usuario_id`),
+  CONSTRAINT `etp94_FK` FOREIGN KEY (`usuario_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `etp94`
+--
+
+LOCK TABLES `etp94` WRITE;
+/*!40000 ALTER TABLE `etp94` DISABLE KEYS */;
+INSERT INTO `etp94` VALUES (9,'23','23','23','','','','','','','','','','','','113\r\n12','','','','',13,'2023-06-28 08:01:00'),(10,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','rerere',13,'2023-06-28 08:50:31'),(11,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','rerere',13,'2023-06-28 08:56:26'),(12,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','rerere',13,'2023-06-28 09:00:44'),(13,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação',13,'2023-06-28 09:09:44'),(14,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação',13,'2023-06-28 09:15:46'),(15,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação',13,'2023-06-28 09:19:14'),(16,'Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','Não Constar Informação','oioioo',13,'2023-06-28 09:35:25');
+/*!40000 ALTER TABLE `etp94` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 --
 -- Table structure for table `paginas`
 --

@@ -16,6 +16,7 @@ from config import app_config, app_active
 # controllers
 from controller.User import UserController
 from controller.Etp40 import Etp40Controller
+from controller.Etp94 import Etp94Controller
 
 from controller.Product import ProductController
 from admin.Admin import start_views
@@ -86,7 +87,13 @@ def create_app(config_name):
     
     @app.route('/etp94')
     def etp94():
-        return render_template('/etp94/etp94.html')
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            #limpar_sessoes()
+            session['user_id'] = user_id
+            return render_template('/etp94/etp94.html')
+        else:
+            return render_template('/etp94/etp94.html')
     
     @app.route('/etp40')
     def etp40():
@@ -209,7 +216,7 @@ def create_app(config_name):
                 content = session[str(session_number)]
                 content = remove_html_tags(content)  # Remove as tags HTML
                 if content.strip() == '':
-                    content = 'Não Constar Informação'
+                    content = ' '
                 csv_data.append([quill_content[str(session_number)], content])
         
        
@@ -247,9 +254,9 @@ def create_app(config_name):
 
             if conteudo_editor is not None:
                 if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor = 'Não Constar Informação'
+                conteudo_editor = ' '
 
             quill_content[str(etapa)] = conteudo_editor
 
@@ -293,11 +300,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -345,9 +352,9 @@ def create_app(config_name):
 
             if conteudo_editor is not None:
                 if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor = 'Não Constar Informação'
+                conteudo_editor = ' '
 
             quill_content[str(etapa)] = conteudo_editor
 
@@ -391,11 +398,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -747,7 +754,7 @@ def create_app(config_name):
 
         return conteudo_editor
     
-    @app.route('/salvar-94/<int:etapa>', methods=['POST'])
+    @app.route('/salvar_94/<int:etapa>', methods=['POST'])
     def salvar_94(etapa):
         conteudo_editor_94 = request.form.get('conteudo_editor_94')
 
@@ -760,13 +767,15 @@ def create_app(config_name):
         return 'OK'
 
     # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
-    @app.route('/recuperar-94/<int:etapa>', methods=['GET'])
+    @app.route('/recuperar_94/<int:etapa>', methods=['GET'])
     def recuperar_94(etapa):
         #etapa94 = str(etapa)
 
         conteudo_editor_94 = session.get(str(etapa), '')
         input_value_94 = request.args.get('valor')
-
+        print('entrou')
+        
+        print('vaxio' + str(input_value_94))
         if input_value_94 is not None:
             conteudo_editor_94 = input_value_94
         
@@ -794,10 +803,6 @@ def create_app(config_name):
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
-        if request.method == 'POST':
-            conteudoinformacao1 = request.form.get('conteudoinformacao1')
-            session['conteudoinformacao1'] = conteudoinformacao1
-            return redirect('/informacao1-94')
 
         return render_template('etp94/1informacao-94.html')
     
@@ -848,15 +853,8 @@ def create_app(config_name):
     
     @app.route('/solucao11-94', methods=['POST', 'GET'])
     def solucao11_94():
-        if request.method == 'POST':
-            conteudosolucao11 = request.form.get('conteudosolucao11')
-            session['conteudosolucao11'] = conteudosolucao11
-            return redirect('/solucao11-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao11 = session.get('conteudosolucao11')
-
-        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
+        return render_template('etp94/11solucao-94.html')
     
     @app.route('/solucao12-94', methods=['POST', 'GET'])
     def solucao12_94():
@@ -880,13 +878,7 @@ def create_app(config_name):
     
     @app.route('/planejamento16-94', methods=['POST', 'GET'])
     def planejamento16_94():
-        if request.method == 'POST':
-            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
-            session['conteudoplanejamento16'] = conteudoplanejamento16
-            return redirect('/planejamento16-94')
 
-        return render_template('etp94/16planejamento-94.html')
-    
         return render_template('etp94/16planejamento-94.html')
     
     @app.route('/planejamento17-94', methods=['POST', 'GET'])
@@ -904,8 +896,9 @@ def create_app(config_name):
 
         return render_template('etp94/19viabilidade-94.html')
     
-    @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
+    @app.route('/gerar_pdf_94',methods=['POST', 'GET'])
     def gerar_pdf_94():
+            
         quill_content = {}
 
         for etapa in range(1, 20):
@@ -917,13 +910,17 @@ def create_app(config_name):
 
             if conteudo_editor_94 is not None:
                 if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
-                    conteudo_editor_94 = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor_94 = 'Não Constar Informação'
+                conteudo_editor_94 = ' '
 
             quill_content[str(etapa)] = conteudo_editor_94
 
         temp_file_path = 'temp.html'
+        #last_id+=1
+
+        #print(last_id,'last id 94 +1')
+        #output_path = 'static/pdf/etp94/etp94'+str(last_id)+'.pdf'
         output_path = 'static/pdf/etp94/etp94.pdf'
         sections = {
             'Informações Básicas': [1],
@@ -965,11 +962,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -987,18 +984,49 @@ def create_app(config_name):
             'encoding': 'UTF-8',
         }
 
-        pdfkit.from_file(temp_file_path, output_path, options=options)
+        # pdfkit.from_file(temp_file_path, output_path, options=options)
 
-        os.remove(temp_file_path)
-        timestamp = int(time.time())  # Obtém o timestamp atual
-        return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
+        # os.remove(temp_file_path)
+        # timestamp = int(time.time())  # Obtém o timestamp atual
+        # return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
+        if current_user.is_active:
+                user_id = current_user.id
+                
+                 # salva no banco
+                result = Etp94Controller.save_etp94()
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    #gera  o pdf no local específico
+                    #pdfkit.from_file(temp_file_path, output_path, options=options)
+                    os.remove(temp_file_path)
+                    #gera o csv local específico
+
+                    #print(last_id,'last id 94 vai entra no csv')
+                    #gerar_csv_94(last_id)
+                    #fazer uma funcao para verificar se o usuario está logado
+                    # Limpa a sessão
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+
 
     @app.route('/editor-session')
     def editor_session_94():
         return render_template('etp94/editor_session.html')
 
-    @app.route('/gerar-csv-94', methods=['GET'])
+    #@app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
+    @app.route('/gerar-csv-94', methods=['GET', 'POST'])
+    #def gerar_csv_94(last_id):
     def gerar_csv_94():
+        carregar_dados = carregar_pdf_94()
+
         quill_content = {
             '1': 'Informações Básicas',
             '2': 'Descrição da Necessidade',
@@ -1028,17 +1056,174 @@ def create_app(config_name):
                 content = session[str(session_number)]
                 content = remove_html_tags(content)  # Remove as tags HTML
                 if content.strip() == '':
-                    content = 'Não Constar Informação'
+                    content = ' '
                 csv_data.append([quill_content[str(session_number)], content])
 
-        csv_filename = 'data-94.csv'
+        #csv_filename = 'data-94.csv'
+        # Nome do arquivo CSV
+        # ultimo_id = Etp94Controller.ultimo_id_formulario()
+        # last_id = ultimo_id.id
+        # print(last_id,'last id')
+        # if last_id == None or last_id == '':
+        #     print(last_id,'last 0')
+        #     last_id = 0
+        
+        #last_id+=1    # Toda vez estava criando um numero a mais que o necessario
+        #output_path = 'static/csv/etp94/etp94'+str(last_id)+'.csv'
+        output_path = 'static/csv/etp94/etp94.csv'
+        print(output_path)
+        csv_filename = output_path
         
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
             writer = csv.writer(csv_file)
             writer.writerows(csv_data)
 
         return send_file(csv_filename, as_attachment=True)
-   
+       
+    @app.route('/retomar_dados_94',methods=['POST', 'GET'])
+    def retomar_dados_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+        return render_template('etp94/1informacao-94.html', status=status) 
+    
+    @app.route('/salvar_edicao_94',methods=['POST', 'GET'])
+    def salvar_edicao_94():
+        id_form = session['id_form']
+        result = Etp94Controller.salvar_edicao_etp94(id_form)
+        
+        if current_user.is_active:
+                user_id = current_user.id
+                if result:
+                    
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo a edição do ETP 94 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+
+    @app.route('/carregar_pdf_94',methods=['POST', 'GET'])
+    def carregar_pdf_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+        return result
+    
+    @app.route('/baixar_pdf_94', methods=['POST', 'GET'])
+    def baixar_pdf_94():
+
+        carregar_dados = carregar_pdf_94()
+        quill_content = {}
+        # Exemplo de uso:
+
+        for etapa in range(1, 20):  # Loop para percorrer as 16 sessões
+            conteudo_editor_94 = session.get(str(etapa), '')
+            if etapa == 13:
+                input_value_94 = request.args.get('valor')
+                if input_value_94 is not None:
+                    conteudo_editor_94 = input_value_94
+
+            if conteudo_editor_94 is not None:
+                if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor_94 = ' '
+
+            quill_content[str(etapa)] = conteudo_editor_94
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp94/etp94.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 8)),
+            'Solução': list(range(8, 16)),
+            'Planejamento': list(range(16, 18)),
+            'Viabilidade': [18, 19]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
+
+                    if session_content.strip() == '':
+                        session_content = ' '
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+        
+
+
+        pdf_bytes = pdfkit.from_file(temp_file_path, False, options=options)
+        # Criar uma resposta com os bytes do PDF
+        response = make_response(pdf_bytes)
+        
+        # Definir o cabeçalho Content-Type para application/pdf
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
+        response.headers['Content-Disposition'] = 'attachment; filename=etp94.pdf'
+        
+        return response
+
+       
     def limpar_sessoes():
         session.clear()
 

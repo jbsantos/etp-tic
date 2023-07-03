@@ -7,13 +7,13 @@ class Config(object):
     TEMPLATE_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     APP = None
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://jorge:jb141186@localhost:3306/etp-tic'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:jb141186@localhost:3306/etp-tic'
     SENDGRID_API_KEY = 'API_KEY'
 
 class DevelopmentConfig(Config):
     TESTING = False
     DEBUG = True
-    IP_HOST = '10.80.16.51'
+    IP_HOST = 'localhost'
     PORT_HOST = 8080
     URL_MAIN = 'http://%s:%s/' % (IP_HOST, PORT_HOST)
 
