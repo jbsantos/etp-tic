@@ -731,7 +731,7 @@ def create_app(config_name):
     # Rota para salvar o conteúdo do editor Quill em uma sessão específica
     @app.route('/salvar/<int:etapa>', methods=['POST'])
     def salvar(etapa):
-        
+        print(etapa)
         
         conteudo_editor = request.form.get('conteudo_editor')
         
@@ -740,7 +740,6 @@ def create_app(config_name):
 
         print(conteudo_editor, 'chegou....')
         session[str(etapa)] = conteudo_editor
-
         return 'OK'
 
     # Rota para recuperar o conteúdo do editor Quill de uma sessão específica

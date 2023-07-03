@@ -19,19 +19,11 @@
     {% endif %}
 
 
- 
-
-
-
-
-
   {% if etapa =='16'and proxima !='/salvar_edicao' %}
         <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-          Salvar Etapa atual
+          Salvar e Finalizar
         </button>
-        <a href="/gerar_pdf" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-          Finalizar ETP
-        </a>
+
 
   {% elif etapa !='1' and proxima =='/salvar_edicao' %}
 
@@ -46,7 +38,7 @@
         {% if etapa =='1' and proxima =='/salvar_edicao' %}
 
             <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-              Próxima etapa2
+              Próxima etapa
             </a>
             <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
               Salvar e Finalizar
@@ -54,7 +46,7 @@
           
         {%else %}
             <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-              Próxima etapa1
+              Próxima etapa
             </button>
         {% endif  %}
  
