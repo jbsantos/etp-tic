@@ -68,9 +68,20 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <!-- ======= Section ======= -->
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/solucao12-94','/salvar_edicao_94','13', '/solucao14-94') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/solucao12-94', '/solucao14-94','13') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+
+    <!-- ======= Section ======= 
     {{ section.pagina_estatica('/solucao12-94', '/solucao14-94','13') }}
-    <!-- ======= End Section ======= -->
+     ======= End Section ======= -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
 
@@ -111,7 +122,7 @@
           autoGroup: true,
           digits: 2,
           rightAlign: false
-        });
+        }).on('blur', validarValor);
 
         // Event listener para o campo de entrada
         document.getElementById('valor').addEventListener('blur', validarValor);
@@ -125,7 +136,7 @@
           }
         });
       });
-    </script>
+    </script> 
 
 
     <script>

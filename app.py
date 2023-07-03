@@ -754,7 +754,7 @@ def create_app(config_name):
 
         return conteudo_editor
     
-    @app.route('/salvar-94/<int:etapa>', methods=['POST'])
+    @app.route('/salvar_94/<int:etapa>', methods=['POST'])
     def salvar_94(etapa):
         conteudo_editor_94 = request.form.get('conteudo_editor_94')
 
@@ -767,13 +767,15 @@ def create_app(config_name):
         return 'OK'
 
     # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
-    @app.route('/recuperar-94/<int:etapa>', methods=['GET'])
+    @app.route('/recuperar_94/<int:etapa>', methods=['GET'])
     def recuperar_94(etapa):
         #etapa94 = str(etapa)
 
         conteudo_editor_94 = session.get(str(etapa), '')
         input_value_94 = request.args.get('valor')
-
+        print('entrou')
+        
+        print('vaxio' + str(input_value_94))
         if input_value_94 is not None:
             conteudo_editor_94 = input_value_94
         
@@ -894,18 +896,8 @@ def create_app(config_name):
 
         return render_template('etp94/19viabilidade-94.html')
     
-    @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
+    @app.route('/gerar_pdf_94',methods=['POST', 'GET'])
     def gerar_pdf_94():
-     
-        # ultimo_id = Etp94Controller.ultimo_id_formulario()
-
-        # last_id = ultimo_id
-        # print(last_id,'last id')
-        
-        # if last_id == None or last_id == '':
-        #     last_id = 0
-        # else:
-        #     last_id = ultimo_id.id
             
         quill_content = {}
 
@@ -1088,7 +1080,7 @@ def create_app(config_name):
 
         return send_file(csv_filename, as_attachment=True)
        
-    @app.route('/retomar-dados-94',methods=['POST', 'GET'])
+    @app.route('/retomar_dados_94',methods=['POST', 'GET'])
     def retomar_dados_94():
         status = ''
         id_form = request.form.get('id_form')
@@ -1099,7 +1091,7 @@ def create_app(config_name):
 
         return render_template('etp94/1informacao-94.html', status=status) 
     
-    @app.route('/salvar-edicao-94',methods=['POST', 'GET'])
+    @app.route('/salvar_edicao_94',methods=['POST', 'GET'])
     def salvar_edicao_94():
         id_form = session['id_form']
         result = Etp94Controller.salvar_edicao_etp94(id_form)

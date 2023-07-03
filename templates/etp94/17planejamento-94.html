@@ -68,9 +68,20 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <!-- ======= Section ======= -->
+    {%if session['status'] =='editar'%}
+   
+        <!-- ======= Section ======= -->
+        {{ section.pagina_estatica('/planejamento16-94','/salvar_edicao_94','17', '/viabilidade18-94') }}
+        <!-- ======= End Section ======= -->
+    {%else%}
+      <!-- ======= Section ======= -->
+      {{ section.pagina_estatica('/planejamento16-94', '/viabilidade18-94','17') }}
+      <!-- ======= End Section ======= -->
+    {%endif%}
+
+    <!-- ======= Section ======= 
     {{ section.pagina_estatica('/planejamento16-94', '/viabilidade18-94','17') }}
-    <!-- ======= End Section ======= -->
+     ======= End Section ======= -->
 
     <script>
       document.addEventListener('DOMContentLoaded', function () {

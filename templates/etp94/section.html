@@ -1,5 +1,5 @@
-{% macro pagina_estatica(anterior, proxima, etapa) %}
-{{session['status']}}
+{% macro pagina_estatica(anterior, proxima, etapa, proxima_edicao) %}
+
 <form id="confirmacao-form" action="{{proxima}}" method="POST">
 
   {% if etapa =='13' %}
@@ -15,22 +15,39 @@
   </a>
   {% endif %}
 
-  {% if etapa =='19' and proxima !='/salvar-edicao-94' %}
+  {% if etapa =='19' and proxima !='/salvar_edicao_94' %}
   <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
     Salvar Etapa Atual
   </button>
-  <a href="/gerar-pdf-94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
-    Finalizar ETP
+  <a href="/gerar_pdf_94" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    Finalizar ETP-94
   </a>
-  {% elif etapa =='19' and proxima =='/salvar-edicao-94' %}
 
+  {% elif etapa !='1' and proxima =='/salvar_edicao_94' %}
+
+  <a href="{{proxima_edicao}}" id="proxima_edicao" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    Próxima Etapa Edição
+  </a>
   <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-    Salvar Edição
+    Finalizar Edição
   </button>
+
   {% else %}
+  {% if etapa =='1' and proxima =='/salvar_edicao_94' %}
+
+  <a href="{{anterior}}" id="etapa-anterior" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+    Próxima Etapa Edição
+  </a>
   <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
-    Próxima etapa
+    Salvar e Finalizar
   </button>
+
+  {%else %}
+  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+    Próxima Etapa
+  </button>
+  {% endif %}
+
   {% endif %}
 
 </form>
@@ -73,7 +90,7 @@
     if (etapaValue === '13') {
       // Lógica específica para a etapa 13 usando o valor do input
       $.ajax({
-        url: '/recuperar-94/13',
+        url: '/recuperar_94/13',
         method: 'GET',
         success: function (response) {
           $('#valor').val(response);
@@ -85,7 +102,7 @@
     } else {
       // Lógica padrão usando o valor do editor
       $.ajax({
-        url: '/recuperar-94/{{etapa}}',
+        url: '/recuperar_94/{{etapa}}',
         method: 'GET',
         success: function (response) {
           editor.root.innerHTML = response;
@@ -115,7 +132,7 @@
         }
 
         $.ajax({
-          url: '/salvar-94/13',
+          url: '/salvar_94/13',
           method: 'POST',
           data: {
             inputValue_94: inputContent // Valor do input
@@ -125,7 +142,7 @@
 
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar-94/13',
+              url: '/recuperar_94/13',
               method: 'GET',
               success: function (response) {
                 // Atualiza o valor do input com as informações recuperadas
@@ -159,7 +176,7 @@
         }
 
         $.ajax({
-          url: '/salvar-94/{{etapa}}',
+          url: '/salvar_94/{{etapa}}',
           method: 'POST',
           data: {
             conteudo_editor_94: conteudoEditor_94
@@ -169,7 +186,7 @@
 
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar-94/{{etapa}}',
+              url: '/recuperar_94/{{etapa}}',
               method: 'GET',
               success: function (response) {
                 // Atualiza o conteúdo do editor com as informações recuperadas
@@ -189,57 +206,6 @@
         });
 
 
-        // if (etapaValue === '19' && proxima !== '/salvar-edicao-94') {
-        //   // Lógica para a última etapa antes de finalizar
-        //   var etapasEmBranco = [];
-
-        //   // Verifica todas as etapas anteriores à etapa 19
-        //   for (var i = 1; i < 19; i++) {
-        //     if (i !== 2 && i !== 7) {
-        //       // Ignora as etapas 2 e 7, pois já foram tratadas anteriormente
-        //       var conteudoEtapa = $.ajax({
-        //         url: '/recuperar-94/' + i,
-        //         method: 'GET',
-        //         async: false
-        //       }).responseText;
-
-        //       if (conteudoEtapa.trim() === '' || conteudoEtapa === '<p><br></p>') {
-        //         etapasEmBranco.push(i);
-        //       }
-        //     }
-        //   }
-
-        //   if (etapasEmBranco.length > 0) {
-        //     var mensagem = 'As seguintes etapas estão em branco: ' + etapasEmBranco.join(', ') + '. Deseja continuar mesmo assim?';
-
-        //     Swal.fire({
-        //       icon: 'warning',
-        //       title: 'Etapas em Branco',
-        //       text: mensagem,
-        //       showCancelButton: true,
-        //       confirmButtonText: 'Continuar',
-        //       cancelButtonText: 'Cancelar',
-        //     }).then((result) => {
-        //       if (result.isConfirmed) {
-        //         // Continuar com o processo de finalização
-        //         window.location.href = '/gerar-pdf-94';
-        //       }
-        //     });
-        //   } else {
-        //     // Nenhuma etapa em branco, continuar com o processo de finalização
-        //     window.location.href = '/gerar-pdf-94';
-        //   }
-        // } else {
-        //   // Não é a última etapa antes de finalizar, redirecionar para a próxima etapa
-        //   window.location.href = proxima;
-        // }
-
-
-
-
-
-
-
       }
     });
 
@@ -252,7 +218,7 @@
         // Lógica específica para a etapa 13 usando o valor do input
         var inputContent = $('#valor').val();
         $.ajax({
-          url: '/salvar-94/13',
+          url: '/salvar_94/13',
           method: 'POST',
           data: {
             inputValue_94: inputContent // Valor do input
@@ -262,7 +228,7 @@
 
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar-94/13',
+              url: '/recuperar_94/13',
               method: 'GET',
               success: function (response) {
                 // Atualiza o valor do input com as informações recuperadas
@@ -284,7 +250,7 @@
         // Lógica padrão usando o valor do editor
         conteudoEditor_94 = editor.root.innerHTML;
         $.ajax({
-          url: '/salvar-94/{{etapa}}',
+          url: '/salvar_94/{{etapa}}',
           method: 'POST',
           data: {
             conteudo_editor_94: conteudoEditor_94
@@ -294,7 +260,7 @@
 
             // Recupera as informações da sessão
             $.ajax({
-              url: '/recuperar-94/{{etapa}}',
+              url: '/recuperar_94/{{etapa}}',
               method: 'GET',
               success: function (response) {
                 // Atualiza o conteúdo do editor com as informações recuperadas
@@ -302,6 +268,77 @@
 
                 // Redirecionar para a próxima etapa
                 window.location.href = "{{ anterior }}";
+              },
+              error: function (error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      }
+    });
+
+
+    $('#proxima_edicao').on('click', function (event) {
+      event.preventDefault(); // Evita o envio do formulário
+
+      if (etapaValue === '13') {
+        // Lógica específica para a etapa 8 usando o valor do input
+        var inputContent = $('#valor').val();
+        $.ajax({
+          url: '/salvar_94/13',
+          method: 'POST',
+          data: {
+            inputValue_94: inputContent // Valor do input
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar_94/13',
+              method: 'GET',
+              success: function (response) {
+                // Atualiza o valor do input com as informações recuperadas
+                $('#valor').val(response);
+
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima_edicao }}";
+              },
+              error: function (error) {
+                console.error('Erro ao recuperar as informações da sessão');
+              },
+            });
+          },
+          error: function (error) {
+            console.error('Erro ao salvar as alterações');
+          },
+        });
+      } else {
+        // Lógica padrão usando o valor do editor
+        var conteudoEditor_94 = editor.root.innerHTML;
+        $.ajax({
+          url: '/salvar_94/{{etapa}}',
+          method: 'POST',
+          data: {
+            conteudo_editor_94: conteudoEditor_94
+          },
+          success: function (response) {
+            console.log('Alterações salvas com sucesso');
+
+            // Recupera as informações da sessão
+            $.ajax({
+              url: '/recuperar_94/{{etapa}}',
+              method: 'GET',
+              success: function (response) {
+                // Atualiza o conteúdo do editor com as informações recuperadas
+                editor.root.innerHTML = response;
+
+                // Redirecionar para a próxima etapa
+                window.location.href = "{{ proxima_edicao }}";
               },
               error: function (error) {
                 console.error('Erro ao recuperar as informações da sessão');
@@ -325,7 +362,7 @@
       // Lógica específica para a etapa 13 usando o valor do input
       var inputContent = $('#valor').val();
       $.ajax({
-        url: '/salvar-94/13',
+        url: '/salvar_94/13',
         method: 'POST',
         data: {
           inputValue_94: inputContent // Valor do input
@@ -341,7 +378,7 @@
       // Lógica padrão usando o valor do editor
       conteudoEditor_94 = editor.root.innerHTML;
       $.ajax({
-        url: '/salvar-94/{{etapa}}',
+        url: '/salvar_94/{{etapa}}',
         method: 'POST',
         data: {
           conteudo_editor_94: conteudoEditor_94
