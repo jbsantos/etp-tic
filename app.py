@@ -89,7 +89,7 @@ def create_app(config_name):
     def etp94():
         if current_user.is_authenticated:
             user_id = current_user.id
-            limpar_sessoes()
+            #limpar_sessoes()
             session['user_id'] = user_id
             return render_template('/etp94/etp94.html')
         else:

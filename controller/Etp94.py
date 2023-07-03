@@ -127,9 +127,9 @@ class Etp94Controller:
 
                 if conteudo_editor is not None:
                     if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                        conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                        conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
                 else:
-                    conteudo_editor = 'Não Constar Informação'
+                    conteudo_editor = ' '
                     
                 conteudo_editor= remove_html_tags(conteudo_editor)
                 

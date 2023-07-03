@@ -19,7 +19,8 @@
 			<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
 		</div>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
-	<a href="http://localhost:8000/recovery-password/">Recuperar senha</a>
+	<a href="http://localhost:8000/recovery-password/">Recuperar senha</a><br />
+	<a href="/registre-se">Não Tenho Cadastro</a>
 	{% if data.status == 401 %}
 		{% if data.type == 1 %}
 		<div class="alert alert-danger" role="alert">
