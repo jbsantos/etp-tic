@@ -216,7 +216,7 @@ def create_app(config_name):
                 content = session[str(session_number)]
                 content = remove_html_tags(content)  # Remove as tags HTML
                 if content.strip() == '':
-                    content = 'Não Constar Informação'
+                    content = ' '
                 csv_data.append([quill_content[str(session_number)], content])
         
        
@@ -254,9 +254,9 @@ def create_app(config_name):
 
             if conteudo_editor is not None:
                 if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor = 'Não Constar Informação'
+                conteudo_editor = ' '
 
             quill_content[str(etapa)] = conteudo_editor
 
@@ -300,11 +300,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -352,9 +352,9 @@ def create_app(config_name):
 
             if conteudo_editor is not None:
                 if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                    conteudo_editor = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor = 'Não Constar Informação'
+                conteudo_editor = ' '
 
             quill_content[str(etapa)] = conteudo_editor
 
@@ -398,11 +398,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -910,9 +910,9 @@ def create_app(config_name):
 
             if conteudo_editor_94 is not None:
                 if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
-                    conteudo_editor_94 = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor_94 = 'Não Constar Informação'
+                conteudo_editor_94 = ' '
 
             quill_content[str(etapa)] = conteudo_editor_94
 
@@ -962,11 +962,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
@@ -1056,7 +1056,7 @@ def create_app(config_name):
                 content = session[str(session_number)]
                 content = remove_html_tags(content)  # Remove as tags HTML
                 if content.strip() == '':
-                    content = 'Não Constar Informação'
+                    content = ' '
                 csv_data.append([quill_content[str(session_number)], content])
 
         #csv_filename = 'data-94.csv'
@@ -1138,9 +1138,9 @@ def create_app(config_name):
 
             if conteudo_editor_94 is not None:
                 if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
-                    conteudo_editor_94 = 'Não Constar Informação'  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
-                conteudo_editor_94 = 'Não Constar Informação'
+                conteudo_editor_94 = ' '
 
             quill_content[str(etapa)] = conteudo_editor_94
 
@@ -1187,11 +1187,11 @@ def create_app(config_name):
                     content = quill_content.get(str(session_number), '')
                     session_content = session.get(str(session_number), '')
                     
-                    # Substitui <br> por "Não Constar Informação"
-                    session_content = session_content.replace('<br>', 'Não Constar Informação')
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
 
                     if session_content.strip() == '':
-                        session_content = 'Não Constar Informação'
+                        session_content = ' '
                     
                     temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
                     temp_file.write(f'<p>{session_content}</p>\n')
