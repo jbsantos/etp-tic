@@ -15,7 +15,7 @@ from model.Etp94 import Etp94
 from admin.Views import UserView, HomeView, RoleView, CategoryView, ProductView, PaginasView, Etp40View, Etp94View
 
 def start_views(app, db):
-    admin = Admin(app, name='ETP DIGITA SYSTEM', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
+    admin = Admin(app, name='ETP DIGITAL SYSTEM', base_template='admin/base.html', template_mode='bootstrap3', index_view=HomeView())
 
     admin.add_view(RoleView(Role, db.session, "Funções",  category="Usuários"))
     admin.add_view(UserView(User, db.session, "Usuários", category="Usuários"))
