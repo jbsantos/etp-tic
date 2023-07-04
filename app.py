@@ -498,7 +498,6 @@ def create_app(config_name):
 
                     flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
-                    return redirect(url_for('admin.index'))
                 else: 
                     print(result)
                     return "Não foi salvo a edição do ETP 40 procure o administrador do sistema."
@@ -1005,6 +1004,9 @@ def create_app(config_name):
                 
                  # salva no banco
                 result = Etp94Controller.save_etp94()
+                ultimo_id = Etp94Controller.ultimo_id_formulario()
+               
+                    
                         #caso seja positivo o resultado gerar o csv
                 if result:
                     #gera  o pdf no local específico
@@ -1019,6 +1021,10 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    ultimo_id = ultimo_id.id
+                        #caso seja positivo o resultado 
+                    variavel = "Foi criado o ETP 94 nº " + str(ultimo_id)
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
@@ -1114,6 +1120,9 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    variavel = "Foi editado o ETP-94 nº " + str(id_form)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
