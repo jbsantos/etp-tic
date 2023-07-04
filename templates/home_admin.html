@@ -20,6 +20,7 @@
           <tr>
             <th>Processo</th>
             <th>Usuário</th>
+            <th>Nome do ETP - Data e Hora</th>
             <th>Baixar PDF</th>
             <th>Baixar CSV</th>
             <th>Editar</th>
@@ -30,7 +31,8 @@
           {% for etp in etp40 %}
           <tr>
             <td>{{etp.id}}</td>
-            <td> Usuário {{current_user.username}}</td>
+            <td> Criador {{current_user.username}}</td>
+            <td>ETP40_{{etp.date_created.strftime('%d/%m/%Y %H:%M:%S')}}</td>
             <td>
               <form action="{{ url_for('baixar_pdf') }}" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
@@ -57,7 +59,9 @@
           {% for etp in etp94 %}
           <tr>
             <td>{{etp.id}}</td>
-            <td> Usuário {{current_user.username}}</td>
+            <td> Criador {{current_user.username}}</td>
+            <td>ETP94_{{etp.date_created.strftime('%d/%m/%Y %H:%M:%S')}}</td>
+
             <td>
               <form action="{{ url_for('baixar_pdf_94') }}" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">

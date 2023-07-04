@@ -25,7 +25,7 @@
         </button>
 
 
-  {% elif etapa !='1' and proxima =='/salvar_edicao' %}
+  {% elif etapa !='1' and etapa!='16' and proxima =='/salvar_edicao' %}
 
   <a href="{{proxima_edicao}}" id="proxima_edicao" class="swal2-confirm swal2-styled" style="text-decoration: none;">
     Próxima Etapa edição
@@ -43,6 +43,11 @@
             <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
               Salvar e Finalizar
             </button>
+        
+        {%elif etapa == '16' and proxima == '/salvar_edicao'%}
+        <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
+          Salvar e Finalizar
+        </button>
           
         {%else %}
             <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled btn-next">
