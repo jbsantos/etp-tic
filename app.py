@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, make_response, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory
+from flask import Flask, request,url_for, make_response, redirect, render_template, Response, json, abort, session, request, send_file, send_from_directory, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, current_user
@@ -338,7 +338,7 @@ def create_app(config_name):
 
 
     
-    @app.route('/gerar_pdf',methods=['POST', 'GET'])
+    @app.route('/gerar_pdf', methods=['POST', 'GET'])
     def gerar_pdf():
             
         quill_content = {}
@@ -352,8 +352,10 @@ def create_app(config_name):
 
             if conteudo_editor is not None:
                 if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
-                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+                    conteudo_editor = ''  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
             else:
+                
+                session['editor_vazio'] =[str(etapa)]
                 conteudo_editor = ' '
 
             quill_content[str(etapa)] = conteudo_editor
@@ -421,12 +423,15 @@ def create_app(config_name):
         }
 
         # timestamp = int(time.time())  # Obtém o timestamp atual
-        
+        ultimo_id = 0
         if current_user.is_active:
+
                 user_id = current_user.id
                 
                  # salva no banco
                 result = Etp40Controller.save_etp40()
+                ultimo_id = Etp40Controller.ultimo_id_formulario()
+                ultimo_id = ultimo_id.id
                         #caso seja positivo o resultado gerar o csv
                 if result:
                     os.remove(temp_file_path)
@@ -434,6 +439,9 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    variavel = "Foi criado o ETP 40 nº " + str(ultimo_id)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
@@ -486,6 +494,9 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    variavel = "Foi editado o ETP-40 nº " + str(id_form)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
@@ -993,6 +1004,9 @@ def create_app(config_name):
                 
                  # salva no banco
                 result = Etp94Controller.save_etp94()
+                ultimo_id = Etp94Controller.ultimo_id_formulario()
+               
+                    
                         #caso seja positivo o resultado gerar o csv
                 if result:
                     #gera  o pdf no local específico
@@ -1007,6 +1021,10 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    ultimo_id = ultimo_id.id
+                        #caso seja positivo o resultado 
+                    variavel = "Foi criado o ETP 94 nº " + str(ultimo_id)
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
@@ -1102,6 +1120,9 @@ def create_app(config_name):
                     limpar_sessoes()
                 # Define o objeto current_user novamente na sessão
                     session['user_id'] = user_id
+                    variavel = "Foi editado o ETP-94 nº " + str(id_form)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
                     return redirect(url_for('admin.index'))
                 else: 
                     print(result)
