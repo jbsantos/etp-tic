@@ -48,7 +48,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  {{ header.pagina_header('viabilidade-nav', 'responsavel') }}
+  {{ header.pagina_header('viabilidade-nav', 'responsavel', current_user) }}
   <!-- ======= End Header ======= -->
 
 
@@ -111,7 +111,7 @@
             `,
                 focusConfirm: false,
                 showCancelButton: false,
-                allowOutsideClick: false,
+                allowOutsideClick: true,
                 confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
                 
             });

@@ -102,7 +102,7 @@ def create_app(config_name):
             user_id = current_user.id
             # limpar_sessoes()
             session['user_id'] = user_id
-            return render_template('/etp40/etp40.html')
+            return render_template('/etp40/etp40.html',)
         else:
             return render_template('/etp40/etp40.html')
        
@@ -582,7 +582,7 @@ def create_app(config_name):
                 return render_template('login.html', data={'status': 401, 'msg': 'Seu usuário não tem permissão para acessar o admin', 'type':2})
             else:
                 login_user(result)
-                return redirect('/admin')
+                return redirect('/')
         else:
             return render_template('login.html', data={'status': 401, 'msg': 'Dados de usuário incorretos', 'type': 1})
 
