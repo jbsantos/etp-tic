@@ -4,7 +4,7 @@
 
   {% if etapa =='13' %}
   <input type="text" class="form-control" id="valor" name="valor" required><br />
-  {% else %}
+  {% elif etapa != '1' and etapa != '19' %}
   <div style="min-height: 150px" id="editor"></div><br />
   {% endif %}
 
