@@ -3,7 +3,7 @@ import re
 
 # Lendo o arquivo CSV com o pandas
 #df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv_94.csv')
-df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv_94.csv', header=None)
+df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
 
 
 # Verificando se o DataFrame foi criado corretamente
@@ -24,11 +24,11 @@ for valor in coluna_b:
     print(valor)
 
 # Acessar o valor da posição 6 da coluna B
-valor_posicao_6 = coluna_b.iloc[12]
+valor_posicao_6 = coluna_b.iloc[7]
 print("Valor na posição 6 da coluna B:", valor_posicao_6)
 
 # Exemplo de string no formato "R$ 5.656,00"
-valor_com_mascara = coluna_b.iloc[12]
+valor_com_mascara = coluna_b.iloc[7]
 
 # Removendo a máscara e trocando a vírgula por ponto
 valor_sem_mascara = re.sub(r'[^\d,]', '', valor_com_mascara).replace(',', '.')
