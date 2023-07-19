@@ -1038,9 +1038,7 @@ def create_app(config_name):
     def editor_session_94():
         return render_template('etp94/editor_session.html')
 
-    #@app.route('/gerar-csv-94<Llast_id>', methods=['GET', 'POST'])
-    @app.route('/gerar-csv-94', methods=['GET', 'POST'])
-    #def gerar_csv_94(last_id):
+    @app.route('/gerar_csv_94', methods=['GET', 'POST'])
     def gerar_csv_94():
         carregar_dados = carregar_pdf_94()
 
@@ -1076,26 +1074,15 @@ def create_app(config_name):
                     content = ' '
                 csv_data.append([quill_content[str(session_number)], content])
 
-        #csv_filename = 'data-94.csv'
-        # Nome do arquivo CSV
-        # ultimo_id = Etp94Controller.ultimo_id_formulario()
-        # last_id = ultimo_id.id
-        # print(last_id,'last id')
-        # if last_id == None or last_id == '':
-        #     print(last_id,'last 0')
-        #     last_id = 0
-        
-        #last_id+=1    # Toda vez estava criando um numero a mais que o necessario
-        #output_path = 'static/csv/etp94/etp94'+str(last_id)+'.csv'
         output_path = 'static/csv/etp94/etp94.csv'
-        print(output_path)
+        
         csv_filename = output_path
         
         with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
             writer = csv.writer(csv_file)
             writer.writerows(csv_data)
 
-        return send_file(csv_filename, as_attachment=True)
+        return send_file(csv_filename, as_attachment=False)
        
     @app.route('/retomar_dados_94',methods=['POST', 'GET'])
     def retomar_dados_94():
