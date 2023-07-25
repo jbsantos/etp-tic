@@ -159,9 +159,10 @@
         const { value: accept } = await Swal.fire({
           title: 'Preenchendo a Estimativa do Valor da Contratação',
           html: `
-                <div style="max-height: 400px; overflow-y: auto;">
+                <div style="max-height: 400px; overflow-y: auto; align: left; ">
                     
-                    <p> Neste item, é obrigatório que você estime o valor da contratação, acompanhado dos preços unitários referenciais, das memórias de cálculo e dos documentos que lhe dão suporte, que poderão constar de anexo classificado, se a administração optar por preservar o seu sigilo até a conclusão da licitação (inciso, VI, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. </p>
+                    <p> Neste item, é obrigatório que você estime o valor da contratação, acompanhado dos preços unitários referenciais, das memórias de cálculo e dos documentos que lhe dão suporte, que poderão constar de anexo classificado, se a administração optar por preservar o seu sigilo até a conclusão da licitação (inciso, VI, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório. <br />
+                                      Obs.: O preenchimento desse campo no que se refere ao valor aproximado da contratação, deve conter apenas números interiros sem casas decimais.</p>
                 </div>
             `,
           focusConfirm: false,

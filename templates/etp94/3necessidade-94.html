@@ -85,9 +85,10 @@
           const { value: accept } = await Swal.fire({
             title: 'Informando a Área Requisitante',
             html: `
-                                <div style="max-height: 400px; overflow-y: auto;">
+                                <div style="max-height: 400px; overflow-y: auto; align: left; ">
                                     
-                                    <p> Aqui você deve informar o nome do(s) órgão(s), setor(es) ou área(s) que solicitou(aram) a contratação.</p>
+                                    <p> Aqui você deve informar o nome do(s) órgão(s), setor(es) ou área(s) que solicitou(aram) a contratação. <br />
+                                      Obs.: O preenchimento desse campo deve ser feito no próprio site do Comprasnet.</p>
                                 </div>
                             `,
             focusConfirm: false,

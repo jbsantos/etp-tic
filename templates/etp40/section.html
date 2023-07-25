@@ -126,6 +126,18 @@
       if (etapaValue === '8') {
         // Lógica específica para a etapa 8 usando o valor do input
         var inputContent = $('#valor').val();
+
+        // Verifica se o valor do input está vazio
+        if (inputContent.trim() === '') {
+          // Exibe uma mensagem de erro informando que o valor é obrigatório
+          Swal.fire({
+            icon: 'error',
+            title: 'Campo Obrigatorio',
+            text: 'Por favor, preencha o campo valor antes de avançar para a próxima etapa.',
+          });
+          return; // Interrompe a execução da função e impede o envio do formulário
+        }
+
         $.ajax({
           url: '/salvar/8',
           method: 'POST',
@@ -158,6 +170,18 @@
       } else {
         // Lógica padrão usando o valor do editor
         var conteudoEditor = editor.root.innerHTML;
+        
+        if (etapaValue === '2' || etapaValue === '6' || etapaValue === '7' || etapaValue === '9') {
+          if (conteudoEditor.trim() === '' || conteudoEditor === '<p><br></p>') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Campo Obrigatório',
+              text: 'Por favor, preencha o campo antes de avançar para a próxima etapa.',
+            });
+            return;
+          }
+        }
+
         $.ajax({
           url: '/salvar/{{etapa}}',
           method: 'POST',
