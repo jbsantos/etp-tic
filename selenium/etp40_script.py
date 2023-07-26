@@ -38,14 +38,14 @@ try:
     campo_login.click()
 
     # Agora, preencha o campo de login com o valor desejado
-    campo_login.send_keys('79260144515')
+    campo_login.send_keys('0')
 
     # Localize o campo de senha dentro do elemento com a classe .content e clique nele
     campo_senha = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtSenha')))
     campo_senha.click()
 
     # Agora, preencha o campo de senha com o valor desejado
-    campo_senha.send_keys('SCTI2023')
+    campo_senha.send_keys('0')
 
     # Aguarde até que o botão esteja clicável antes de clicar nele
     botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
