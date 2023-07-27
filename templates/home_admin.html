@@ -11,7 +11,6 @@
 
   {% block body %}
   <button onclick="window.location.href = '{{ url_for('index') }}'">Criar formulário ETP /IN 40 e 94</button>
-
   <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <h3>Documento Gerado</h3>
@@ -21,7 +20,9 @@
             <th>Processo</th>
             <th>Usuário</th>
             <th>Nome do ETP - Data e Hora</th>
-            <th>Baixar PDF</th>
+            <th>Baixar <br />PDF | CSV </th>
+            <th>Editar</th>
+            <th>Importar ComprasNet</th>
             <th>Baixar CSV</th>
             <th>Editar</th>
 
@@ -33,6 +34,23 @@
             <td>{{etp.id}}</td>
             <td> Criador {{current_user.username}}</td>
             <td>ETP40_{{etp.date_created.strftime('%d/%m/%Y %H:%M:%S')}}</td>
+            <td>
+              <form method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <a href="{{ url_for('baixar_pdf') }}" alt="pdf" ><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true" style="color: #313030;  margin-right: 10px;"></i></a>
+                <a href="{{ url_for('gerar_csv') }}" alt="csv" ><i class="fa fa-file-excel-o fa-2x" aria-hidden="true" style="color: #313030;  margin-right: 10px;"></i></a>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('retomar_dados') }}" method="POST" id="form-editar-etp40">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <a href="javascript:void(0);" onclick="document.getElementById('form-editar-etp40').submit();" alt="Editar">
+                  <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="color: #313030; margin-right: 10px;"></i>
+                </a>
+              </form>
+            </td>
             <td>
               <form action="{{ url_for('baixar_pdf') }}" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
@@ -61,7 +79,23 @@
             <td>{{etp.id}}</td>
             <td> Criador {{current_user.username}}</td>
             <td>ETP94_{{etp.date_created.strftime('%d/%m/%Y %H:%M:%S')}}</td>
-
+            <td>
+              <form method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <a href="{{ url_for('baixar_pdf_94') }}" alt="pdf"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true" style="color: #313030;  margin-right: 10px;"></i></a>
+                <a href="{{ url_for('gerar_csv_94') }}" alt="csv"><i class="fa fa-file-excel-o fa-2x" aria-hidden="true" style="color: #313030;  margin-right: 10px;"></i></a>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('retomar_dados_94') }}" method="POST" id="form-editar-etp94">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <a href="javascript:void(0);" onclick="document.getElementById('form-editar-etp94').submit();" alt="Editar">
+                  <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="color: #313030; margin-right: 10px;"></i>
+                </a>
+              </form>
+            </td>
             <td>
               <form action="{{ url_for('baixar_pdf_94') }}" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
