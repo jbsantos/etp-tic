@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.keys import Keys
 
 # Lendo o arquivo CSV com o pandas
 df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
@@ -38,14 +39,14 @@ try:
     campo_login.click()
 
     # Agora, preencha o campo de login com o valor desejado
-    campo_login.send_keys('0')
+    campo_login.send_keys('79260144515')
 
     # Localize o campo de senha dentro do elemento com a classe .content e clique nele
     campo_senha = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtSenha')))
     campo_senha.click()
 
     # Agora, preencha o campo de senha com o valor desejado
-    campo_senha.send_keys('0')
+    campo_senha.send_keys('SCTI2023')
 
     # Aguarde até que o botão esteja clicável antes de clicar nele
     botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
@@ -183,7 +184,7 @@ try:
     campo_solucao_7 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
     campo_solucao_7.click()
 
-    #Agora, preencha o campo de login com o valor desejado
+    #Agora, preencha o campo com o valor desejado
     campo_solucao_7.send_keys(coluna_b.iloc[6])
 
     # Após preencher o campo, retorne ao conteúdo principal
@@ -195,20 +196,34 @@ try:
 
     ## Estimativa do Valor da Contratação
 
-    # Obtém o valor do CSV (por exemplo, "R$ 15.489.759,01")
-    valor_csv = coluna_b.iloc[7]
-
     # Remove os pontos e troca a vírgula por ponto decimal
-    valor_numerico = float(re.sub(r'[^\d,]', '', valor_csv).replace(',', '.'))
+    valor_sem_mascara = float(re.sub(r'[^\d,]', '', coluna_b.iloc[7]).replace(',', '.'))
 
+    # Convertendo para um número inteiro
+    valor_inteiro = int(valor_sem_mascara)
+
+    # Separando casas decimais
+    valor_decimais = int ((valor_sem_mascara - valor_inteiro)* 100)
 
     # Localize novamente o campo de input
     campo_solucao_8_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[formcontrolname="valorNumerico"]')))
 
-    #Agora, preencha o campo de login com o valor desejado
-    #campo_solucao_8_input.send_keys(re.sub(r'[^\d,]', '', coluna_b.iloc[7]).replace(',', '.'))
-    # Utilize execute_script para definir o valor diretamente no campo, sem formatação do site
-    driver.execute_script("arguments[0].value = arguments[1]", campo_solucao_8_input, valor_numerico)
+    #Agora, preencha o campo com o valor desejado
+    campo_solucao_8_input.send_keys(valor_inteiro)
+
+    # Obtém o valor atual do campo de input
+    valor_com_mascara = campo_solucao_8_input.get_attribute("value")
+
+    # Encontre a posição da vírgula no valor atual
+    posicao_virgula = valor_com_mascara.find(',')
+
+    # Posicione o cursor após a vírgula, movendo para a direita
+    for _ in range(len(valor_com_mascara) - posicao_virgula + 1):
+        campo_solucao_8_input.send_keys(Keys.RIGHT)
+        time.sleep(1)
+        campo_solucao_8_input.send_keys(valor_decimais)
+
+    time.sleep(1)
 
     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
