@@ -1,5 +1,6 @@
 import pandas as pd
 import time, re
+from flask import session
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,7 +9,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 # Lendo o arquivo CSV com o pandas
-df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
+df = pd.read_csv('/home/jorge/Downloads/gerar_csv.csv', header=None)
 
 # Verificando se o DataFrame foi criado corretamente
 if not df.empty:
@@ -122,7 +123,7 @@ try:
     campo_necessidade_4.click()
 
     #Agora, preencha o campo de login com o valor desejado
-    campo_necessidade_4.send_keys(coluna_b.iloc[3])
+    campo_necessidade_4.send_keys(session[''])
 
     # Após preencher o campo, retorne ao conteúdo principal
     driver.switch_to.default_content()
