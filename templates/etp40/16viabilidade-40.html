@@ -102,12 +102,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showTermsAndConditions = async () => {
             const { value: accept } = await Swal.fire({
-                title: 'Anexando Documentos',
+                title: 'Atenção',
                 html: `
-                <div style="max-height: 400px; overflow-y: auto;">
-                    
-                    <p> Informar Responsaveis </p>
-                </div>
+                <div style="color: red; text-align: center;">
+                            A informação dos responsáveis deve ser feito de forma direta no próprio site do COMPRANET.
+                      </div>
             `,
                 focusConfirm: false,
                 showCancelButton: false,
