@@ -2,6 +2,7 @@ from decimal import Decimal
 import pandas as pd
 import re
 
+
 from model.Etp40 import Etp40
 
 
@@ -55,9 +56,19 @@ print(valor_arredondado)
 
 # Lendo o arquivo CSV com o pandas
 #df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
-etpa40_model = Etp40()
-etpa40_by_id = etpa40_model.get_all()
+#etpa40_model = Etp40()
+#etpa40_by_id = etpa40_model.get_all()
 
-for id in etpa40_by_id:
-    print(id , etpa40_by_id.__dict__)
+#for id in etpa40_by_id:
+#    print(id , etpa40_by_id.__dict__)
+
+
+id_form = 9
+
+etp40 = Etp40.get_etp40_formulario_by_id(id_form) 
+if etp40 is not None:
+    print('campo 8 é ', etp40.solucao8_40)
+else:
+    print('tenta outra vez')
+    
 

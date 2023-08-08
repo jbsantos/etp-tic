@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
+from controller.Etp40 import Etp40Controller
+
 # Lendo o arquivo CSV com o pandas
 df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
 
@@ -17,6 +19,8 @@ if not df.empty:
     print("Colunas:", df.columns)
 else:
     print("O arquivo CSV não pôde ser encontrado ou está vazio.")
+
+
 
 try:
     # Inicializando o navegador Selenium

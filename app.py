@@ -10,6 +10,7 @@ import pdfkit
 import csv
 from bs4 import BeautifulSoup
 import time
+from automacao.teste_selenium import Etp40Selenium
 # config import
 from config import app_config, app_active
 
@@ -22,6 +23,8 @@ from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
 import os
+
+
 config = app_config[app_active]
 
 def create_app(config_name):
@@ -1230,6 +1233,34 @@ def create_app(config_name):
         
         return response
 
+
+       
+    @app.route('/retomar_dados_import',methods=['POST', 'GET'])
+    def retomar_dados_import():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retoma_session_etp40(id_form)
+
+        list = Etp40Selenium.inport_automatic_etp40(result)
+
+        print('chamou', result['8'],' ', session['8'], ' ', list)
+
+        return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+    
+    @app.route('/retomar_dados_import_94',methods=['POST', 'GET'])
+    def retomar_dados_import_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+
+        return render_template('etp94/1informacao-94.html', status=status)
        
     def limpar_sessoes():
         session.clear()

@@ -29,3 +29,21 @@ body, html {
     -ms-transform: rotate(-44deg);
     transform: rotate(-44deg);
 }
+
+.invisible-button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.invisible-button i {
+    color: inherit;
+    margin-right: 10px;
+}
+
+.style-icon {
+    color: #313030; 
+    margin-right: 10px;
+}
