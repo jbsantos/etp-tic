@@ -22,6 +22,16 @@ from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
 import os
+
+import pandas as pd
+import time, re
+from flask import session
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.keys import Keys
 config = app_config[app_active]
 
 def create_app(config_name):
@@ -184,18 +194,10 @@ def create_app(config_name):
         # Aqui você pode escrever o código para automatizar o login usando o WebDriver.
         # Lembre-se de que este é apenas um exemplo básico, você precisará adaptar o código ao seu caso de uso real.
 
-        import pandas as pd
-        import time, re
-        from flask import session
-        from selenium import webdriver
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
-        from selenium.common.exceptions import WebDriverException
-        from selenium.webdriver.common.keys import Keys
+  
 
         # Lendo o arquivo CSV com o pandas
-        df = pd.read_csv('/home/jorge/Downloads/gerar_csv.csv', header=None)
+        df = pd.read_csv('/home/jorgejbas/Downloads/gerar_csv.csv', header=None)
 
         # Verificando se o DataFrame foi criado corretamente
         if not df.empty:
@@ -204,6 +206,10 @@ def create_app(config_name):
             print("Colunas:", df.columns)
         else:
             print("O arquivo CSV não pôde ser encontrado ou está vazio.")
+
+
+
+        driver = None
 
         try:
             # Inicializando o navegador Selenium
@@ -245,9 +251,8 @@ def create_app(config_name):
             
             campo_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, 'ETP')))
             campo_etp.click()
-            time.sleep(20)
-           
-          
+            time.sleep(10)
+            
 
             # Obtenha todas as guias abertas pelo driver
             guias = driver.window_handles
@@ -285,7 +290,7 @@ def create_app(config_name):
             necessidade_2 = remove_html_tags(session.get('1'))
             #Agora, preencha o campo de login com o valor desejado
             campo_necessidade_2.send_keys(necessidade_2)
-
+            
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -294,10 +299,29 @@ def create_app(config_name):
             botao_proximo.click()
 
             ## Área requisitante
+            
 
             # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+            adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.mb-sm-0 > .br-button')))
+            adicionar.click()
+            
+
+            adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(1) .ng-untouched .ng-untouched')))
+            adicionar.send_keys('Deus é fiel')
+    
+
+            exit()
+
+            adicionar_area1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'row:nth-child(1) .ng-untouched .ng-untouched')))
+            #adicionar_area1.click()
+            adicionar_area1.send_keys('teste1')
+            
+            adicionar_area2 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.ng-untouched:nth-child(2)')))
+            adicionar_area2.click()
+            adicionar_area2.send_keys('teste2')
+            
+            
+
 
             ## Descrição dos Requisitos da Contratação
 
@@ -316,7 +340,7 @@ def create_app(config_name):
 
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
-
+            exit()
             # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
             botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
             botao_proximo.click()
@@ -603,7 +627,7 @@ def create_app(config_name):
         except WebDriverException as e:
             print("Ocorreu um erro no WebDriver:", e)
             print("Entre em contato com o desenvolvedor para obter suporte.")
-            driver.quit()
+
 
         except Exception as e:
             print("Ocorreu um erro inesperado:", e)
@@ -612,14 +636,19 @@ def create_app(config_name):
 
 
 
+
+        finally:
+
         # Pausa a execução do script para aguardar sua interação manual com o alerta
-        input("Pressione Enter após interagir com o alerta para continuar.")
+            input("Pressione Enter após interagir com o alerta para continuar.")
+            # Verifique se a variável 'driver' não é None antes de tentar fechar o navegador
+            if driver is not None:
+            # Feche o navegador ao final do processo
+                driver.quit()
 
-        # Feche o navegador
-        driver.quit()
 
-        # Fechar o navegador ao final do processo
-        driver.quit()
+        # # Fechar o navegador ao final do processo
+        # driver.quit()
 
         # Redirecionar para a página Selenium (ou para onde você desejar após o login)
         return jsonify({'status': 'success', 'message': 'Login bem-sucedido'})
