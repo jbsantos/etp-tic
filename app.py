@@ -302,29 +302,40 @@ def create_app(config_name):
             
 
             # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.mb-sm-0 > .br-button')))
-            adicionar.click()
+
+            # Área requisitante 3 
+            adicionar1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.mb-sm-0 > .br-button')))
+            adicionar1.click()
             
 
-            adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(1) .ng-untouched .ng-untouched')))
-            adicionar.send_keys('Deus é fiel')
+            # Clicar dentro do primeiro campo de entrada no primeiro formulário
+            campo_input1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(1) .field .ng-untouched')))
+            campo_input1.click()
+
+            # Preencher o primeiro campo de entrada no primeiro formulário
+            campo_input1.send_keys('teste123')
+
+            # Clicar dentro do segundo campo de entrada no segundo formulário
+            campo_input2 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(2) .ng-untouched .ng-untouched')))
+            campo_input2.click()
+
+            # Preencher o segundo campo de entrada no segundo formulário
+            campo_input2.send_keys('testeDeus é fiel')
+            
+            input_adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.is-primary')))
+            input_adicionar.click()
     
 
-            exit()
-
-            adicionar_area1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'row:nth-child(1) .ng-untouched .ng-untouched')))
-            #adicionar_area1.click()
-            adicionar_area1.send_keys('teste1')
+            # Após preencher o campo, retorne ao conteúdo principal
+            #driver.switch_to.default_content()
+            pop_up = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.ui-toast-close-icon')))
+            pop_up.click()
             
-            adicionar_area2 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.ng-untouched:nth-child(2)')))
-            adicionar_area2.click()
-            adicionar_area2.send_keys('teste2')
-            
-            
-
-
+            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+            botao_proximo.click()
             ## Descrição dos Requisitos da Contratação
-
+            
             # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
             iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
@@ -337,10 +348,10 @@ def create_app(config_name):
 
             #Agora, preencha o campo de login com o valor desejado
             campo_necessidade_4.send_keys(necessidade_4)
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
-            exit()
+            
             # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
             botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
             botao_proximo.click()
@@ -357,7 +368,7 @@ def create_app(config_name):
             campo_solucao_5.click()
             
             necessidade_5 = remove_html_tags(session.get('5'))
-
+            time.sleep(2)
             #Agora, preencha o campo de login com o valor desejado
             campo_solucao_5.send_keys(necessidade_5)
 
@@ -383,7 +394,7 @@ def create_app(config_name):
 
             #Agora, preencha o campo de login com o valor desejado
             campo_solucao_6.send_keys(necessidade_6)
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -406,7 +417,7 @@ def create_app(config_name):
 
             #Agora, preencha o campo com o valor desejado
             campo_solucao_7.send_keys(necessidade_7)
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -458,7 +469,7 @@ def create_app(config_name):
 
             #Agora, preencha o campo de login com o valor desejado
             campo_solucao_8.send_keys(session.get('8'))
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -485,7 +496,7 @@ def create_app(config_name):
 
             #Agora, preencha o campo de login com o valor desejado
             campo_solucao_9.send_keys(necessidade_9)
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -508,7 +519,7 @@ def create_app(config_name):
 
             #Agora, preencha o campo de login com o valor desejado
             campo_solucao_10.send_keys(necessidade_10)
-
+            time.sleep(2)
             # Após preencher o campo, retorne ao conteúdo principal
             driver.switch_to.default_content()
 
@@ -644,6 +655,7 @@ def create_app(config_name):
             # Verifique se a variável 'driver' não é None antes de tentar fechar o navegador
             if driver is not None:
             # Feche o navegador ao final do processo
+                exit()
                 driver.quit()
 
 
