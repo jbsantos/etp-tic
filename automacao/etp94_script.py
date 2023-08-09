@@ -193,7 +193,7 @@ try:
     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
     botao_proximo.click()
 
-    ## Levantamento de soluções
+    ## Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC
 
     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))

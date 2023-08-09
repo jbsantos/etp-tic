@@ -10,7 +10,7 @@ import pdfkit
 import csv
 from bs4 import BeautifulSoup
 import time
-from automacao.teste_selenium import Etp40Selenium
+from automacao.teste_selenium import ImportAuto
 # config import
 from config import app_config, app_active
 
@@ -1242,11 +1242,11 @@ def create_app(config_name):
         session['id_form'] = id_form
         status = request.form.get('status')
         session['status'] = status
-        result = Etp40Controller.retoma_session_etp40(id_form)
 
-        list = Etp40Selenium.inport_automatic_etp40(result)
+        etp = 1
+        result = ImportAuto.import_automatic_etp(id_form)
 
-        print('chamou', result['8'],' ', session['8'], ' ', list)
+        print('chamou etp40', result,' ', session['8'])
 
         return 'ok' #render_template('etp94/1informacao-94.html', status=status)
     
@@ -1257,10 +1257,13 @@ def create_app(config_name):
         session['id_form'] = id_form
         status = request.form.get('status')
         session['status'] = status
-        result = Etp94Controller.retomar_session_etp94(id_form)
 
+        etp = 2
+        result = ImportAuto.import_automatic_etp(id_form)
 
-        return render_template('etp94/1informacao-94.html', status=status)
+        print('chamou etp94', result,' ', session['13'])
+
+        return 'ok' #render_template('etp94/1informacao-94.html', status=status)
        
     def limpar_sessoes():
         session.clear()

@@ -110,7 +110,6 @@ class Etp94(db.Model):
     def salvar_edicao_etp94(form_id):
 
         etp94 = Etp94.query.filter_by(id=form_id).first()
-        print(etp94.__dict__)
       
         if etp94 is not None:
             etp94.informacao1_94 = session['1']
