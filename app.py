@@ -1244,7 +1244,8 @@ def create_app(config_name):
         session['status'] = status
 
         etp = 1
-        result = ImportAuto.import_automatic_etp(id_form)
+        #result = ImportAuto.import_automatic_etp(id_form)
+        result = ImportAuto.import_automatic_etp(id_form,etp)
 
         print('chamou etp40', result,' ', session['8'])
 
@@ -1259,7 +1260,8 @@ def create_app(config_name):
         session['status'] = status
 
         etp = 2
-        result = ImportAuto.import_automatic_etp(id_form)
+        #result = ImportAuto.import_automatic_etp(id_form)
+        result = ImportAuto.import_automatic_etp(id_form,etp)
 
         print('chamou etp94', result,' ', session['13'])
 

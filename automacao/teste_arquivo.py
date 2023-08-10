@@ -1,10 +1,7 @@
 from decimal import Decimal
 import pandas as pd
 import re
-
-
-from model.Etp40 import Etp40
-
+from num2words import num2words
 
 
 # Lendo o arquivo CSV com o pandas
@@ -54,21 +51,36 @@ print("Valor centavos:", f"{valor_centavos:02}")  # Exibe os centavos com dois d
 valor_arredondado = round(valor_centavos, 2)
 print(valor_arredondado) 
 
-# Lendo o arquivo CSV com o pandas
-#df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv.csv', header=None)
-#etpa40_model = Etp40()
-#etpa40_by_id = etpa40_model.get_all()
 
-#for id in etpa40_by_id:
-#    print(id , etpa40_by_id.__dict__)
+def valor_por_extenso(valor):
+    partes = valor.split(".")
+    
+    if len(partes) >= 2:
+        reais = partes[0].replace(".", "")
+        centavos = partes[1]
+    else:
+        reais = valor.replace(".", "")
+        centavos = "00"
+    
+    extenso_reais = num2words(int(reais), lang='pt_BR').replace("-", " ")
+    extenso_centavos = num2words(int(centavos), lang='pt_BR').replace("-", " ")
+    
+    if extenso_reais == "um":
+        extenso_reais = "um real"
+    else:
+        extenso_reais += " reais"
+    
+    if extenso_centavos == "um":
+        extenso_centavos = "um centavo"
+    else:
+        extenso_centavos += " centavos"
+    
+    valor_extenso = extenso_reais + " e " + extenso_centavos
+    return valor_extenso.title()
 
+valor = valor_sem_mascara
+valor_extenso = valor_por_extenso(str(valor))
+print(valor_extenso)
 
-id_form = 9
-
-etp40 = Etp40.get_etp40_formulario_by_id(id_form) 
-if etp40 is not None:
-    print('campo 8 é ', etp40.solucao8_40)
-else:
-    print('tenta outra vez')
     
 

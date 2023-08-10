@@ -5,28 +5,28 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
+from num2words import num2words
 from config import app_active, app_config
+#Controller
 from controller.Etp40 import Etp40Controller
 from controller.Etp94 import Etp94Controller
 
-from model.Etp40 import Etp40 
 
 config = app_config[app_active]
 
 class ImportAuto:
-    def import_automatic_etp(id_form):
+    #def import_automatic_etp(id_form):
+    def import_automatic_etp(id_form,etp):
 
-        etp=1
+        #etp=1
 
         #Colocar validação de qual etp usar
         if(etp == 1):
             info_etp = Etp40Controller.retoma_session_etp40(id_form)
             print('deu certo etp40', info_etp, info_etp['8'])
-            
         elif(etp == 2):
             info_etp = Etp94Controller.retoma_session_etp94(id_form)
             print('deu certo etp94', info_etp, info_etp['13'])
-
         else:
             print('Não Localizado o ETP')
 
@@ -143,6 +143,8 @@ class ImportAuto:
             botao_proximo.click()
             print('modulo necessidade seguindo')
 
+            time.sleep(5)
+
             if (etp == 1):
                 ## Descrição dos Requisitos da Contratação
 
@@ -165,7 +167,6 @@ class ImportAuto:
                 botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
                 print('Escolha ETP40 - Necessidade Concluida')
-
             elif(etp == 2):
 
                 # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
@@ -250,13 +251,42 @@ class ImportAuto:
                 botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
                 print('Escolha ETP94 - Necessidade Concluida')
-
             else:
                 print('ETP não localizado')
             return
 
+        ## Transformar o Valor em Extenso
+        def valor_por_extenso(valor):
+            partes = valor.split(".")
+            
+            if len(partes) >= 2:
+                reais = partes[0].replace(".", "")
+                centavos = partes[1]
+            else:
+                reais = valor.replace(".", "")
+                centavos = "00"
+            
+            extenso_reais = num2words(int(reais), lang='pt_BR').replace("-", " ")
+            extenso_centavos = num2words(int(centavos), lang='pt_BR').replace("-", " ")
+            
+            if extenso_reais == "um":
+                extenso_reais = "um real"
+            else:
+                extenso_reais += " reais"
+            
+            if extenso_centavos == "um":
+                extenso_centavos = "um centavo"
+            else:
+                extenso_centavos += " centavos"
+            
+            valor_extenso = extenso_reais + " e " + extenso_centavos
+            
+            return valor_extenso.title()
+
         ## Etapa de Solução
         def modulo_solucao(driver,etp):
+
+            time.sleep(5)
 
             if (etp == 1):
                 ## Levantamento de Mercado
@@ -363,8 +393,12 @@ class ImportAuto:
                 campo_etp40_solucao_8 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
                 campo_etp40_solucao_8.click()
 
+                # Valor por Extenso
+                valor_extenso = valor_por_extenso(str(valor_sem_mascara))
+
                 #Agora, preencha o campo de login com o valor desejado
-                campo_etp40_solucao_8.send_keys(info_etp['8'])
+                #campo_etp40_solucao_8.send_keys(info_etp['8'])
+                campo_etp40_solucao_8.send_keys(valor_extenso)
 
                 # Após preencher o campo, retorne ao conteúdo principal
                 driver.switch_to.default_content()
@@ -440,7 +474,6 @@ class ImportAuto:
                 botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
                 print('Escolha ETP40')
-
             elif(etp == 2):
                 ## Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC
                 # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
@@ -586,8 +619,12 @@ class ImportAuto:
                 campo_etp94_solucao_13 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
                 campo_etp94_solucao_13.click()
 
+                # Valor por Extenso
+                valor_extenso = valor_por_extenso(str(valor_sem_mascara))
+
                 # Agora, preencha o campo de login com o valor desejado
-                campo_etp94_solucao_13.send_keys(info_etp['13'])
+                #campo_etp94_solucao_13.send_keys(info_etp['13'])
+                campo_etp94_solucao_13.send_keys(valor_extenso)
 
                 # Após preencher o campo, retorne ao conteúdo principal
                 driver.switch_to.default_content()
@@ -648,6 +685,9 @@ class ImportAuto:
 
         ## Etapa de Planejamento
         def modulo_planejamento(driver,etp):
+
+            time.sleep(5)
+
             if (etp == 1):
                 ## Benefícios a serem alcançados com a contratação
 
@@ -761,6 +801,9 @@ class ImportAuto:
 
         ## Etapa Viabilidade
         def modulo_viabilidade(driver,etp):
+
+            time.sleep(5)
+
             if(etp == 1):
                 ## Declaração de Viabilidade
 
@@ -784,7 +827,7 @@ class ImportAuto:
                 ## Responsáveis
 
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
 
                 print('Escolha ETP94 - Viabilidade concluida')
@@ -792,6 +835,18 @@ class ImportAuto:
                 print('ETP não localizado')
             return
 
+        ## Buscar Numero de Rascunho
+        def buscar_numero_documento(driver):
+            # Localizar o elemento
+            element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="form-etp"]/div/div/div[2]/app-campos/div[1]/div[1]/div[1]/div/ul/li[3]/span')))
+
+            # Obter o texto do elemento
+            texto_elemento = element.text
+
+            # Extrair o valor desejado usando manipulações de string
+            numero = texto_elemento.split("Nº ")[1]
+            return numero
+        
         try:
             # Inicializando driver navegador 
             driver = inicializar_drive()
@@ -833,6 +888,10 @@ class ImportAuto:
 
             # Etapa de Viabilidade
             modulo_viabilidade(driver, etp)
+
+            # Numero do Documento - Rascunho
+            numero = buscar_numero_documento(driver)
+            print('Rascunho - ', numero)
 
             time.sleep(10)
 
