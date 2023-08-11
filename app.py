@@ -22,6 +22,14 @@ from controller.Etp94 import Etp94Controller
 from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
+#Selenium
+import time, re
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 import os
 config = app_config[app_active]
 
@@ -277,8 +285,10 @@ def create_app(config_name):
 
             campo_necessidade_2 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
             campo_necessidade_2.click()
+            #print('necess ', necessidade2_40, 'sesion ', session.get('1') )
+            
 
-            necessidade_2 = remove_html_tags(session.get('1'))
+            necessidade_2 = remove_html_tags(session.get('2'))
             #Agora, preencha o campo de login com o valor desejado
             campo_necessidade_2.send_keys(necessidade_2)
             
@@ -646,7 +656,7 @@ def create_app(config_name):
             # Verifique se a variável 'driver' não é None antes de tentar fechar o navegador
             if driver is not None:
             # Feche o navegador ao final do processo
-                exit()
+                #exit()
                 driver.quit()
 
 
@@ -1719,6 +1729,9 @@ def create_app(config_name):
        
     @app.route('/retomar_dados_import',methods=['POST', 'GET'])
     def retomar_dados_import():
+        login = login_selenium()
+        usuario = login.usuario
+        senha = login.passaword
         status = ''
         id_form = request.form.get('id_form')
         session['id_form'] = id_form

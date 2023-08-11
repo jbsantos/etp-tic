@@ -751,7 +751,7 @@ class ImportAuto:
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                 botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
-                print('Escolha ETP40 - Solucao concluida')
+                print('Escolha ETP40 - Planejamento concluida')
             elif(etp == 2):
                 ## Benefícios a serem alcançados com a contratação
 
@@ -794,7 +794,7 @@ class ImportAuto:
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                 botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
-                print('Escolha ETP94 - Solucao concluida')
+                print('Escolha ETP94 - Planejamento concluida')
             else:
                 print('ETP não localizado')
             return
