@@ -50,7 +50,7 @@ try:
     campo_senha.click()
 
     # Agora, preencha o campo de senha com o valor desejado
-    campo_senha.send_keys('SCTI2023')
+    campo_senha.send_keys('SATIC2023')
 
     # Aguarde até que o botão esteja clicável antes de clicar nele
     botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))

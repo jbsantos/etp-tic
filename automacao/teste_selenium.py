@@ -10,13 +10,14 @@ from config import app_active, app_config
 #Controller
 from controller.Etp40 import Etp40Controller
 from controller.Etp94 import Etp94Controller
+from controller.User import UserController
 
 
 config = app_config[app_active]
 
 class ImportAuto:
     #def import_automatic_etp(id_form):
-    def import_automatic_etp(id_form,etp):
+    def import_automatic_etp(usuario, senha, id_form,etp):
 
         #etp=1
 
@@ -46,7 +47,7 @@ class ImportAuto:
             return
         
         ## Procedimento de Logar
-        def processo_conexao_login(driver):
+        def processo_conexao_login(driver, usuario, senha):
             # Localize o campo desejado usando o seletor CSS
             campo = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#card2 .content')))
 
@@ -55,14 +56,14 @@ class ImportAuto:
             campo_login.click()
 
             # Agora, preencha o campo de login com o valor desejado
-            campo_login.send_keys('79260144515')
+            campo_login.send_keys(usuario)
 
             # Localize o campo de senha dentro do elemento com a classe .content e clique nele
             campo_senha = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtSenha')))
             campo_senha.click()
 
             # Agora, preencha o campo de senha com o valor desejado
-            campo_senha.send_keys('SCTI2023')
+            campo_senha.send_keys(senha)
 
 
             # Aguarde até que o botão esteja clicável antes de clicar nele
@@ -856,7 +857,7 @@ class ImportAuto:
 
             # Pagina de Login
             # Procedimento de Logar no ComprasNet
-            processo_conexao_login(driver)
+            processo_conexao_login(driver, usuario, senha)
 
             # Pagina Inicial ComprasNet
             escolhar_processo_criar_etp(driver)

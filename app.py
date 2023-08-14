@@ -18,7 +18,6 @@ from config import app_config, app_active
 from controller.User import UserController
 from controller.Etp40 import Etp40Controller
 from controller.Etp94 import Etp94Controller
-
 from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
@@ -185,13 +184,23 @@ def create_app(config_name):
     def viabilidade16_40():
         return render_template('etp40/16viabilidade-40.html') 
  
-    @app.route('/login_selenium',methods=['POST', 'GET'])
+    @app.route('/process_form',methods=['POST', 'GET'])
     def login_selenium():
+        data = request.form  # Use .json diretamente para obter os dados
 
-        data = request.form
-        username = data.get('username')
-        password = data.get('password')
-        id_form = data.get('id_form')
+        processed_data = UserController.process_form_data(data)
+        print(processed_data['username'])
+        exit()
+        ImportAuto
+        # data = request.form
+        # username = data.get('username')
+        # password = data.get('password')
+        # id_form = data.get('id_form')
+        # etp = data.get('etp')
+        print(processed_data)
+        
+        return jsonify(processed_data)
+    
         #etp
 
         #print('dados '+ id_form, username, password)
@@ -671,22 +680,8 @@ def create_app(config_name):
         # # Redirecionar para a página Selenium (ou para onde você desejar após o login)
         #return  jsonify({'status': 'success', 'message': 'Login bem-sucedido'})
 
-        etp = data.get('etp')
-    
-        # Você pode fazer o que quiser com os valores aqui, por exemplo, autenticar o usuário
-    
-        response = {
-            'status': 'success',  # Ou 'error' se houver erro na autenticação
-            'message': 'Autenticação bem-sucedida',  # Mensagem opcional
-            'dados': {
-                'username': username,
-                'password': password,
-                'id_form': id_form,
-                'etp': etp
-            }
-        }   
+    # Chame a função do controlador e obtenha o resultado
 
-        return jsonify(response)
       
     @app.route('/pagina_selenium',methods=['POST', 'GET'])
     def pagina_selenium():    
@@ -1751,14 +1746,23 @@ def create_app(config_name):
        
     @app.route('/retomar_dados_import',methods=['POST', 'GET'])
     def retomar_dados_import():
-        login = login_selenium()
+        data = request.form  # Use .json diretamente para obter os dados
 
-        print('chegou', login.__dict__ )
-        exit()
-        usuario = login.usuario
-        senha = login.passaword
-        id_form = login.id_form
-        etp= login.etp
+        processed_data = UserController.process_form_data(data)
+        #print(processed_data['username'])
+
+        ImportAuto
+        # data = request.form
+        # username = data.get('username')
+        # password = data.get('password')
+        # id_form = data.get('id_form')
+        # etp = data.get('etp')
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
         # status = ''
         # id_form = request.form.get('id_form')
         # session['id_form'] = id_form
@@ -1767,7 +1771,7 @@ def create_app(config_name):
 
         #etp = 1
         #result = ImportAuto.import_automatic_etp(id_form)
-        result = ImportAuto.import_automatic_etp(id_form,etp)
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
 
         print('chamou etp40', result,' ', session['8'])
 
