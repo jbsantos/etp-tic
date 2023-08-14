@@ -33,7 +33,7 @@ class UserController():
             'username': data.get('username'),
             'password': data.get('password'),
             'id_form': data.get('id_form'),
-            'etp': data.get('etp')
+            'etp': int(data.get('etp'))
         }
         return processed_data
 
