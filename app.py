@@ -187,9 +187,14 @@ def create_app(config_name):
  
     @app.route('/login_selenium',methods=['POST', 'GET'])
     def login_selenium():
+
         data = request.form
         username = data.get('username')
         password = data.get('password')
+        id_form = data.get('id_form')
+        #etp
+
+        #print('dados '+ id_form, username, password)
         # Aqui você pode escrever o código para automatizar o login usando o WebDriver.
         # Lembre-se de que este é apenas um exemplo básico, você precisará adaptar o código ao seu caso de uso real.
 
@@ -208,468 +213,485 @@ def create_app(config_name):
 
 
 
-        driver = None
+       # driver = None
 
-        try:
-            # Inicializando o navegador Selenium
-            path = '/static/driver/chromedriver'
-            driver = webdriver.Chrome()  
-            print("O driver do Selenium foi localizado com sucesso.")
-            #coluna_b = df.iloc[:, 1] 
+        # try:
+        #     # Inicializando o navegador Selenium
+        #     path = '/static/driver/chromedriver'
+        #     driver = webdriver.Chrome()  
+        #     print("O driver do Selenium foi localizado com sucesso.")
+        #     #coluna_b = df.iloc[:, 1] 
 
-            driver.get('http://www.comprasnet.gov.br/seguro/loginPortalUASG.asp')
-            driver.current_window_handle  # id da janela atual
-            driver.set_window_size(width=1022, height=683)
+        #     driver.get('http://www.comprasnet.gov.br/seguro/loginPortalUASG.asp')
+        #     driver.current_window_handle  # id da janela atual
+        #     driver.set_window_size(width=1022, height=683)
 
-            ## Pagina de Login
+        #     ## Pagina de Login
 
-            # Localize o campo desejado usando o seletor CSS
-            campo = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#card2 .content')))
+        #     # Localize o campo desejado usando o seletor CSS
+        #     campo = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#card2 .content')))
 
-            # Localize o campo de login dentro do elemento com a classe .content e clique nele
-            campo_login = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtLogin')))
-            campo_login.click()
+        #     # Localize o campo de login dentro do elemento com a classe .content e clique nele
+        #     campo_login = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtLogin')))
+        #     campo_login.click()
 
-            # Agora, preencha o campo de login com o valor desejado
-            campo_login.send_keys(username)
+        #     # Agora, preencha o campo de login com o valor desejado
+        #     campo_login.send_keys(username)
 
-            # Localize o campo de senha dentro do elemento com a classe .content e clique nele
-            campo_senha = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtSenha')))
-            campo_senha.click()
+        #     # Localize o campo de senha dentro do elemento com a classe .content e clique nele
+        #     campo_senha = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'txtSenha')))
+        #     campo_senha.click()
             
-            # Agora, preencha o campo de senha com o valor desejado
-            campo_senha.send_keys(password)
+        #     # Agora, preencha o campo de senha com o valor desejado
+        #     campo_senha.send_keys(password)
             
-            # Aguarde até que o botão esteja clicável antes de clicar nele
-            botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
-            botao_entrar.click()
+        #     # Aguarde até que o botão esteja clicável antes de clicar nele
+        #     botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
+        #     botao_entrar.click()
             
-            ## Pagina Inicial
-            botao_criar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.div-menu-acesso-rapido-interno button.br-button.is-primary')))
-            botao_criar.click()
+        #     ## Pagina Inicial
+        #     botao_criar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.div-menu-acesso-rapido-interno button.br-button.is-primary')))
+        #     botao_criar.click()
             
-            campo_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, 'ETP')))
-            campo_etp.click()
-            time.sleep(10)
-            
-
-            # Obtenha todas as guias abertas pelo driver
-            guias = driver.window_handles
-            
-            # Alterne para a nova aba (guia) que foi aberta
-            driver.switch_to.window(guias[1])  # O índice 0 é a guia original, o índice 1 é a nova guia
-
-            ## Pagina ETP
-            botao_criar_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.br-button.primary.ng-star-inserted')))
-            botao_criar_etp.click()
-
-            opcao_etp_outros = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'p-slidemenusub ul li.ui-menuitem:nth-child(2) a span')))
-            opcao_etp_outros.click()
-
-            ## Passando informações ETP - Outros 
-
-            ## Informações Básicas
-            time.sleep(5)
-
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Próximo campo")]')))
-            botao_proximo.click()
-
-            ##  Descrição da necessidade
-
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
-
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
-
-            campo_necessidade_2 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_necessidade_2.click()
-            #print('necess ', necessidade2_40, 'sesion ', session.get('1') )
+        #     campo_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, 'ETP')))
+        #     campo_etp.click()
+        #     time.sleep(10)
             
 
-            necessidade_2 = remove_html_tags(session.get('2'))
-            #Agora, preencha o campo de login com o valor desejado
-            campo_necessidade_2.send_keys(necessidade_2)
+        #     # Obtenha todas as guias abertas pelo driver
+        #     guias = driver.window_handles
             
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Alterne para a nova aba (guia) que foi aberta
+        #     driver.switch_to.window(guias[1])  # O índice 0 é a guia original, o índice 1 é a nova guia
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     ## Pagina ETP
+        #     botao_criar_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.br-button.primary.ng-star-inserted')))
+        #     botao_criar_etp.click()
 
-            ## Área requisitante
+        #     opcao_etp_outros = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'p-slidemenusub ul li.ui-menuitem:nth-child(2) a span')))
+        #     opcao_etp_outros.click()
+
+        #     ## Passando informações ETP - Outros 
+
+        #     ## Informações Básicas
+        #     time.sleep(5)
+
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Próximo campo")]')))
+        #     botao_proximo.click()
+
+        #     ##  Descrição da necessidade
+
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
+
+        #     campo_necessidade_2 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_necessidade_2.click()
+        #     #print('necess ', necessidade2_40, 'sesion ', session.get('1') )
             
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     necessidade_2 = remove_html_tags(session.get('2'))
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_necessidade_2.send_keys(necessidade_2)
+            
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Área requisitante 3 
-            adicionar1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.mb-sm-0 > .br-button')))
-            adicionar1.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
+
+        #     ## Área requisitante
             
 
-            # Clicar dentro do primeiro campo de entrada no primeiro formulário
-            campo_input1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(1) .field .ng-untouched')))
-            campo_input1.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
 
-            # Preencher o primeiro campo de entrada no primeiro formulário
-            campo_input1.send_keys('teste123')
-
-            # Clicar dentro do segundo campo de entrada no segundo formulário
-            campo_input2 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(2) .ng-untouched .ng-untouched')))
-            campo_input2.click()
-
-            # Preencher o segundo campo de entrada no segundo formulário
-            campo_input2.send_keys('testeDeus é fiel')
+        #     # Área requisitante 3 
+        #     adicionar1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.mb-sm-0 > .br-button')))
+        #     adicionar1.click()
             
-            input_adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.is-primary')))
-            input_adicionar.click()
+
+        #     # Clicar dentro do primeiro campo de entrada no primeiro formulário
+        #     campo_input1 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(1) .field .ng-untouched')))
+        #     campo_input1.click()
+
+        #     # Preencher o primeiro campo de entrada no primeiro formulário
+        #     campo_input1.send_keys('teste123')
+
+        #     # Clicar dentro do segundo campo de entrada no segundo formulário
+        #     campo_input2 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.row:nth-child(2) .ng-untouched .ng-untouched')))
+        #     campo_input2.click()
+
+        #     # Preencher o segundo campo de entrada no segundo formulário
+        #     campo_input2.send_keys('testeDeus é fiel')
+            
+        #     input_adicionar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.is-primary')))
+        #     input_adicionar.click()
     
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            #driver.switch_to.default_content()
-            pop_up = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.ui-toast-close-icon')))
-            pop_up.click()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     #driver.switch_to.default_content()
+        #     pop_up = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.ui-toast-close-icon')))
+        #     pop_up.click()
             
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
-            ## Descrição dos Requisitos da Contratação
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
+        #     ## Descrição dos Requisitos da Contratação
             
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_necessidade_4 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_necessidade_4.click()
-            necessidade_4 = remove_html_tags(session.get('4'))
+        #     campo_necessidade_4 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_necessidade_4.click()
+        #     necessidade_4 = remove_html_tags(session.get('4'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_necessidade_4.send_keys(necessidade_4)
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_necessidade_4.send_keys(necessidade_4)
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
             
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Levantamento de Mercado
+        #     ## Levantamento de Mercado
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_5 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_5.click()
+        #     campo_solucao_5 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_5.click()
             
-            necessidade_5 = remove_html_tags(session.get('5'))
-            time.sleep(2)
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_5.send_keys(necessidade_5)
+        #     necessidade_5 = remove_html_tags(session.get('5'))
+        #     time.sleep(2)
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_5.send_keys(necessidade_5)
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Descrição da solução como um todo
+        #     ## Descrição da solução como um todo
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_6 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_6.click()
+        #     campo_solucao_6 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_6.click()
 
-            necessidade_6 = remove_html_tags(session.get('6'))
+        #     necessidade_6 = remove_html_tags(session.get('6'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_6.send_keys(necessidade_6)
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_6.send_keys(necessidade_6)
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Estimativa das Quantidades a serem Contratadas
+        #     ## Estimativa das Quantidades a serem Contratadas
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_7 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_7.click()
+        #     campo_solucao_7 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_7.click()
 
-            necessidade_7 = remove_html_tags(session.get('7'))
+        #     necessidade_7 = remove_html_tags(session.get('7'))
 
-            #Agora, preencha o campo com o valor desejado
-            campo_solucao_7.send_keys(necessidade_7)
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo com o valor desejado
+        #     campo_solucao_7.send_keys(necessidade_7)
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Estimativa do Valor da Contratação
-            necessidade_8 = remove_html_tags(session.get('8'))
+        #     ## Estimativa do Valor da Contratação
+        #     necessidade_8 = remove_html_tags(session.get('8'))
 
-            # Remove os pontos e troca a vírgula por ponto decimal
-            valor_sem_mascara = float(re.sub(r'[^\d,]', '', necessidade_8).replace(',', '.'))
+        #     # Remove os pontos e troca a vírgula por ponto decimal
+        #     valor_sem_mascara = float(re.sub(r'[^\d,]', '', necessidade_8).replace(',', '.'))
 
-            # Convertendo para um número inteiro
-            valor_inteiro = int(valor_sem_mascara)
+        #     # Convertendo para um número inteiro
+        #     valor_inteiro = int(valor_sem_mascara)
 
-            # Separando casas decimais
-            valor_decimais = int ((valor_sem_mascara - valor_inteiro)* 100)
+        #     # Separando casas decimais
+        #     valor_decimais = int ((valor_sem_mascara - valor_inteiro)* 100)
 
-            # Localize novamente o campo de input
-            campo_solucao_8_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[formcontrolname="valorNumerico"]')))
+        #     # Localize novamente o campo de input
+        #     campo_solucao_8_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[formcontrolname="valorNumerico"]')))
 
-            #Agora, preencha o campo com o valor desejado
-            campo_solucao_8_input.send_keys(valor_inteiro)
+        #     #Agora, preencha o campo com o valor desejado
+        #     campo_solucao_8_input.send_keys(valor_inteiro)
 
-            # Obtém o valor atual do campo de input
-            valor_com_mascara = campo_solucao_8_input.get_attribute("value")
+        #     # Obtém o valor atual do campo de input
+        #     valor_com_mascara = campo_solucao_8_input.get_attribute("value")
 
-            # Encontre a posição da vírgula no valor atual
-            posicao_virgula = valor_com_mascara.find(',')
+        #     # Encontre a posição da vírgula no valor atual
+        #     posicao_virgula = valor_com_mascara.find(',')
 
-            # Posicione o cursor após a vírgula, movendo para a direita
-            for _ in range(len(valor_com_mascara) - posicao_virgula + 1):
-                campo_solucao_8_input.send_keys(Keys.RIGHT)
-                time.sleep(1)
-                campo_solucao_8_input.send_keys(valor_decimais)
+        #     # Posicione o cursor após a vírgula, movendo para a direita
+        #     for _ in range(len(valor_com_mascara) - posicao_virgula + 1):
+        #         campo_solucao_8_input.send_keys(Keys.RIGHT)
+        #         time.sleep(1)
+        #         campo_solucao_8_input.send_keys(valor_decimais)
 
-            time.sleep(1)
+        #     time.sleep(1)
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
-            time.sleep(5)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
+        #     time.sleep(5)
 
-            campo_solucao_8 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_8.click()
+        #     campo_solucao_8 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_8.click()
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_8.send_keys(session.get('8'))
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_8.send_keys(session.get('8'))
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Role para cima
-            driver.execute_script("window.scrollTo(0, 0);")
+        #     # Role para cima
+        #     driver.execute_script("window.scrollTo(0, 0);")
 
-            time.sleep(5)
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     time.sleep(5)
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Justificativa para o Parcelamento ou não da Solução
+        #     ## Justificativa para o Parcelamento ou não da Solução
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_9 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_9.click()
+        #     campo_solucao_9 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_9.click()
 
-            necessidade_9 = remove_html_tags(session.get('9'))
+        #     necessidade_9 = remove_html_tags(session.get('9'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_9.send_keys(necessidade_9)
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_9.send_keys(necessidade_9)
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Contratações Correlatas e/ou Interdependentes
+        #     ## Contratações Correlatas e/ou Interdependentes
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_10 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_10.click()
+        #     campo_solucao_10 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_10.click()
             
-            necessidade_10 = remove_html_tags(session.get('10'))
+        #     necessidade_10 = remove_html_tags(session.get('10'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_10.send_keys(necessidade_10)
-            time.sleep(2)
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_10.send_keys(necessidade_10)
+        #     time.sleep(2)
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Alinhamento entre a Contratação e o Planejamento
+        #     ## Alinhamento entre a Contratação e o Planejamento
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_solucao_11 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_solucao_11.click()
+        #     campo_solucao_11 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_solucao_11.click()
 
-            necessidade_11 = remove_html_tags(session.get('11'))
+        #     necessidade_11 = remove_html_tags(session.get('11'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_solucao_11.send_keys(necessidade_11)
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_solucao_11.send_keys(necessidade_11)
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Benefícios a serem alcançados com a contratação
+        #     ## Benefícios a serem alcançados com a contratação
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_planejamento_12 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_planejamento_12.click()
+        #     campo_planejamento_12 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_planejamento_12.click()
 
-            #Agora, preencha o campo de login com o valor desejado
-            necessidade_12 = remove_html_tags(session.get('12'))
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     necessidade_12 = remove_html_tags(session.get('12'))
 
-            campo_planejamento_12.send_keys(necessidade_12)
+        #     campo_planejamento_12.send_keys(necessidade_12)
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Providências a serem Adotadas
+        #     ## Providências a serem Adotadas
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível 
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível 
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_planejamento_13 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_planejamento_13.click()
+        #     campo_planejamento_13 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_planejamento_13.click()
 
-            necessidade_13 = remove_html_tags(session.get('13'))
+        #     necessidade_13 = remove_html_tags(session.get('13'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_planejamento_13.send_keys(necessidade_13)
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_planejamento_13.send_keys(necessidade_13)
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Possíveis Impactos Ambientais
+        #     ## Possíveis Impactos Ambientais
 
-            # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
-            iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
+        #     # Localize o iframe pelo seletor CSS ou por qualquer outro meio disponível
+        #     iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')))
 
-            # Alterne para o iframe
-            driver.switch_to.frame(iframe)
+        #     # Alterne para o iframe
+        #     driver.switch_to.frame(iframe)
 
-            campo_planejamento_14 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
-            campo_planejamento_14.click()
+        #     campo_planejamento_14 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'body.document-editor')))
+        #     campo_planejamento_14.click()
 
-            necessidade_14 = remove_html_tags(session.get('14'))
+        #     necessidade_14 = remove_html_tags(session.get('14'))
 
-            #Agora, preencha o campo de login com o valor desejado
-            campo_planejamento_14.send_keys(necessidade_14)
+        #     #Agora, preencha o campo de login com o valor desejado
+        #     campo_planejamento_14.send_keys(necessidade_14)
 
-            # Após preencher o campo, retorne ao conteúdo principal
-            driver.switch_to.default_content()
+        #     # Após preencher o campo, retorne ao conteúdo principal
+        #     driver.switch_to.default_content()
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Declaração de Viabilidade
+        #     ## Declaração de Viabilidade
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
-            ## Responsáveis
+        #     ## Responsáveis
 
-            # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-            botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
-            botao_proximo.click()
-
-
-
-            time.sleep(10)
-
-        except WebDriverException as e:
-            print("Ocorreu um erro no WebDriver:", e)
-            print("Entre em contato com o desenvolvedor para obter suporte.")
-
-
-        except Exception as e:
-            print("Ocorreu um erro inesperado:", e)
-            print("Entre em contato com o desenvolvedor para obter suporte.")
-            driver.quit()
+        #     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+        #     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+        #     botao_proximo.click()
 
 
 
+        #     time.sleep(10)
 
-        finally:
-
-        # Pausa a execução do script para aguardar sua interação manual com o alerta
-            input("Pressione Enter após interagir com o alerta para continuar.")
-            # Verifique se a variável 'driver' não é None antes de tentar fechar o navegador
-            if driver is not None:
-            # Feche o navegador ao final do processo
-                #exit()
-                driver.quit()
+        # except WebDriverException as e:
+        #     print("Ocorreu um erro no WebDriver:", e)
+        #     print("Entre em contato com o desenvolvedor para obter suporte.")
 
 
-        # # Fechar o navegador ao final do processo
-        # driver.quit()
+        # except Exception as e:
+        #     print("Ocorreu um erro inesperado:", e)
+        #     print("Entre em contato com o desenvolvedor para obter suporte.")
+        #     driver.quit()
 
-        # Redirecionar para a página Selenium (ou para onde você desejar após o login)
-        return jsonify({'status': 'success', 'message': 'Login bem-sucedido'})
+
+
+
+        # finally:
+
+        # # Pausa a execução do script para aguardar sua interação manual com o alerta
+        #     input("Pressione Enter após interagir com o alerta para continuar.")
+        #     # Verifique se a variável 'driver' não é None antes de tentar fechar o navegador
+        #     if driver is not None:
+        #     # Feche o navegador ao final do processo
+        #         #exit()
+        #         driver.quit()
+
+
+        # # # Fechar o navegador ao final do processo
+        # # driver.quit()
+
+        # # Redirecionar para a página Selenium (ou para onde você desejar após o login)
+        #return  jsonify({'status': 'success', 'message': 'Login bem-sucedido'})
+
+        etp = data.get('etp')
+    
+        # Você pode fazer o que quiser com os valores aqui, por exemplo, autenticar o usuário
+    
+        response = {
+            'status': 'success',  # Ou 'error' se houver erro na autenticação
+            'message': 'Autenticação bem-sucedida',  # Mensagem opcional
+            'dados': {
+                'username': username,
+                'password': password,
+                'id_form': id_form,
+                'etp': etp
+            }
+        }   
+
+        return jsonify(response)
       
     @app.route('/pagina_selenium',methods=['POST', 'GET'])
     def pagina_selenium():    
     
-        return render_template('etp40/login-selenium.html') 
+        return 'OK' #render_template('etp40/login-selenium.html') 
        
     @app.route('/salvar-conteudo', methods=['POST'])
     def salvar_conteudo():
@@ -1730,15 +1752,20 @@ def create_app(config_name):
     @app.route('/retomar_dados_import',methods=['POST', 'GET'])
     def retomar_dados_import():
         login = login_selenium()
+
+        print('chegou', login.__dict__ )
+        exit()
         usuario = login.usuario
         senha = login.passaword
-        status = ''
-        id_form = request.form.get('id_form')
-        session['id_form'] = id_form
-        status = request.form.get('status')
-        session['status'] = status
+        id_form = login.id_form
+        etp= login.etp
+        # status = ''
+        # id_form = request.form.get('id_form')
+        # session['id_form'] = id_form
+        # status = request.form.get('status')
+        # session['status'] = status
 
-        etp = 1
+        #etp = 1
         #result = ImportAuto.import_automatic_etp(id_form)
         result = ImportAuto.import_automatic_etp(id_form,etp)
 

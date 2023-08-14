@@ -58,10 +58,15 @@
               </form>
             </td>
             <td>
-              <form action="{{ url_for('retomar_dados_import') }}" method="POST">
+              <!-- <form action="{{ url_for('retomar_dados_import') }}" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
                 <input type="hidden" name="status" value="editar">
                 <button type="submit" class="btn btn-link invisible-button"><i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
+              </form> -->
+              <form action="#" method="POST">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="1">
+                <button type="button" class="btn-login btn btn-link invisible-button"> oi 40<i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
               </form>
             </td>
           </tr>
@@ -95,52 +100,66 @@
             </td>
             <td>
               <form action="#" method="POST">
-                <button type="button" id='btn-login' class="btn btn-link invisible-button"> oi<i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="2">
+                <button type="button" class="btn-login btn btn-link invisible-button"> oi 94<i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
               </form>
             </td>
 
-  <script>
-    // Função para enviar o formulário de login
-    function enviarFormulario() {
-      Swal.fire({
-        title: 'Login',
-        html: '<form id="login-form">' +
-              //'<input type="hidden" name="id_form" value="{{etp.id}}">' +
-              '<input type="text" id="username" class="swal2-input" placeholder="Usuário">' +
-              '<input type="password" id="password" class="swal2-input" placeholder="Senha">' +
-              '</form>',
-        focusConfirm: false,
-        preConfirm: () => {
-          const username = $('#username').val();
-          const password = $('#password').val();
-          const id_form  = $('#id_form').val();
-  
-          // Enviar os dados de login para o backend (app.py) usando AJAX
-          $.ajax({
-            url: '/login_selenium',
-            method: 'POST',
-            data: { username: username, password: password },
-            success: function (response) {
-              // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
-              if (response.status === 'success') {
-                window.location.href = '/pagina_selenium'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
-              } else {
-                // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
-                Swal.fire('Erro', 'Login ou senha inválidos', 'error');
+            <script>
+              // Função para enviar o formulário de login
+              function enviarFormulario() {
+                const button = $(this); // Pega o botão que foi clicado
+                const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
+                const etp = button.siblings('[name="status"]').val();
+                
+                Swal.fire({
+                  title: 'Login',
+                  html: '<form id="login-form">' +
+                        '<input type="text" id="username" class="swal2-input" placeholder="Usuário">' +
+                        '<input type="password" id="password" class="swal2-input" placeholder="Senha">' +
+                        '</form>',
+                  focusConfirm: false,
+                  preConfirm: () => {
+                    const username = $('#username').val();
+                    const password = $('#password').val();
+
+                    let link;
+                    if (etp === '1') {
+                      link = '/retomar_dados_import'; // Altere para o URL correto para etp === '1'
+                    } else if (etp === '2') {
+                      link = '/login_selenium'; // Altere para o URL correto para etp === '2'
+                    } else {
+                      // Trate outros valores de etp aqui, se necessário
+                      print('não informado')
+                    }
+            
+                    // Enviar os dados de login para o backend (app.py) usando AJAX
+                    $.ajax({
+                      url: link,
+                      method: 'POST',
+                      data: { username: username, password: password, id_form: id_form, etp:etp }, // Envia o id_form também
+                      success: function (response) {
+                        // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
+                        if (response.status === 'success') {
+                          window.location.href = '/pagina_selenium'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
+                        } else {
+                          // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
+                          Swal.fire('Erro', 'Login ou senha inválidos', 'error');
+                        }
+                      },
+                      error: function (error) {
+                        console.error('Erro ao enviar dados de login:', error);
+                        Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
+                      },
+                    });
+                  }
+                });
               }
-            },
-            error: function (error) {
-              console.error('Erro ao enviar dados de login:', error);
-              Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
-            },
-          });
-        }
-      });
-    }
-  
-    // Adicionar o evento de clique ao botão para abrir o formulário de login
-    document.getElementById('btn-login').addEventListener('click', enviarFormulario);
-  </script>
+            
+              // Adicionar o evento de clique aos botões de classe "btn-login"
+              $('.btn-login').click(enviarFormulario);
+            </script>
   
           </tr>
           {% endfor %}
