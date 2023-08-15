@@ -27,8 +27,8 @@ class UserController():
         return {}
     
     def process_form_data(data):
-    # Coloque a lógica de autenticação aqui
-    # Verifique as credenciais, id_form e etp
+        # Coloque a lógica de autenticação aqui
+        # Verifique as credenciais, id_form e etp
         processed_data = {
             'username': data.get('username'),
             'password': data.get('password'),

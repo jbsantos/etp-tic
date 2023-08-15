@@ -189,17 +189,31 @@ def create_app(config_name):
         data = request.form  # Use .json diretamente para obter os dados
 
         processed_data = UserController.process_form_data(data)
-        print(processed_data['username'])
-        exit()
-        ImportAuto
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
+
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
+
+        print('chamou etp40', result,' ', session['8'])
+
+        # data = request.form  # Use .json diretamente para obter os dados
+
+        # processed_data = UserController.process_form_data(data)
+        # print(processed_data['username'])
+        # exit()
+        #ImportAuto
         # data = request.form
         # username = data.get('username')
         # password = data.get('password')
         # id_form = data.get('id_form')
         # etp = data.get('etp')
-        print(processed_data)
+        # print(processed_data)
         
-        return jsonify(processed_data)
+        #return jsonify(processed_data)
     
         #etp
 
@@ -1749,49 +1763,43 @@ def create_app(config_name):
         data = request.form  # Use .json diretamente para obter os dados
 
         processed_data = UserController.process_form_data(data)
-        #print(processed_data['username'])
-
-        ImportAuto
-        # data = request.form
-        # username = data.get('username')
-        # password = data.get('password')
-        # id_form = data.get('id_form')
-        # etp = data.get('etp')
         print(processed_data)
         
         usuario = processed_data['username']
         senha = processed_data['password']
         id_form = processed_data['id_form']
         etp= processed_data['etp']
-        # status = ''
-        # id_form = request.form.get('id_form')
-        # session['id_form'] = id_form
-        # status = request.form.get('status')
-        # session['status'] = status
 
-        #etp = 1
-        #result = ImportAuto.import_automatic_etp(id_form)
         result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
 
         print('chamou etp40', result,' ', session['8'])
-
-        return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+        if result:
+            # return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso'})
+        else:
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo'})
     
     @app.route('/retomar_dados_import_94',methods=['POST', 'GET'])
     def retomar_dados_import_94():
-        status = ''
-        id_form = request.form.get('id_form')
-        session['id_form'] = id_form
-        status = request.form.get('status')
-        session['status'] = status
+        data = request.form  # Use .json diretamente para obter os dados
 
-        etp = 2
+        processed_data = UserController.process_form_data(data)
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
+
         #result = ImportAuto.import_automatic_etp(id_form)
-        result = ImportAuto.import_automatic_etp(id_form,etp)
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
 
         print('chamou etp94', result,' ', session['13'])
-
-        return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+        if result:
+            #return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso'})
+        else:
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo'})
        
     def limpar_sessoes():
         session.clear()

@@ -58,15 +58,10 @@
               </form>
             </td>
             <td>
-              <!-- <form action="{{ url_for('retomar_dados_import') }}" method="POST">
-                <input type="hidden" name="id_form" value="{{etp.id}}">
-                <input type="hidden" name="status" value="editar">
-                <button type="submit" class="btn btn-link invisible-button"><i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
-              </form> -->
               <form action="#" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
                 <input type="hidden" name="status" value="1">
-                <button type="button" class="btn-login btn btn-link invisible-button"> oi 40<i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
+                <button type="button" class="btn-login btn btn-link invisible-button"><i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
               </form>
             </td>
           </tr>
@@ -102,7 +97,7 @@
               <form action="#" method="POST">
                 <input type="hidden" name="id_form" value="{{etp.id}}">
                 <input type="hidden" name="status" value="2">
-                <button type="button" class="btn-login btn btn-link invisible-button"> oi 94<i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
+                <button type="button" class="btn-login btn btn-link invisible-button"><i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
               </form>
             </td>
 
@@ -127,8 +122,10 @@
                     let link;
                     if (etp === '1') {
                       link = '/retomar_dados_import'; // Altere para o URL correto para etp === '1'
+                      print('chamou 1 que é 40')
                     } else if (etp === '2') {
-                      link = '/login_selenium'; // Altere para o URL correto para etp === '2'
+                      link = '/retomar_dados_import_94'; // Altere para o URL correto para etp === '2'
+                      print('champ 2 que é 94')
                     } else {
                       // Trate outros valores de etp aqui, se necessário
                       print('não informado')
