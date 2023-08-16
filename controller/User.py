@@ -36,6 +36,16 @@ class UserController():
             'etp': int(data.get('etp'))
         }
         return processed_data
+    
+    def process_form_data_etp(data):
+    # Coloque a lógica de autenticação aqui
+    # Verifique as credenciais, id_form e etp
+        processed_data = {
+            'username': data.get('username'),
+            'password': data.get('password'),
+            'etp': data.get('etp')
+        }
+        return processed_data
 
     
     def get_admin_login(self, user_id):

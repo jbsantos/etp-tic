@@ -85,12 +85,13 @@
       preConfirm: () => {
         const username = $('#username').val();
         const password = $('#password').val();
+        const etp40 = '40'
 
         // Enviar os dados de login para o backend (app.py) usando AJAX
         $.ajax({
-          url: '/login_selenium',
+          url: '/processo_formulario_40',
           method: 'POST',
-          data: { username: username, password: password },
+          data: { username: username, password: password, etp: etp40 },
           success: function (response) {
             // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
             if (response.status === 'success') {

@@ -19,6 +19,7 @@ from controller.User import UserController
 from controller.Etp40 import Etp40Controller
 from controller.Etp94 import Etp94Controller
 from controller.Product import ProductController
+from controller.Automacao import Automacao
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
 #Selenium
@@ -184,21 +185,16 @@ def create_app(config_name):
     def viabilidade16_40():
         return render_template('etp40/16viabilidade-40.html') 
  
-    @app.route('/process_form',methods=['POST', 'GET'])
+    @app.route('/processo_formulario_40',methods=['POST'])
     def login_selenium():
         data = request.form  # Use .json diretamente para obter os dados
 
-        processed_data = UserController.process_form_data(data)
-        print(processed_data['username'])
-        exit()
-        ImportAuto
-        # data = request.form
-        # username = data.get('username')
-        # password = data.get('password')
-        # id_form = data.get('id_form')
-        # etp = data.get('etp')
-        print(processed_data)
-        
+        processed_data = UserController.process_form_data_etp(data)
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        etp = processed_data['etp']
+
+        result = Automacao.iniciar_automacao(usuario, senha, etp)
         return jsonify(processed_data)
     
         #etp
