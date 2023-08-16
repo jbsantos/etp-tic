@@ -1334,10 +1334,10 @@ def create_app(config_name):
         return send_from_directory(directory, filename, as_attachment=True)
 
     @app.route('/termo-de-uso-etptic')
-    def quando_usar_ep94():
-        return render_template('/etp94/quando-usar-ept94.html')
+    def quando_usar_etp94():
+        return render_template('/etp94/quando-usar-etp94.html')
         
-    @app.route('/termo-de-uso-etptic40')
+    @app.route('/termo-de-uso-etp')
     def quando_usar_etp40():
         return render_template('/etp40/quando-usar-etp40.html')
     
