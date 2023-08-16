@@ -1336,6 +1336,10 @@ def create_app(config_name):
     @app.route('/termo-de-uso-etptic')
     def quando_usar_ep94():
         return render_template('/etp94/quando-usar-ept94.html')
+        
+    @app.route('/termo-de-uso-etptic40')
+    def quando_usar_etp40():
+        return render_template('/etp40/quando-usar-etp40.html')
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
