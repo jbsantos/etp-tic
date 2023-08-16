@@ -47,3 +47,21 @@ body, html {
     color: #313030; 
     margin-right: 10px;
 }
+
+.scrollable-table {
+    max-height: 300px; /* Defina a altura máxima que deseja que a tabela seja */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando o conteúdo exceder a altura máxima */
+  }
+  
+  .scrollable-content {
+    max-height: 300px; /* Defina a altura máxima que deseja que a div seja */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando o conteúdo exceder a altura máxima */
+  }
+
+  /* Estilos para o <tbody> com a barra de rolagem */
+.scrollable-tbody {
+    max-height: 400px; /* Altura máxima do <tbody> */
+    overflow-y: auto; /* Adicionar a barra de rolagem vertical conforme necessário */
+  }
+  
+  

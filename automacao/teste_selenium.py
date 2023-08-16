@@ -1078,6 +1078,7 @@ class ImportAuto:
 
             # Extrair o valor desejado usando manipulações de string
             numero = texto_elemento.split("Nº ")[1]
+
             return numero
         
         ## Sequencia de ETP
@@ -1126,6 +1127,19 @@ class ImportAuto:
             # Numero do Documento - Rascunho
             numero = buscar_numero_documento(driver)
             print('Rascunho N°' - numero)
+
+            ## Botao Voltar
+            try:
+                    # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
+                    botao_voltar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="form-etp"]/div/div/div[2]/app-campos/div[1]/div[2]/div/div/span[4]')))
+                    botao_voltar.click()
+            except Exception as e:
+                    error_code = '1024'
+                    error_message = 'Botao Voltar não localizado'
+
+                    print(f'Erro ({error_code}): {error_message}')
+                    return False  # Retorna False para indicar erro
+
 
             time.sleep(10)
             return True
