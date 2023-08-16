@@ -146,9 +146,10 @@
           const { value: accept } = await Swal.fire({
             title: 'Informar Estimativa de Custo Total da Contratação',
             html: `
-                                <div style="max-height: 400px; overflow-y: auto;">
+                                <div style="max-height: 400px; overflow-y: auto; align: left; ">
                                     
-                                    <p> Aqui se deve informar a estimativa de custo de aquisição da Solução, observando também. o valor para dispensa de licitação, o qual dispensa a necessidade de confecção do ETP.</p>
+                                    <p> Aqui se deve informar a estimativa de custo de aquisição da Solução, observando também. o valor para dispensa de licitação, o qual dispensa a necessidade de confecção do ETP.<br />
+                                      Obs.: O preenchimento desse campo no que se refere ao valor aproximado da contratação, deve conter apenas números interiros sem casas decimais.</p>
                                 </div>
                             `,
             focusConfirm: false,

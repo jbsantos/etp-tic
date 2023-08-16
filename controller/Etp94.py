@@ -232,4 +232,36 @@ class Etp94Controller:
 
         return res
             
-    
+    def retoma_session_etp94(form_id):
+        try:
+            etp94 = Etp94.get_etp94_formulario_by_id(form_id)  # Recupera o registro da tabela Etp94 com base no ID do formulário
+            
+            if etp94 is not None:
+                session['1'] = etp94.informacao1_94
+                session['2'] = etp94.necessidade2_94
+                session['3'] = etp94.necessidade3_94
+                session['4'] = etp94.necessidade4_94
+                session['5'] = etp94.necessidade5_94
+                session['6'] = etp94.necessidade6_94
+                session['7'] = etp94.necessidade7_94
+                session['8'] = etp94.solucao8_94
+                session['9'] = etp94.solucao9_94
+                session['10'] = etp94.solucao10_94
+                session['11'] = etp94.solucao11_94
+                session['12'] = etp94.solucao12_94
+                session['13'] = etp94.solucao13_94
+                session['14'] = etp94.solucao14_94
+                session['15'] = etp94.solucao15_94
+                session['16'] = etp94.planejamento16_94
+                session['17'] = etp94.planejamento17_94
+                session['18'] = etp94.viabilidade18_94
+                session['19'] = etp94.viabilidade19_94
+
+                return session  # Retorna True para indicar que os dados foram recuperados com sucesso
+            else:
+                return False  # Retorna False se o registro não for encontrado
+
+        except Exception as e:
+            print(e)
+            return False  # Retorna False em caso de erro
+

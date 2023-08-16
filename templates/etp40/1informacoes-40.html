@@ -78,9 +78,6 @@
       {{ section.pagina_estatica('/informacoes1-40', '/necessidade2-40','1') }}
       <!-- ======= End Section ======= -->
     {%endif%}
-    <!-- ======= Section ======= 
-    {{ section.pagina_estatica('/informacoes1-40', '/necessidade2-40', '1') }}
-     ======= End Section ======= -->
 
   </main><!-- End #main -->
 
@@ -107,17 +104,18 @@
       const showTermsAndConditions = async () => {
         const { value: accept } = await Swal.fire({
           title: 'Iniciando com as Informações básicas do ETP',
-          html: ` <div style="max-height: 400px; overflow-y: auto;">
+          html: ` <div style="max-height: 400px; overflow-y: auto; align: left; ">
                     
                     <p> Nesta etapa, faculta-se informar o Processo Administrativo correspondente às demandas geradas para a condução da futura contratação </p>
-                    <p> Informar: <br/>
+                    <p> Informar: <br/><br/>
                         1. Categoria do Objeto<br/>
                         2. Número da Contratação<br/>
-                        3. Processo Administrativo</p>
+                        3. Processo Administrativo<br/>
+                        Obs.: O preenchimento desse campo deve ser feito no próprio site do Comprasnet. </p>
                 </div>
                
               <div style="color: red; text-align: center;">
-                  Obs: O preenchimento desse campo deve ser feito de forma direta no próprio site do COMPRANET.
+                  Obs: O preenchimento desse campo deve ser feito de forma direta no próprio site do COMPRASNET.
               </div>
 
 
