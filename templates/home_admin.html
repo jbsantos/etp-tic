@@ -119,7 +119,15 @@
                   <input type="hidden" name="status" value="2">
                   <button type="button" class="btn-login btn btn-link invisible-button"><i class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
                 </form>
-              </td>
+              </td>    
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
 
               <script>
                 // Função para enviar o formulário de login
@@ -157,7 +165,7 @@
                         success: function (response) {
                           // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
                           if (response.status === 'success') {
-                            window.location.href = '/pagina_selenium'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
+                            window.location.href = '/'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
                           } else {
                             // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
                             Swal.fire('Erro', 'Login ou senha inválidos', 'error');
@@ -175,15 +183,6 @@
                 // Adicionar o evento de clique aos botões de classe "btn-login"
                 $('.btn-login').click(enviarFormulario);
               </script>
-    
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
   {% endblock %}
 
 </body>
