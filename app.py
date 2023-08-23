@@ -1769,12 +1769,14 @@ def create_app(config_name):
         processed_data = UserController.process_form_data(data)
         print(processed_data)
         
+        # return 'ok'
         usuario = processed_data['username']
         senha = processed_data['password']
         id_form = processed_data['id_form']
         etp= processed_data['etp']
+        # userAgent= processed_data['userAgent']
 
-        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)#, userAgent)
 
         print('chamou etp40', result,' ', session['8'])
         if result:
@@ -1794,9 +1796,10 @@ def create_app(config_name):
         senha = processed_data['password']
         id_form = processed_data['id_form']
         etp= processed_data['etp']
+        # userAgent= processed_data['userAgent']
 
         #result = ImportAuto.import_automatic_etp(id_form)
-        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)#, userAgent)
 
         print('chamou etp94', result,' ', session['13'])
         if result:
