@@ -1776,7 +1776,7 @@ def create_app(config_name):
 
         result, detalhe  = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)
 
-        print('chamou etp40', result,' ', session['8'])
+        #print('chamou etp40', result,' ', session['8'])
         if result == 'success':
             # return 'ok' #render_template('etp94/1informacao-94.html', status=status)
             return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso', 'retorno': str(detalhe)})
@@ -1794,17 +1794,15 @@ def create_app(config_name):
         senha = processed_data['password']
         id_form = processed_data['id_form']
         etp= processed_data['etp']
-        # userAgent= processed_data['userAgent']
 
-        #result = ImportAuto.import_automatic_etp(id_form)
-        result = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)#, userAgent)
+        result, detalhe = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)
 
-        print('chamou etp94', result,' ', session['13'])
-        if result:
+        #print('chamou etp94', result,' ', session['13'])
+        if result == 'success':
             #return 'ok' #render_template('etp94/1informacao-94.html', status=status)
-            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso'})
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso', 'retorno': str(detalhe)})
         else:
-            return  jsonify({'status': 'error', 'message': 'Erro no Processo'})
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo', 'error': str(detalhe)})
        
     def limpar_sessoes():
         session.clear()
