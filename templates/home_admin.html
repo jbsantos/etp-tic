@@ -138,7 +138,7 @@
   </div>
 
   <script>
-        // Função para enviar o formulário de login
+    // Função para enviar o formulário de login
     function enviarFormulario() {
       const button = $(this); // Pega o botão que foi clicado
       const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
@@ -176,7 +176,42 @@
             success: function (response) {
               // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
               if (response.status === 'success') {
-                window.location.href = '/'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Importação Efetuada Com Sucesso',
+                  html: `
+                    <div style="max-height: 400px; overflow-y: auto; align: left; ">
+                      Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
+                      <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
+                    </div>
+                    ${etp === '1'
+                      ? `<div style="color: red; text-align: center;">
+                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                          <ul>
+                            <li>Iniciando com as Informações básicas do ETP</li>
+                            <li>Informando a Área Requisitante</li>
+                            <li>Declarando a Viabilidade</li>
+                            <li>Responsáveis</li>
+                          </ul>
+                        </div>`
+                      : etp === '2'
+                      ? `<div style="color: red; text-align: center;">
+                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                          <ul>
+                            <li>Iniciando com as Informações básicas do ETP</li>
+                            <li>Informando a Área Requisitante</li>
+                            <li>Declarando a Viabilidade</li>
+                            <li>Responsáveis</li>
+                          </ul>
+                        </div>`
+                      : 'Mensagem padrão se etp não for 1 nem 2'
+                    }
+                  `
+                });
+
+
+                return;
+                // window.location.href = '/'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
               } else {
                 // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
                 Swal.fire('Erro', 'Login ou senha inválidos', 'error');

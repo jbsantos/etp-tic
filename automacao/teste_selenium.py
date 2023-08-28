@@ -39,7 +39,7 @@ class ImportAuto:
                 error_message = 'Ocorreu um erro no WebDriver'
 
                 print(f'Erro ({error_code}): {error_message}')
-                raise e
+                return ('error', e)   
         
         ## Acesso ao site do compras net
         def conexao_comprasnet(driver):
@@ -54,7 +54,7 @@ class ImportAuto:
                 error_message = 'Ocorreu um erro no endereçamento do site'
 
                 print(f'Erro ({error_code}): {error_message}')
-                raise e
+                return ('error', e)   
         
         ## Procedimento de Logar
         def processo_conexao_login(driver, usuario, senha):
@@ -88,7 +88,7 @@ class ImportAuto:
                 error_message = 'Erro de Log'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e    
+                return ('error', e)   
 
         ## Escolha de criacão do etp
         def escolhar_processo_criar_etp(driver):
@@ -105,7 +105,7 @@ class ImportAuto:
                 error_message = 'Escolha de opção ETP não localizado'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
 
         ## Escolha na criacao do etp
         def escolhar_criar_etp_informado(driver,etp):
@@ -130,7 +130,7 @@ class ImportAuto:
                 error_message = 'Escolha de opção ETP informada não localizado'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
         
         ## Etapa de Informações Básicas
         def modulo_informacao_basicas(driver):
@@ -147,7 +147,7 @@ class ImportAuto:
                 error_message = 'Erro na Etapa 1 - Informações Básicas'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
 
         ## Etapa de Necessidade
         def modulo_necessidade(driver,etp):
@@ -177,7 +177,7 @@ class ImportAuto:
                 error_message = 'Erro na Etapa 2 - Descrição da necessidade'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
 
             ## Área requisitante
             try:
@@ -189,7 +189,7 @@ class ImportAuto:
                 error_message = 'Erro na Etapa 3 - Área requisitante'
 
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
 
             print('modulo necessidade seguindo')
             time.sleep(5)
@@ -221,7 +221,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 4 - Descrição dos Requisitos da Contratação'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
             
             elif(etp == 2):
                 ## Necessidades de Negócio
@@ -249,7 +249,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 4 - Necessidades de Negócio'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Necessidades Tecnológicas
                 try:
@@ -276,7 +276,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 5 - Necessidades Tecnológicas'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Demais requisitos necessários e suficientes à escolha da solução de TIC
                 try:
@@ -303,7 +303,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 6 - Demais requisitos necessários e suficientes à escolha da solução de TIC'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Estimativa da demanda - quantidade de bens e serviços
                 try:
@@ -330,7 +330,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 7 - Estimativa da demanda - quantidade de bens e serviços'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
                 print('Escolha ETP94 - Necessidade Concluida')
             
              
@@ -394,7 +394,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 5 - Levantamento de Mercado'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Descrição da solução como um todo
                 try:
@@ -421,7 +421,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 6 - Descrição da solução como um todo'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Estimativa das Quantidades a serem Contratadas
                 try:
@@ -448,7 +448,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 7 - Estimativa das Quantidades a serem Contratadas'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Estimativa do Valor da Contratação
                 try:
@@ -514,7 +514,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 8 - Estimativa do Valor da Contratação'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Justificativa para o Parcelamento ou não da Solução
                 try:
@@ -541,7 +541,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 9 - Justificativa para o Parcelamento ou não da Solução'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Contratações Correlatas e/ou Interdependentes
                 try:
@@ -568,7 +568,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 10 - Contratações Correlatas e/ou Interdependentes'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Alinhamento entre a Contratação e o Planejamento
                 try:
@@ -595,7 +595,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 11 - Alinhamento entre a Contratação e o Planejamento'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
                 
                 print('Escolha ETP40 - Solução Concluido')
             
@@ -625,7 +625,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 8 - Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Análise comparativa de soluções
                 try:
@@ -652,7 +652,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 9 - Análise comparativa de soluções'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Registro de soluções consideradas inviáveis
                 try:
@@ -679,7 +679,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 10 - Registro de soluções consideradas inviáveis'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Análise comparativa de custos (TCO)
                 try:
@@ -706,7 +706,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 11 - Análise comparativa de custos (TCO)'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Descrição da solução de TIC a ser contratada
                 try:
@@ -733,7 +733,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 12 - Descrição da solução de TIC a ser contratada'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Estimativa de custo total da contratação
                 try:
@@ -796,7 +796,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 13 - Estimativa de custo total da contratação'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Justificativa técnica da escolha da solução
                 try:
@@ -823,7 +823,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 14 - Justificativa técnica da escolha da solução'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Justificativa econômica da escolha da solução
                 try:
@@ -850,7 +850,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 15 - Justificativa econômica da escolha da solução'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 print('Escolha ETP94 - Solução Concluido')
 
@@ -887,7 +887,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 12 - Benefícios a serem alcançados com a contratação'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -914,7 +914,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 13 - Providências a serem Adotadas'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Possíveis Impactos Ambientais
                 try:
@@ -941,7 +941,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 14 - Possíveis Impactos Ambientais'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
                 print('Escolha ETP40 - Planejamento concluida')
             
             elif(etp == 2):
@@ -970,7 +970,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 16 - Benefícios a serem alcançados com a contratação'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -997,7 +997,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 17 - Providências a serem Adotadas'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
                 print('Escolha ETP94 - Planejamento concluida')
             
              
@@ -1018,7 +1018,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 15 - Declaração de Viabilidade'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1030,7 +1030,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 16 - Responsáveis'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
                 print('Escolha ETP40 - Viabilidade concluida')
             
             elif(etp == 2):
@@ -1045,7 +1045,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 18 - Declaração de Viabilidade'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1057,7 +1057,7 @@ class ImportAuto:
                     error_message = 'Erro na Etapa 19 - Responsáveis'
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return e  # Retorna e para indicar erro
+                    return ('error', e) # Retorna e para indicar erro
 
                 print('Escolha ETP94 - Viabilidade concluida')
             
@@ -1094,7 +1094,7 @@ class ImportAuto:
                 error_code = '1024'
                 error_message = 'Botao Voltar não localizado'
                 print(f'Erro ({error_code}): {error_message}')
-                return e  # Retorna e para indicar erro
+                return ('error', e) # Retorna e para indicar erro
 
         ## Sequencia de ETP
         try:
@@ -1151,7 +1151,7 @@ class ImportAuto:
 
             time.sleep(2)
 
-            return numero
+            return ('success', numero)
         
         except Exception as e:
             print("Ocorreu um erro inesperado:", e)

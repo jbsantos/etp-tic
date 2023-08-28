@@ -1769,21 +1769,19 @@ def create_app(config_name):
         processed_data = UserController.process_form_data(data)
         print(processed_data)
         
-        # return 'ok'
         usuario = processed_data['username']
         senha = processed_data['password']
         id_form = processed_data['id_form']
         etp= processed_data['etp']
-        # userAgent= processed_data['userAgent']
 
-        result = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)#, userAgent)
+        result, detalhe  = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)
 
         print('chamou etp40', result,' ', session['8'])
-        if result:
+        if result == 'success':
             # return 'ok' #render_template('etp94/1informacao-94.html', status=status)
-            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso'})
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso', 'retorno': str(detalhe)})
         else:
-            return  jsonify({'status': 'error', 'message': 'Erro no Processo'})
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo', 'error': str(detalhe)})
     
     @app.route('/retomar_dados_import_94',methods=['POST', 'GET'])
     def retomar_dados_import_94():
