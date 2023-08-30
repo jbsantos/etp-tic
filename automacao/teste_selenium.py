@@ -40,7 +40,7 @@ class ImportAuto:
                 # Define algumas opções
                 options = webdriver.ChromeOptions()
                 # options.add_argument("--start-maximized")  # Inicia o navegador maximizado
-                options.add_argument("--headless=new")  # Inicia o navegador maximiza
+                # options.add_argument("--headless=new")  # Inicia o navegador maximiza
                 # driver = webdriver.Chrome()
                 
                 # Inicializa o driver do Chrome com as opções configuradas
@@ -52,7 +52,7 @@ class ImportAuto:
             except WebDriverException as e:
                 error_code = '1000'
                 error_message = 'Ocorreu um erro no WebDriver'
-
+                
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e)   
         
@@ -67,6 +67,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1001'
                 error_message = 'Ocorreu um erro no endereçamento do site'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e)   
@@ -101,6 +102,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1002'
                 error_message = 'Erro de Repasse de Informação'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e)   
@@ -118,6 +120,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1003'
                 error_message = 'Escolha de opção ETP não localizado'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -143,6 +146,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1004'
                 error_message = 'Escolha de opção ETP informada não localizado'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -160,6 +164,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1004'
                 error_message = 'Erro na Etapa 1 - Informações Básicas'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -190,6 +195,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1005'
                 error_message = 'Erro na Etapa 2 - Descrição da necessidade'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -202,6 +208,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1006'
                 error_message = 'Erro na Etapa 3 - Área requisitante'
+                driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -234,6 +241,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1007'
                     error_message = 'Erro na Etapa 4 - Descrição dos Requisitos da Contratação'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -262,6 +270,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1007'
                     error_message = 'Erro na Etapa 4 - Necessidades de Negócio'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -289,6 +298,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1008'
                     error_message = 'Erro na Etapa 5 - Necessidades Tecnológicas'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -316,6 +326,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1009'
                     error_message = 'Erro na Etapa 6 - Demais requisitos necessários e suficientes à escolha da solução de TIC'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -343,6 +354,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1010'
                     error_message = 'Erro na Etapa 7 - Estimativa da demanda - quantidade de bens e serviços'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -407,6 +419,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1008'
                     error_message = 'Erro na Etapa 5 - Levantamento de Mercado'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -434,6 +447,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1009'
                     error_message = 'Erro na Etapa 6 - Descrição da solução como um todo'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -461,6 +475,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1010'
                     error_message = 'Erro na Etapa 7 - Estimativa das Quantidades a serem Contratadas'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -527,6 +542,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1011'
                     error_message = 'Erro na Etapa 8 - Estimativa do Valor da Contratação'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -554,6 +570,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1012'
                     error_message = 'Erro na Etapa 9 - Justificativa para o Parcelamento ou não da Solução'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -581,6 +598,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1013'
                     error_message = 'Erro na Etapa 10 - Contratações Correlatas e/ou Interdependentes'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -608,6 +626,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1014'
                     error_message = 'Erro na Etapa 11 - Alinhamento entre a Contratação e o Planejamento'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -638,6 +657,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1011'
                     error_message = 'Erro na Etapa 8 - Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -665,6 +685,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1012'
                     error_message = 'Erro na Etapa 9 - Análise comparativa de soluções'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -692,6 +713,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1013'
                     error_message = 'Erro na Etapa 10 - Registro de soluções consideradas inviáveis'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -719,6 +741,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1014'
                     error_message = 'Erro na Etapa 11 - Análise comparativa de custos (TCO)'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -746,6 +769,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1015'
                     error_message = 'Erro na Etapa 12 - Descrição da solução de TIC a ser contratada'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -809,6 +833,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1016'
                     error_message = 'Erro na Etapa 13 - Estimativa de custo total da contratação'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -836,6 +861,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1017'
                     error_message = 'Erro na Etapa 14 - Justificativa técnica da escolha da solução'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -863,6 +889,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1018'
                     error_message = 'Erro na Etapa 15 - Justificativa econômica da escolha da solução'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -900,6 +927,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1015'
                     error_message = 'Erro na Etapa 12 - Benefícios a serem alcançados com a contratação'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -927,6 +955,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1016'
                     error_message = 'Erro na Etapa 13 - Providências a serem Adotadas'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -954,6 +983,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1017'
                     error_message = 'Erro na Etapa 14 - Possíveis Impactos Ambientais'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -983,6 +1013,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1019'
                     error_message = 'Erro na Etapa 16 - Benefícios a serem alcançados com a contratação'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1010,6 +1041,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1020'
                     error_message = 'Erro na Etapa 17 - Providências a serem Adotadas'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1031,6 +1063,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1018'
                     error_message = 'Erro na Etapa 15 - Declaração de Viabilidade'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1043,6 +1076,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1019'
                     error_message = 'Erro na Etapa 16 - Responsáveis'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1058,6 +1092,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1021'
                     error_message = 'Erro na Etapa 18 - Declaração de Viabilidade'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1070,6 +1105,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1022'
                     error_message = 'Erro na Etapa 19 - Responsáveis'
+                    driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -1108,6 +1144,8 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1024'
                 error_message = 'Botao Voltar não localizado'
+                driver.quit()
+                
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
 
