@@ -2,6 +2,8 @@ import time, re
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -30,8 +32,21 @@ class ImportAuto:
         ## Instaciar o Drive do Navegador
         def inicializar_drive():
             try:
-                path = '/static/driver/chromedriver'
-                driver = webdriver.Chrome()  
+                # Inicializa o serviço do ChromeDriver
+                service = Service(ChromeDriverManager().install())  
+                
+                # path = 'chromedriver'
+
+                # Define algumas opções
+                options = webdriver.ChromeOptions()
+                # options.add_argument("--start-maximized")  # Inicia o navegador maximizado
+                options.add_argument("--headless=new")  # Inicia o navegador maximiza
+                # driver = webdriver.Chrome()
+                
+                # Inicializa o driver do Chrome com as opções configuradas
+                driver = webdriver.Chrome(service=service, options=options)
+
+
                 print("O driver do Selenium foi localizado com sucesso.")
                 return driver
             except WebDriverException as e:
@@ -81,11 +96,11 @@ class ImportAuto:
                 botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
                 botao_entrar.click()
 
-                print('Login efetuado')
+                print('Informação Recebida')
                  
             except Exception as e:
                 error_code = '1002'
-                error_message = 'Erro de Log'
+                error_message = 'Erro de Repasse de Informação'
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e)   
