@@ -52,6 +52,7 @@ class ImportAuto:
             except WebDriverException as e:
                 error_code = '1000'
                 error_message = 'Ocorreu um erro no WebDriver'
+                driver.quit()
                 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e)   
@@ -1155,6 +1156,9 @@ class ImportAuto:
             driver = inicializar_drive()
             print(driver)
 
+            numero = '22222'
+            return ('success', numero)
+        
             # Conectar com a página
             conexao_comprasnet(driver)
 

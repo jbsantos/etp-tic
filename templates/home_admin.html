@@ -180,12 +180,12 @@
                   icon: 'success',
                   title: 'Importação Efetuada Com Sucesso',
                   html: `
-                    <div style="max-height: 400px; overflow-y: auto; align: left; ">
+                    <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">
                       Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
                       <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
-                    </div>
+                    
                     ${etp === '1'
-                      ? `<div style="color: red; text-align: center;">
+                      ? `<div style="color: red; text-align: left;">
                           Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
                           <ul>
                             <li>Iniciando com as Informações básicas do ETP</li>
@@ -193,9 +193,9 @@
                             <li>Declarando a Viabilidade</li>
                             <li>Responsáveis</li>
                           </ul>
-                        </div>`
+                        </div> </div>`
                       : etp === '2'
-                      ? `<div style="color: red; text-align: center;">
+                      ? `<div style="color: red; text-align: left;">
                           Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
                           <ul>
                             <li>Iniciando com as Informações básicas do ETP</li>
@@ -203,7 +203,7 @@
                             <li>Declarando a Viabilidade</li>
                             <li>Responsáveis</li>
                           </ul>
-                        </div>`
+                        </div> </div>`
                       : 'Mensagem padrão se etp não for 1 nem 2'
                     }
                   `
@@ -219,7 +219,7 @@
             },
             error: function (error) {
               console.error('Erro ao enviar dados de login:', error);
-              Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
+              Swal.fire('Atenção', ' <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">O processo não foi finalizado, refazer a importação.</div>', 'warning');
             },
           });
         }
