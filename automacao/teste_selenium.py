@@ -40,14 +40,14 @@ class ImportAuto:
                 # Define algumas opções
                 options = webdriver.ChromeOptions()
                 # options.add_argument("--start-maximized")  # Inicia o navegador maximizado
-                options.add_argument("--headless=new")  # Inicia o navegador maximiza
+                # options.add_argument("--headless=new")  # Inicia o navegador maximiza
                 # driver = webdriver.Chrome()
                 
                 # Inicializa o driver do Chrome com as opções configuradas
                 driver = webdriver.Chrome(service=service, options=options)
 
 
-                print("O driver do Selenium foi localizado com sucesso.")
+                # print("O driver do Selenium foi localizado com sucesso.")
                 return driver
             except WebDriverException as e:
                 error_code = '1000'
@@ -63,7 +63,7 @@ class ImportAuto:
                 driver.get('http://www.comprasnet.gov.br/seguro/loginPortalUASG.asp')
                 driver.current_window_handle  # id da janela atual
                 driver.set_window_size(width=1022, height=683)
-                print ('Conexao Com Site Efetuada')
+                # print ('Conexao Com Site Efetuada')
                  
             except Exception as e:
                 error_code = '1001'
@@ -93,12 +93,11 @@ class ImportAuto:
                 # Agora, preencha o campo de senha com o valor desejado
                 campo_senha.send_keys(senha)
 
-
                 # Aguarde até que o botão esteja clicável antes de clicar nele
                 botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))
                 botao_entrar.click()
 
-                print('Informação Recebida')
+                # print('Informação Recebida')
                  
             except Exception as e:
                 error_code = '1002'
@@ -116,7 +115,7 @@ class ImportAuto:
 
                 criar_etp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, 'ETP')))
                 criar_etp.click()
-                print('Escolha de Etp Efetuada')
+                # print('Escolha de Etp Efetuada')
                  
             except Exception as e:
                 error_code = '1003'
@@ -147,7 +146,7 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1004'
                 error_message = 'Escolha de opção ETP informada não localizado'
-                driver.quit()
+                # driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 return ('error', e) # Retorna e para indicar erro
@@ -160,15 +159,18 @@ class ImportAuto:
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                 botao_proximo = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Próximo campo")]')))
                 botao_proximo.click()
-                print('mODULO INFORMAÇÃO OK')
-                 
+                # print('mODULO INFORMAÇÃO OK')
             except Exception as e:
                 error_code = '1004'
                 error_message = 'Erro na Etapa 1 - Informações Básicas'
+
+                # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                numero = buscar_numero_documento(driver)
                 driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
-                return ('error', e) # Retorna e para indicar erro
+                # return ('error', e) # Retorna e para indicar erro
+                return ('sucess', numero) # Retorna e para indicar erro
 
         ## Etapa de Necessidade
         def modulo_necessidade(driver,etp):
@@ -191,15 +193,19 @@ class ImportAuto:
                 driver.switch_to.default_content()
 
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
+                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próo campo"]')))
                 botao_proximo.click()
             except Exception as e:
                 error_code = '1005'
                 error_message = 'Erro na Etapa 2 - Descrição da necessidade'
+                
+                # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                numero = buscar_numero_documento(driver)
                 driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
-                return ('error', e) # Retorna e para indicar erro
+                # return ('error', e) # Retorna e para indicar erro
+                return ('sucess', numero) # Retorna e para indicar erro
 
             ## Área requisitante
             try:
@@ -209,12 +215,16 @@ class ImportAuto:
             except Exception as e:
                 error_code = '1006'
                 error_message = 'Erro na Etapa 3 - Área requisitante'
+                
+                # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                numero = buscar_numero_documento(driver)
                 driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
-                return ('error', e) # Retorna e para indicar erro
+                # return ('error', e) # Retorna e para indicar erro
+                return ('sucess', numero) # Retorna e para indicar erro
 
-            print('modulo necessidade seguindo')
+            # print('Modulo necessidade seguindo')
             time.sleep(5)
 
             if (etp == 1):
@@ -238,14 +248,18 @@ class ImportAuto:
                     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                     botao_proximo.click()
-                    print('Escolha ETP40 - Necessidade Concluida')
+                    # print('Escolha ETP40 - Necessidade Concluida')
                 except Exception as e:
                     error_code = '1007'
                     error_message = 'Erro na Etapa 4 - Descrição dos Requisitos da Contratação'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
             
             elif(etp == 2):
                 ## Necessidades de Negócio
@@ -271,10 +285,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1007'
                     error_message = 'Erro na Etapa 4 - Necessidades de Negócio'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Necessidades Tecnológicas
                 try:
@@ -299,10 +317,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1008'
                     error_message = 'Erro na Etapa 5 - Necessidades Tecnológicas'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Demais requisitos necessários e suficientes à escolha da solução de TIC
                 try:
@@ -327,10 +349,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1009'
                     error_message = 'Erro na Etapa 6 - Demais requisitos necessários e suficientes à escolha da solução de TIC'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Estimativa da demanda - quantidade de bens e serviços
                 try:
@@ -355,14 +381,16 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1010'
                     error_message = 'Erro na Etapa 7 - Estimativa da demanda - quantidade de bens e serviços'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
-                print('Escolha ETP94 - Necessidade Concluida')
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
+                # print('Escolha ETP94 - Necessidade Concluida')
             
-             
-
         ## Transformar o Valor em Extenso
         def valor_por_extenso(valor):
             partes = valor.split(".")
@@ -420,10 +448,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1008'
                     error_message = 'Erro na Etapa 5 - Levantamento de Mercado'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Descrição da solução como um todo
                 try:
@@ -448,10 +480,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1009'
                     error_message = 'Erro na Etapa 6 - Descrição da solução como um todo'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Estimativa das Quantidades a serem Contratadas
                 try:
@@ -476,10 +512,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1010'
                     error_message = 'Erro na Etapa 7 - Estimativa das Quantidades a serem Contratadas'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Estimativa do Valor da Contratação
                 try:
@@ -543,10 +583,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1011'
                     error_message = 'Erro na Etapa 8 - Estimativa do Valor da Contratação'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Justificativa para o Parcelamento ou não da Solução
                 try:
@@ -571,10 +615,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1012'
                     error_message = 'Erro na Etapa 9 - Justificativa para o Parcelamento ou não da Solução'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Contratações Correlatas e/ou Interdependentes
                 try:
@@ -599,10 +647,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1013'
                     error_message = 'Erro na Etapa 10 - Contratações Correlatas e/ou Interdependentes'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Alinhamento entre a Contratação e o Planejamento
                 try:
@@ -627,12 +679,16 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1014'
                     error_message = 'Erro na Etapa 11 - Alinhamento entre a Contratação e o Planejamento'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
                 
-                print('Escolha ETP40 - Solução Concluido')
+                # print('Escolha ETP40 - Solução Concluido')
             
             elif(etp == 2):
                 ## Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC
@@ -658,10 +714,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1011'
                     error_message = 'Erro na Etapa 8 - Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Análise comparativa de soluções
                 try:
@@ -686,10 +746,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1012'
                     error_message = 'Erro na Etapa 9 - Análise comparativa de soluções'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Registro de soluções consideradas inviáveis
                 try:
@@ -714,10 +778,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1013'
                     error_message = 'Erro na Etapa 10 - Registro de soluções consideradas inviáveis'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Análise comparativa de custos (TCO)
                 try:
@@ -742,7 +810,7 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1014'
                     error_message = 'Erro na Etapa 11 - Análise comparativa de custos (TCO)'
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     return ('error', e) # Retorna e para indicar erro
@@ -770,10 +838,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1015'
                     error_message = 'Erro na Etapa 12 - Descrição da solução de TIC a ser contratada'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Estimativa de custo total da contratação
                 try:
@@ -834,10 +906,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1016'
                     error_message = 'Erro na Etapa 13 - Estimativa de custo total da contratação'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Justificativa técnica da escolha da solução
                 try:
@@ -862,10 +938,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1017'
                     error_message = 'Erro na Etapa 14 - Justificativa técnica da escolha da solução'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Justificativa econômica da escolha da solução
                 try:
@@ -890,14 +970,16 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1018'
                     error_message = 'Erro na Etapa 15 - Justificativa econômica da escolha da solução'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
-                print('Escolha ETP94 - Solução Concluido')
-
-             
+                # print('Escolha ETP94 - Solução Concluido')
 
         ## Etapa de Planejamento
         def modulo_planejamento(driver,etp):
@@ -928,10 +1010,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1015'
                     error_message = 'Erro na Etapa 12 - Benefícios a serem alcançados com a contratação'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -956,10 +1042,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1016'
                     error_message = 'Erro na Etapa 13 - Providências a serem Adotadas'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Possíveis Impactos Ambientais
                 try:
@@ -984,11 +1074,15 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1017'
                     error_message = 'Erro na Etapa 14 - Possíveis Impactos Ambientais'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
-                print('Escolha ETP40 - Planejamento concluida')
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
+                # print('Escolha ETP40 - Planejamento concluida')
             
             elif(etp == 2):
                 ## Benefícios a serem alcançados com a contratação
@@ -1014,10 +1108,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1019'
                     error_message = 'Erro na Etapa 16 - Benefícios a serem alcançados com a contratação'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -1042,14 +1140,16 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1020'
                     error_message = 'Erro na Etapa 17 - Providências a serem Adotadas'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
-                print('Escolha ETP94 - Planejamento concluida')
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
+                # print('Escolha ETP94 - Planejamento concluida')
             
-             
-
         ## Etapa Viabilidade
         def modulo_viabilidade(driver,etp):
 
@@ -1064,10 +1164,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1018'
                     error_message = 'Erro na Etapa 15 - Declaração de Viabilidade'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1077,11 +1181,15 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1019'
                     error_message = 'Erro na Etapa 16 - Responsáveis'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
-                print('Escolha ETP40 - Viabilidade concluida')
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
+                # print('Escolha ETP40 - Viabilidade concluida')
             
             elif(etp == 2):
 
@@ -1093,10 +1201,14 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1021'
                     error_message = 'Erro na Etapa 18 - Declaração de Viabilidade'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1106,15 +1218,17 @@ class ImportAuto:
                 except Exception as e:
                     error_code = '1022'
                     error_message = 'Erro na Etapa 19 - Responsáveis'
+                    
+                    # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
+                    numero = buscar_numero_documento(driver)
                     driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
-                    return ('error', e) # Retorna e para indicar erro
+                    # return ('error', e) # Retorna e para indicar erro
+                    return ('sucess', numero) # Retorna e para indicar erro
 
-                print('Escolha ETP94 - Viabilidade concluida')
+                # print('Escolha ETP94 - Viabilidade concluida')
             
-             
-
         ## Buscar Numero de Rascunho
         def buscar_numero_documento(driver):
 
@@ -1130,25 +1244,26 @@ class ImportAuto:
             # Extrair o valor desejado usando manipulações de string
             numero = texto_elemento.split("Nº ")[1]
 
+            # Botao Voltar
+            botao_voltar(driver)
+
             return numero
         
         ## Botão Voltar
         def botao_voltar(driver):
-            try:
+            # try:
                 botao_voltar = WebDriverWait(driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, 'span:nth-child(4) > .is-secondary'))
                 )
                 # Clique no botão "Voltar"
                 botao_voltar.click()
-
-                 
-            except Exception as e:
-                error_code = '1024'
-                error_message = 'Botao Voltar não localizado'
-                driver.quit()
+            # except Exception as e:
+            #     error_code = '1024'
+            #     error_message = 'Botao Voltar não localizado'
+            #     driver.quit()
                 
-                print(f'Erro ({error_code}): {error_message}')
-                return ('error', e) # Retorna e para indicar erro
+            #     print(f'Erro ({error_code}): {error_message}')
+            #     return ('error', e) # Retorna e para indicar erro
 
         ## Sequencia de ETP
         try:
@@ -1203,7 +1318,7 @@ class ImportAuto:
             print('Rascunho N°-', numero)
 
             ## Botao Voltar
-            botao_voltar(driver)
+            # botao_voltar(driver)
             
 
             time.sleep(2)

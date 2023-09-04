@@ -64,4 +64,9 @@ body, html {
     overflow-y: auto; /* Adicionar a barra de rolagem vertical conforme necessário */
   }
   
+
+
+.hidden {
+   display: none;
+}
   
