@@ -39,7 +39,7 @@ class ImportAuto:
                 # Define algumas opções
                 options = webdriver.ChromeOptions()
                 # options.add_argument("--start-maximized")  # Inicia o navegador maximizado
-                # options.add_argument("--headless=new")  # Inicia o navegador maximiza
+                options.add_argument("--headless=new")  # Inicia o navegador maximiza
                 # driver = webdriver.Chrome()
                 
                 # Inicializa o driver do Chrome com as opções configuradas
