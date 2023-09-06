@@ -838,11 +838,18 @@ def create_app(config_name):
 
     @app.route('/termo-de-uso-etptic')
     def quando_usar_etp94():
-        return render_template('/etp94/quando-usar-etp94.html')
+        if current_user.is_active:
+            return render_template('/etp94/quando-usar-etp94.html')
+        else: 
+            return render_template('login.html', data={'status': 200, 'msg': None, 'type': None})
         
     @app.route('/termo-de-uso-etp')
     def quando_usar_etp40():
-        return render_template('/etp40/quando-usar-etp40.html')
+        if current_user.is_active:
+            return render_template('/etp40/quando-usar-etp40.html')
+        else: 
+            return render_template('login.html', data={'status': 200, 'msg': None, 'type': None})
+        
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
