@@ -5,9 +5,6 @@
   <title>ETP DIGITAL</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="nprogress.css">
-
-
 </head>
 
 <body>
@@ -139,12 +136,7 @@
       </div>
     </div>
   </div>
-  <!-- <div id="loading-animation" class="hidden">
-    <img src="/templates/loading.gif" alt="Carregando...">
-    <p>Carregando...</p>
-  </div> -->
-
-
+  
   <script>
     // Função para enviar o formulário de login
     function enviarFormulario() {
@@ -152,9 +144,6 @@
       const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
       const etp = button.siblings('[name="status"]').val();
       
-      // Iniciar a barra de progresso
-      NProgress.start();
-
       // Formulario
       Swal.fire({
         title: 'Login',
@@ -174,21 +163,12 @@
             link = '/retomar_dados_import_94'; // Altere para o URL correto para etp === '2'
           }
 
-          // // Mostra a animação de processamento
-          // const loadingAnimation = Swal.getPopup().querySelector('#loading-animation');
-          // $(loadingAnimation).removeClass('hidden');
-
           // Enviar os dados de login para o backend (app.py) usando AJAX
           $.ajax({
             url: link,
             method: 'POST',
             data: { username: username, password: password, id_form: id_form, etp: etp },// userAgent: userAgent }, // Envia o id_form também
             success: function (response) {
-
-              // // Fecha o popup do SweetAlert2
-              // Swal.close();
-              // Finalizar a barra de progresso em caso de erro
-              NProgress.done();
 
               // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
               console.log ('Status', response.status, 'tag', response.tag)
@@ -247,12 +227,6 @@
               }
             },
             error: function (error) {
-
-              // // Fecha o popup do SweetAlert2
-              // Swal.close();
-              // Finalizar a barra de progresso em caso de erro
-              NProgress.done();
-
               // console.error('Erro ao enviar dados de login:', error);
               Swal.fire('Atenção', ' <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">O processo não foi finalizado, refazer a importação.</div>', 'warning');
             },
