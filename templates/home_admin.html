@@ -5,6 +5,9 @@
   <title>ETP DIGITAL</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="nprogress.css">
+
+
 </head>
 
 <body>
@@ -136,11 +139,11 @@
       </div>
     </div>
   </div>
-  <div id="loading-animation" class="hidden">
+  <!-- <div id="loading-animation" class="hidden">
     <img src="/templates/loading.gif" alt="Carregando...">
     <p>Carregando...</p>
-  </div>
-  
+  </div> -->
+
 
   <script>
     // Função para enviar o formulário de login
@@ -148,6 +151,9 @@
       const button = $(this); // Pega o botão que foi clicado
       const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
       const etp = button.siblings('[name="status"]').val();
+      
+      // Iniciar a barra de progresso
+      NProgress.start();
 
       // Formulario
       Swal.fire({
@@ -168,9 +174,9 @@
             link = '/retomar_dados_import_94'; // Altere para o URL correto para etp === '2'
           }
 
-          // Mostra a animação de processamento
-          const loadingAnimation = Swal.getPopup().querySelector('#loading-animation');
-          $(loadingAnimation).removeClass('hidden');
+          // // Mostra a animação de processamento
+          // const loadingAnimation = Swal.getPopup().querySelector('#loading-animation');
+          // $(loadingAnimation).removeClass('hidden');
 
           // Enviar os dados de login para o backend (app.py) usando AJAX
           $.ajax({
@@ -179,54 +185,73 @@
             data: { username: username, password: password, id_form: id_form, etp: etp },// userAgent: userAgent }, // Envia o id_form também
             success: function (response) {
 
-              // Fecha o popup do SweetAlert2
-              Swal.close();
+              // // Fecha o popup do SweetAlert2
+              // Swal.close();
+              // Finalizar a barra de progresso em caso de erro
+              NProgress.done();
 
               // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
+              console.log ('Status', response.status, 'tag', response.tag)
               if (response.status === 'success') {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Importação Efetuada Com Sucesso',
-                  html: `
-                    <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">
-                      Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
-                      <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
-                    
-                    ${etp === '1'
-                      ? `<div style="color: red; text-align: left;">
-                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
-                          <ul>
-                            <li>Iniciando com as Informações básicas do ETP</li>
-                            <li>Informando a Área Requisitante</li>
-                            <li>Declarando a Viabilidade</li>
-                            <li>Responsáveis</li>
-                          </ul>
-                        </div> </div>`
-                      : etp === '2'
-                      ? `<div style="color: red; text-align: left;">
-                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
-                          <ul>
-                            <li>Iniciando com as Informações básicas do ETP</li>
-                            <li>Informando a Área Requisitante</li>
-                            <li>Declarando a Viabilidade</li>
-                            <li>Responsáveis</li>
-                          </ul>
-                        </div> </div>`
-                      : 'Mensagem padrão se etp não for 1 nem 2'
-                    }
-                  `
-                });
+                if (response.tag === 'success') {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Importação Efetuada Com Sucesso',
+                    html: `
+                      <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">
+                        Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
+                        <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
+                      
+                        ${etp === '1'
+                        ? `<div style="color: red; text-align: left;">
+                            Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                            <ul>
+                              <li>Iniciando com as Informações básicas do ETP</li>
+                              <li>Informando a Área Requisitante</li>
+                              <li>Declarando a Viabilidade</li>
+                              <li>Responsáveis</li>
+                            </ul>
+                          </div> </div>`
+                        : etp === '2'
+                          ? `<div style="color: red; text-align: left;">
+                            Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                            <ul>
+                              <li>Iniciando com as Informações básicas do ETP</li>
+                              <li>Informando a Área Requisitante</li>
+                              <li>Declarando a Viabilidade</li>
+                              <li>Responsáveis</li>
+                            </ul>
+                          </div> </div>`
+                          : 'Mensagem padrão se etp não for 1 nem 2'
+                      }
+                    `
+                  });
 
-                return;
-              } else {
-                // Se a autenticação falhar,Porem o rascunho foi gerado
-                Swal.fire('Erro', 'Login ou senha inválidos', 'error');
+                  return;
+                } else {
+                  // Se a autenticação falhar,Porem o rascunho foi gerado
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Rascunho Gerado',
+                    html: `
+                      <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">
+                        Houve uma inconsistencia ao enviar os dados para o site do Comprasnet, entretanto gerou o Rascunho N° ${response.retorno}.
+                        <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam usando a opção edita do Comprasnet ou faça a inportação novamente 
+                        e exclua o documento do rascunho gerado com a numeração citada acima.
+                      
+                      </div>`
+                  });
+
+                  return;
+                }
               }
             },
             error: function (error) {
-              
-              // Fecha o popup do SweetAlert2
-              Swal.close();
+
+              // // Fecha o popup do SweetAlert2
+              // Swal.close();
+              // Finalizar a barra de progresso em caso de erro
+              NProgress.done();
 
               // console.error('Erro ao enviar dados de login:', error);
               Swal.fire('Atenção', ' <div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">O processo não foi finalizado, refazer a importação.</div>', 'warning');

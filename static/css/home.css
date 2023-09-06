@@ -69,4 +69,19 @@ body, html {
 .hidden {
    display: none;
 }
+
+#nprogress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Ajuste a altura conforme necessário */
+  background-color: #007bff; /* Cor de fundo da barra de progresso */
+  z-index: 9999; /* Certifique-se de que a barra de progresso esteja na parte superior */
+}
+
+#nprogress .bar {
+  background: #fff; /* Cor da barra de progresso */
+}
+
   

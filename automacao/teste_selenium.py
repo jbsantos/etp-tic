@@ -19,8 +19,8 @@ from controller.User import UserController
 config = app_config[app_active]
 
 class ImportAuto:
-    #def import_automatic_etp(id_form):
-    def import_automatic_etp(usuario, senha, id_form, etp):#, userAgent):
+
+    def import_automatic_etp(usuario, senha, id_form, etp):
 
         #Colocar validação de qual etp usar
         if(etp == 1):
@@ -64,7 +64,6 @@ class ImportAuto:
                 driver.current_window_handle  # id da janela atual
                 driver.set_window_size(width=1022, height=683)
                 # print ('Conexao Com Site Efetuada')
-                 
             except Exception as e:
                 error_code = '1001'
                 error_message = 'Ocorreu um erro no endereçamento do site'
@@ -166,11 +165,11 @@ class ImportAuto:
 
                 # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                 numero = buscar_numero_documento(driver)
-                driver.quit()
+                # driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 # return ('error', e) # Retorna e para indicar erro
-                return ('sucess', numero) # Retorna e para indicar erro
+                return ('warning', numero) # Retorna e para indicar erro
 
         ## Etapa de Necessidade
         def modulo_necessidade(driver,etp):
@@ -201,11 +200,13 @@ class ImportAuto:
                 
                 # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                 numero = buscar_numero_documento(driver)
-                driver.quit()
+
+                print('Rascunho N°-', numero)
+                # driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 # return ('error', e) # Retorna e para indicar erro
-                return ('sucess', numero) # Retorna e para indicar erro
+                return ('warning', numero) # Retorna e para indicar erro
 
             ## Área requisitante
             try:
@@ -218,11 +219,11 @@ class ImportAuto:
                 
                 # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                 numero = buscar_numero_documento(driver)
-                driver.quit()
+                # driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
                 # return ('error', e) # Retorna e para indicar erro
-                return ('sucess', numero) # Retorna e para indicar erro
+                return ('warning', numero) # Retorna e para indicar erro
 
             # print('Modulo necessidade seguindo')
             time.sleep(5)
@@ -255,11 +256,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
             
             elif(etp == 2):
                 ## Necessidades de Negócio
@@ -288,11 +289,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Necessidades Tecnológicas
                 try:
@@ -320,11 +321,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Demais requisitos necessários e suficientes à escolha da solução de TIC
                 try:
@@ -352,11 +353,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Estimativa da demanda - quantidade de bens e serviços
                 try:
@@ -384,11 +385,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
                 # print('Escolha ETP94 - Necessidade Concluida')
             
         ## Transformar o Valor em Extenso
@@ -451,11 +452,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Descrição da solução como um todo
                 try:
@@ -483,11 +484,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Estimativa das Quantidades a serem Contratadas
                 try:
@@ -515,11 +516,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Estimativa do Valor da Contratação
                 try:
@@ -586,11 +587,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Justificativa para o Parcelamento ou não da Solução
                 try:
@@ -618,11 +619,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Contratações Correlatas e/ou Interdependentes
                 try:
@@ -650,11 +651,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Alinhamento entre a Contratação e o Planejamento
                 try:
@@ -682,11 +683,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
                 
                 # print('Escolha ETP40 - Solução Concluido')
             
@@ -717,11 +718,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Análise comparativa de soluções
                 try:
@@ -749,11 +750,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Registro de soluções consideradas inviáveis
                 try:
@@ -781,11 +782,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Análise comparativa de custos (TCO)
                 try:
@@ -841,11 +842,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Estimativa de custo total da contratação
                 try:
@@ -909,11 +910,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Justificativa técnica da escolha da solução
                 try:
@@ -941,11 +942,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Justificativa econômica da escolha da solução
                 try:
@@ -973,11 +974,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 # print('Escolha ETP94 - Solução Concluido')
 
@@ -1013,11 +1014,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -1045,11 +1046,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Possíveis Impactos Ambientais
                 try:
@@ -1077,11 +1078,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
                 # print('Escolha ETP40 - Planejamento concluida')
             
             elif(etp == 2):
@@ -1111,11 +1112,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Providências a serem Adotadas
                 try:
@@ -1143,11 +1144,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
                 # print('Escolha ETP94 - Planejamento concluida')
             
         ## Etapa Viabilidade
@@ -1167,11 +1168,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1184,11 +1185,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
                 # print('Escolha ETP40 - Viabilidade concluida')
             
             elif(etp == 2):
@@ -1204,11 +1205,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 ## Responsáveis
                 try:
@@ -1221,11 +1222,11 @@ class ImportAuto:
                     
                     # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                     numero = buscar_numero_documento(driver)
-                    driver.quit()
+                    # driver.quit()
 
                     print(f'Erro ({error_code}): {error_message}')
                     # return ('error', e) # Retorna e para indicar erro
-                    return ('sucess', numero) # Retorna e para indicar erro
+                    return ('warning', numero) # Retorna e para indicar erro
 
                 # print('Escolha ETP94 - Viabilidade concluida')
             
@@ -1269,7 +1270,7 @@ class ImportAuto:
         try:
             # Inicializando driver navegador 
             driver = inicializar_drive()
-            print(driver)
+            # print(driver)
 
             # numero = '22222'
             # return ('success', numero)
@@ -1328,7 +1329,7 @@ class ImportAuto:
         except Exception as e:
             print("Ocorreu um erro inesperado:", e)
             print("Entre em contato com o desenvolvedor para obter suporte.")
-            return e
+            return #e
 
         finally:
             # Pausa a execução do script para aguardar sua interação manual com o alerta
