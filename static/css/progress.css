@@ -1,0 +1,79 @@
+/* Make clicks pass-through */
+#nprogress {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+  }
+  
+  #nprogress .bar {
+    background: #29d;
+  
+    position: fixed;
+    z-index: 1031;
+
+  
+  
+    width: 100%;
+    height: 2px;
+  }
+  
+
+  /* Remove these to get rid of the spinner */
+  #nprogress .spinner {
+    display: block;
+    position: fixed;
+    z-index: 1031;
+    top: 15px;
+    right: 15px;
+
+  }
+  
+  #nprogress .spinner-icon {
+    width: 108px;
+    height: 108px;
+    box-sizing: border-box;
+  
+    border: solid 5px transparent;
+    border-top-color: #2315dd;
+    border-left-color: #0c3a55;
+    border-radius: 50%;
+  
+    -webkit-animation: nprogress-spinner 400ms linear infinite;
+            animation: nprogress-spinner 400ms linear infinite;
+  }
+  
+  .nprogress-custom-parent {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .nprogress-custom-parent #nprogress .spinner,
+  .nprogress-custom-parent #nprogress .bar {
+    position: absolute;
+  }
+  
+  @-webkit-keyframes nprogress-spinner {
+    0%   { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  @keyframes nprogress-spinner {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Estilo para o elemento da mensagem de carregamento */
+#loading-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    
+  }
+  
