@@ -5,6 +5,16 @@
   <title>ETP DIGITAL</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Inclua o CSS do NProgress -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/progress.css') }}">
+
+<!-- Inclua o JavaScript do NProgress -->
+<script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+
+  
+
+<!-- Inclua o JavaScript do NProgress -->
+
 </head>
 
 <body>
@@ -74,6 +84,12 @@
         </tbody>
       </table>
       <!-- </div> -->
+
+            <!-- Elemento da mensagem de carregamento -->
+      <div id="loading-message" class="hidden">
+        Carregando, por favor aguarde...
+      </div>
+
       <h3>ETP DIGITAL TIC /IN 94</h3>
       <div class="scrollable-content">
         <table class="table table-striped table-hover scrollable-table">
@@ -137,98 +153,133 @@
     </div>
   </div>
 
-  <script>
-    // Função para enviar o formulário de login
-    function enviarFormulario() {
-      const button = $(this); // Pega o botão que foi clicado
-      const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
-      const etp = button.siblings('[name="status"]').val();
-      // const userAgent = navigator.userAgent;
 
 
-      Swal.fire({
-        title: 'Login',
-        html: '<form id="login-form">' +
-          '<input type="text" id="username" class="swal2-input" placeholder="Usuário">' +
-          '<input type="password" id="password" class="swal2-input" placeholder="Senha">' +
-          '</form>',
-        focusConfirm: false,
-        preConfirm: () => {
-          const username = $('#username').val();
-          const password = $('#password').val();
+<script>
 
-          let link;
-          if (etp === '1') {
-            link = '/retomar_dados_import'; // Altere para o URL correto para etp === '1'
-          } else if (etp === '2') {
-            link = '/retomar_dados_import_94'; // Altere para o URL correto para etp === '2'
-          }
-          // else {
-          //   // Trate outros valores de etp aqui, se necessário
-          //   print('não informado')
-          // }
+// Função para mostrar a mensagem de carregamento e iniciar a barra de progresso
+function iniciarCarregamento() {
+  const mensagem = document.getElementById('loading-message');
+  mensagem.classList.remove('hidden');
 
-          // Enviar os dados de login para o backend (app.py) usando AJAX
-          $.ajax({
-            url: link,
-            method: 'POST',
-            data: { username: username, password: password, id_form: id_form, etp: etp },// userAgent: userAgent }, // Envia o id_form também
-            success: function (response) {
-              // Se a autenticação for bem-sucedida, redireciona para a página do Selenium
-              if (response.status === 'success') {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Importação Efetuada Com Sucesso',
-                  html: `
-                    <div style="max-height: 400px; overflow-y: auto; align: left; ">
-                      Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
-                      <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
-                    </div>
-                    ${etp === '1'
-                      ? `<div style="color: red; text-align: center;">
-                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
-                          <ul>
-                            <li>Iniciando com as Informações básicas do ETP</li>
-                            <li>Informando a Área Requisitante</li>
-                            <li>Declarando a Viabilidade</li>
-                            <li>Responsáveis</li>
-                          </ul>
-                        </div>`
-                      : etp === '2'
-                      ? `<div style="color: red; text-align: center;">
-                          Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
-                          <ul>
-                            <li>Iniciando com as Informações básicas do ETP</li>
-                            <li>Informando a Área Requisitante</li>
-                            <li>Declarando a Viabilidade</li>
-                            <li>Responsáveis</li>
-                          </ul>
-                        </div>`
-                      : 'Mensagem padrão se etp não for 1 nem 2'
-                    }
-                  `
-                });
+}
+
+function sucessoCarregamento() {
+  const mensagem = document.getElementById('loading-sucesso');
+  mensagem.classList.remove('hidden');
+
+}
+// Função para ocultar a mensagem de carregamento e finalizar a barra de progresso
+function finalizarCarregamento() {
+  const mensagem = document.getElementById('loading-message');
+
+  mensagem.classList.add('hidden');
+
+}
 
 
-                return;
-                // window.location.href = '/'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
-              } else {
-                // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
-                Swal.fire('Erro', 'Login ou senha inválidos', 'error');
-              }
-            },
-            error: function (error) {
-              console.error('Erro ao enviar dados de login:', error);
-              Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
-            },
-          });
+
+  // Função para enviar o formulário de login
+  function enviarFormulario() {
+    const button = $(this); // Pega o botão que foi clicado
+    const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
+    const etp = button.siblings('[name="status"]').val();
+    // const userAgent = navigator.userAgent;
+
+// Exibir a mensagem de "Aguarde"
+               // Iniciar a barra de progresso
+               iniciarCarregamento();
+              //  setTimeout(function () {
+                //   iniciarCarregamento();
+                    
+                  
+                // // Finalizar a barra de progresso
+                //    // NProgress.done();
+                // }, 3000); 
+    Swal.fire({
+      title: 'Login',
+      html: '<form id="login-form">' +
+        '<input type="text" id="username" class="swal2-input" placeholder="Usuário">' +
+        '<input type="password" id="password" class="swal2-input" placeholder="Senha">' +
+        '</form>',
+      focusConfirm: false,
+      preConfirm: () => {
+        const username = $('#username').val();
+        const password = $('#password').val();
+
+        let link;
+        if (etp === '1') {
+          link = '/retomar_dados_import'; // Altere para o URL correto para etp === '1'
+        } else if (etp === '2') {
+          link = '/retomar_dados_import_94'; // Altere para o URL correto para etp === '2'
         }
-      });
-    }
 
-    // Adicionar o evento de clique aos botões de classe "btn-login"
-    $('.btn-login').click(enviarFormulario);
-  </script>
+        // Enviar os dados de login para o backend (app.py) usando AJAX
+        $.ajax({
+          url: link,
+          method: 'POST',
+          data: { username: username, password: password, id_form: id_form, etp: etp },
+          success: function (response) {
+
+            if (response.status === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Importação Efetuada Com Sucesso',
+                html: `
+                  <div style="max-height: 400px; overflow-y: auto; align: left; ">
+                    Os dados informados foram encaminhados para o site do Comprasnet, como identificado no Rascunho N° ${response.retorno}.
+                    <br> Solicitamos que verifique as etapas e coloque as informações complementares que faltam.
+                  </div>
+                  ${etp === '1'
+                    ? `<div style="color: red; text-align: center;">
+                        Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                        <ul>
+                          <li>Iniciando com as Informações básicas do ETP</li>
+                          <li>Informando a Área Requisitante</li>
+                          <li>Declarando a Viabilidade</li>
+                          <li>Responsáveis</li>
+                        </ul>
+                      </div>`
+                    : etp === '2'
+                    ? `<div style="color: red; text-align: center;">
+                        Obs: Retorne as etapas a seguir no próprio site do COMPRASNET:
+                        <ul>
+                          <li>Iniciando com as Informações básicas do ETP</li>
+                          <li>Informando a Área Requisitante</li>
+                          <li>Declarando a Viabilidade</li>
+                          <li>Responsáveis</li>
+                        </ul>
+                      </div>`
+                    : 'Mensagem padrão se etp não for 1 nem 2'
+                  }
+                `
+              });
+              
+            finalizarCarregamento();
+              return;
+            } else {
+              // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
+              Swal.fire('Erro', 'Login ou senha inválidos', 'error');
+            }
+          },
+          error: function (error) {
+            // Finalizar a barra de progresso em caso de erro
+
+
+            console.error('Erro ao enviar dados de login:', error);
+            Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
+            finalizarCarregamento();
+            NProgress.done();
+          },
+        });
+      }
+    });
+  }
+
+  // Adicionar o evento de clique aos botões de classe "btn-login"
+  $('.btn-login').click(enviarFormulario);
+</script>
+
   {% endblock %}
 
 </body>
