@@ -174,8 +174,6 @@
       const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
       const etp = button.siblings('[name="status"]').val();
 
-      // Iniciar a barra de progresso
-      iniciarCarregamento();
       //  setTimeout(function () {
       //   iniciarCarregamento();
       // // Finalizar a barra de progresso
@@ -194,6 +192,9 @@
           const username = $('#username').val();
           const password = $('#password').val();
 
+          // Iniciar a barra de progresso
+          iniciarCarregamento();
+          
           let link;
           if (etp === '1') {
             link = '/retomar_dados_import'; // Altere para o URL correto para etp === '1'

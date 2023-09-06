@@ -155,7 +155,7 @@ class ImportAuto:
             time.sleep(5)
             try:
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Prómo campo")]')))
+                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Próximo campo")]')))
                 botao_proximo.click()
                 # print('mODULO INFORMAÇÃO OK')
             except Exception as e:
@@ -168,6 +168,7 @@ class ImportAuto:
 
                 print(f'Erro ({error_code}): {error_message}')
                 # return ('error', e) # Retorna e para indicar erro
+
                 return ('warning', numero) # Retorna e para indicar erro
 
         ## Etapa de Necessidade
@@ -1178,6 +1179,17 @@ class ImportAuto:
                     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                     botao_proximo.click()
+
+                    # # Numero do Documento - Rascunho
+                    # numero = buscar_numero_documento(driver)
+
+                    # print('Rascunho N°-', numero)
+
+                    # time.sleep(2)
+
+                    # print('aqui*******************')
+
+                    # return ('success', numero)
                 except Exception as e:
                     error_code = '1019'
                     error_message = 'Erro na Etapa 16 - Responsáveis'
@@ -1215,6 +1227,17 @@ class ImportAuto:
                     # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
                     botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                     botao_proximo.click()
+
+                    # # Numero do Documento - Rascunho
+                    # numero = buscar_numero_documento(driver)
+
+                    # print('Rascunho N°-', numero)
+
+                    # time.sleep(2)
+
+                    # print('aqui*******************')
+
+                    # return ('success', numero)
                 except Exception as e:
                     error_code = '1022'
                     error_message = 'Erro na Etapa 19 - Responsáveis'
@@ -1269,11 +1292,7 @@ class ImportAuto:
         try:
             # Inicializando driver navegador 
             driver = inicializar_drive()
-            # print(driver)
 
-            # numero = '22222'
-            # return ('success', numero)
-        
             # Conectar com a página
             conexao_comprasnet(driver)
 
@@ -1299,10 +1318,10 @@ class ImportAuto:
             # Etapa Informações Básicas
             modulo_informacao_basicas(driver)
 
+            print('aqui------------------------------')
+
             #  Etapa de Necessidade
             modulo_necessidade(driver, etp)
-            # print('Chegou')
-            # return('success','25252525')
 
             # Etapa de Solução
             modulo_solucao(driver, etp)
@@ -1318,18 +1337,18 @@ class ImportAuto:
 
             print('Rascunho N°-', numero)
 
-            ## Botao Voltar
-            # botao_voltar(driver)
-            
-
             time.sleep(2)
+
+            # print('aqui*******************')
 
             return ('success', numero)
         
         except Exception as e:
             print("Ocorreu um erro inesperado:", e)
             print("Entre em contato com o desenvolvedor para obter suporte.")
-            return #e
+
+            print('aqui*******************')
+            return e
 
         finally:
             # Pausa a execução do script para aguardar sua interação manual com o alerta
