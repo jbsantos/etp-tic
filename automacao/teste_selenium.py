@@ -15,7 +15,6 @@ from controller.Etp40 import Etp40Controller
 from controller.Etp94 import Etp94Controller
 from controller.User import UserController
 
-
 config = app_config[app_active]
 
 class ImportAuto:
@@ -135,12 +134,12 @@ class ImportAuto:
                 if (etp == 1):
                     opcao_etp_outros = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'p-slidemenusub ul li.ui-menuitem:nth-child(2) a span')))
                     opcao_etp_outros.click()
-                    print('Escolha ETP40')
+                    # print('Escolha ETP40')
                      
                 elif(etp == 2):
                     opcao_etp_tic = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'p-slidemenusub ul li.ui-menuitem:nth-child(1) a span')))
                     opcao_etp_tic.click()
-                    print('Escolha ETP94')
+                    # print('Escolha ETP94')
                      
             except Exception as e:
                 error_code = '1004'
@@ -156,7 +155,7 @@ class ImportAuto:
             time.sleep(5)
             try:
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-                botao_proximo = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Próximo campo")]')))
+                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@ptooltip, "Prómo campo")]')))
                 botao_proximo.click()
                 # print('mODULO INFORMAÇÃO OK')
             except Exception as e:
@@ -192,7 +191,7 @@ class ImportAuto:
                 driver.switch_to.default_content()
 
                 # Aguarde até que o botão "Próximo campo" esteja clicável antes de clicar nele
-                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próo campo"]')))
+                botao_proximo = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[ptooltip="Próximo campo"]')))
                 botao_proximo.click()
             except Exception as e:
                 error_code = '1005'
@@ -201,7 +200,7 @@ class ImportAuto:
                 # Buscar Numero do Documento Pós Erro do Processo - Rascunho 
                 numero = buscar_numero_documento(driver)
 
-                print('Rascunho N°-', numero)
+                # print('Rascunho N°-', numero)
                 # driver.quit()
 
                 print(f'Erro ({error_code}): {error_message}')
@@ -1284,7 +1283,6 @@ class ImportAuto:
 
             # Pagina Inicial ComprasNet
             escolhar_processo_criar_etp(driver)
-
             time.sleep(5)
 
             # Organizar Abas Abertas
@@ -1303,6 +1301,8 @@ class ImportAuto:
 
             #  Etapa de Necessidade
             modulo_necessidade(driver, etp)
+            # print('Chegou')
+            # return('success','25252525')
 
             # Etapa de Solução
             modulo_solucao(driver, etp)
