@@ -15,7 +15,6 @@ class Etp40Controller:
     def __init__(self):
         self.etp40_model = Etp40()
     
-    
     def get_etp40(self, limit):    
         result = []
     
@@ -95,8 +94,6 @@ class Etp40Controller:
                 'status': status
             })
                
-
-    
     def save_etp40():
         def remove_html_tags(text):
                 soup = BeautifulSoup(text, 'html.parser')
@@ -174,7 +171,6 @@ class Etp40Controller:
             'status': status
         })
 
-
     def retomar_session_etp40(form_id):
         try:
             etp40 = Etp40.get_etp40_formulario_by_id(form_id)  # Recupera o registro da tabela Etp40 com base no ID do formulário
@@ -205,14 +201,10 @@ class Etp40Controller:
             print(e)
             return False  # Retorna False em caso de erro
 
-
-
-
     def salvar_edicao_etp40(form_id):
 
         result = Etp40.salvar_edicao_etp40(form_id)
         return result
-
 
     def ultimo_id_formulario():
         
@@ -250,3 +242,10 @@ class Etp40Controller:
             print(e)
             return False  # Retorna False em caso de erro
 
+    def deletar_etp40(form_id):
+        try:
+            res = Etp40.delete(form_id)
+            return True
+        except Exception as e:
+            print(e)
+            return False  # Retorna False em caso de erro    

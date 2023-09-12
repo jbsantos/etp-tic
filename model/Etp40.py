@@ -155,4 +155,11 @@ class Etp40(db.Model):
             db.session.rollback()
             return False
 
+    def delete(form_id):
+        try:
+            res = db.session.query(Etp40).filter(Etp40.id == form_id).delete()
+            db.session.commit()
 
+            return True
+        except Exception as e:
+            return False

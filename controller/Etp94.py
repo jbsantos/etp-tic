@@ -101,8 +101,6 @@ class Etp94Controller:
                 'status': status
             })
                
-
-    
     def save_etp94():
         def remove_html_tags(text):
                 soup = BeautifulSoup(text, 'html.parser')
@@ -183,7 +181,6 @@ class Etp94Controller:
             'status': status
         })
 
-
     def retomar_session_etp94(form_id):
         try:
             etp94 = Etp94.get_etp94_formulario_by_id(form_id)  # Recupera o registro da tabela Etp94 com base no ID do formulário
@@ -217,14 +214,10 @@ class Etp94Controller:
             print(e)
             return False  # Retorna False em caso de erro
 
-
-
-
     def salvar_edicao_etp94(form_id):
 
         result = Etp94.salvar_edicao_etp94(form_id)
         return result
-
 
     def ultimo_id_formulario():
         
@@ -261,6 +254,14 @@ class Etp94Controller:
             else:
                 return False  # Retorna False se o registro não for encontrado
 
+        except Exception as e:
+            print(e)
+            return False  # Retorna False em caso de erro
+
+    def deletar_etp94(form_id):
+        try:
+            res = Etp94.delete(form_id)
+            return True
         except Exception as e:
             print(e)
             return False  # Retorna False em caso de erro

@@ -105,8 +105,6 @@ class Etp94(db.Model):
         result = db.session.commit()  # Confirma as alterações no banco de dados
         return result
     
-    
-    
     def salvar_edicao_etp94(form_id):
 
         etp94 = Etp94.query.filter_by(id=form_id).first()
@@ -159,4 +157,12 @@ class Etp94(db.Model):
             db.session.rollback()
             return False
 
+    def delete(form_id):
+        try:
+            res = db.session.query(Etp94).filter(Etp94.id == form_id).delete()
+            db.session.commit()
+
+            return True
+        except Exception as e:
+            return False
 

@@ -32,6 +32,7 @@
             <th>Baixar CSV</th>
             <th>Editar</th>
             <th>Importar ComprasNet</th>
+            <th>Excluir</th>
 
           </tr>
         </thead>
@@ -73,6 +74,14 @@
                     class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
               </form>
             </td>
+            <td>
+              <form action="{{ url_for('deletar_etp40') }}" method="POST" class="delete-form">
+                <input type="hidden" name="id_form" value="{{etp.id}}">
+                <input type="hidden" name="status" value="editar">
+                <button type="button" class="btn btn-link invisible-button delete-button"><i class="fa fa-trash fa-2x"
+                  aria-hidden="true" class="style-icon "></i></button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -96,6 +105,7 @@
               <th>Baixar CSV</th>
               <th>Editar</th>
               <th>Importar ComprasNet</th>
+              <th>Excluir</th>
 
             </tr>
           </thead>
@@ -138,6 +148,14 @@
                       class="fa fa-external-link fa-2x" aria-hidden="true" class="style-icon "></i></button>
                 </form>
               </td>
+              <td>
+                <form action="{{ url_for('deletar_etp94') }}" method="POST" class="delete-form">
+                  <input type="hidden" name="id_form" value="{{etp.id}}">
+                  <input type="hidden" name="status" value="editar">
+                  <button type="button" class="btn btn-link invisible-button delete-button"><i class="fa fa-trash fa-2x"
+                    aria-hidden="true" class="style-icon "></i></button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -155,12 +173,6 @@
 
     }
 
-    // function sucessoCarregamento() {
-    //   const mensagem = document.getElementById('loading-sucesso');
-    //   mensagem.classList.remove('hidden');
-
-    // }
-
     // Função para ocultar a mensagem de carregamento e finalizar a barra de progresso
     function finalizarCarregamento() {
       const mensagem = document.getElementById('loading-message');
@@ -174,12 +186,6 @@
       const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
       const etp = button.siblings('[name="status"]').val();
 
-      //  setTimeout(function () {
-      //   iniciarCarregamento();
-      // // Finalizar a barra de progresso
-      //    // NProgress.done();
-      // }, 3000);
-      
       // Formulario
       Swal.fire({
         title: 'Login',
@@ -278,6 +284,36 @@
 
     // Adicionar o evento de clique aos botões de classe "btn-login"
     $('.btn-login').click(enviarFormulario);
+
+    // Função para lidar com a exclusão
+    function confirmarExclusao() {
+      const button = $(this); // Pega o botão que foi clicado
+      const id_form = button.siblings('[name="id_form"]').val(); // Pega o valor do atributo "id_form"
+
+      // Exibir um pop-up de confirmação usando o Swal.fire
+      Swal.fire({
+        title: 'Tem certeza?',
+        // text: 'Você deseja excluir este arquivo?',
+        html: `<div style="font-size: 16px; max-height: 400px; overflow-y: auto; align: left; ">
+                 Você deseja excluir este arquivo?
+              </div>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar',
+        // width: '600px', // Defina a largura desejada
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Se o usuário confirmar, envie o formulário para a exclusão
+          const form = button.closest('form'); // Encontra o formulário mais próximo
+          form.submit();
+        }
+      });
+    }
+
+    // Adicionar o evento de clique aos botões de exclusão
+    $('.delete-button').click(confirmarExclusao);
+
   </script>
   {% endblock %}
 
