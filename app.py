@@ -365,8 +365,6 @@ def create_app(config_name):
         
         return response
 
-
-    
     @app.route('/gerar_pdf', methods=['POST', 'GET'])
     def gerar_pdf():
             
@@ -479,13 +477,10 @@ def create_app(config_name):
         else:
             return redirect('/registre-se')
        
-        
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
     
-
-
     @app.route('/carregar_pdf',methods=['POST', 'GET'])
     def carregar_pdf():
         status = ''
@@ -497,7 +492,6 @@ def create_app(config_name):
 
         return result
     
-
     @app.route('/retomar_dados',methods=['POST', 'GET'])
     def retomar_dados():
         status = ''
@@ -508,8 +502,6 @@ def create_app(config_name):
         result = Etp40Controller.retomar_session_etp40(id_form)
 
         return render_template('etp40/1informacoes-40.html', status=status) 
-    
-    
     
     @app.route('/salvar_edicao',methods=['POST', 'GET'])
     def salvar_edicao():
@@ -534,11 +526,9 @@ def create_app(config_name):
         else:
             return redirect('/registre-se')
        
-    
     @app.route('/registre-se',methods=['POST', 'GET'])
     def registre_se():
         return render_template('etp40/pages-register.html') 
-    
     
     @app.route('/rota1', methods=['POST', 'GET'])
     
@@ -1270,8 +1260,6 @@ def create_app(config_name):
         
         return response
 
-
-       
     @app.route('/retomar_dados_import',methods=['POST', 'GET'])
     def retomar_dados_import():
         data = request.form  # Use .json diretamente para obter os dados
@@ -1320,6 +1308,30 @@ def create_app(config_name):
         else:
             return  jsonify({'status': 'error', 'message': 'Erro no Processo', 'error': str(detalhe)})
        
+    @app.route('/deletar_etp94',methods=['POST', 'GET'])
+    def deletar_etp94():
+        id_form = request.form.get('id_form') 
+        # id_form = session['id_form']
+        result = Etp94Controller.deletar_etp94(id_form)
+
+        if result:
+            print('deletou') 
+
+        # return
+        return redirect(url_for('admin.index'))
+  
+    @app.route('/deletar_etp40',methods=['POST', 'GET'])
+    def deletar_etp40():
+        id_form = request.form.get('id_form') 
+        # id_form = session['id_form']
+        result = Etp40Controller.deletar_etp40(id_form)
+
+        if result:
+            print('deletou') 
+
+        # return
+        return redirect(url_for('admin.index'))
+
     def limpar_sessoes():
         session.clear()
 
