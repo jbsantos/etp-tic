@@ -18,67 +18,64 @@ Faca os procedimentos abaixo para configurar o python
 Por exemplo, se for a versão 2.7.15 do Python, o valor será Python27 ; se for 3.7.0 , o valor será Python37 e assim por diante. Veja o caminho exato da sua instalação e substitua o valor acima.
 7. Após isso, clique em OK .
 
-instalar o pip
+---instalar o pip
 python -m ensurepip
-apos termina, rodar o comanda 
+---apos termina, rodar o comanda 
 python -m ensurepip --upgrade:
 
-Criando um virtualenv no Windows:
-Rode o comando a baixo lembrando de adaptar o caminho do python
+---Criando um virtualenv no Windows:
+---Rode o comando a baixo lembrando de adaptar o caminho do python
 \Python37\Scripts\pip.exe install virtualenv
 
-Em seguida coloque o caminho da pasta 
+---Em seguida coloque o caminho da pasta 
 Python37\Scripts\virtualenv.exe venv
 
-Para ativar seu virtualenv rode o seguinte comando:
+---Para ativar seu virtualenv rode o seguinte comando:
 venv\Scripts\activate
 
 Ubuntu
 
-Faca os procedimentos abaixo para configurar o python 
-rodando o comando e veja se ja existe algum python pre instalado 
+---Faca os procedimentos abaixo para configurar o python 
+---rodando o comando e veja se ja existe algum python pre instalado 
 which python
 
-caso retorna, verifique a versão, caso não instale da seguinte maneira
-sudo apt-get install python2.7.17
+--- veja a versão do python3 instalado em sua máquina
+python3 --version
 
-Instalar o pip 
-sudo apt-get install python-pip
+---caso retorna, verifique a versão, caso não instale da seguinte maneira
+sudo apt-get install python3.7.17
 
-Criando um virtualenv no Ubuntu:
-Para instalar um virtualenv no Ubuntu, rode o comando:
+---Instalar o pip 
+sudo apt-get install python3.7-pip
+
+---Criando um virtualenv no Ubuntu:
+---Para instalar um virtualenv no Ubuntu, rode o comando:
 sudo pip3 install virtualenv
 
-Em seguida coloque o caminho da pasta
+---Em seguida coloque o caminho da pasta
 virtualenv -p python3 venv
 
-Para ativar seu virtualenv rode o seguinte comando:
+---Para ativar seu virtualenv rode o seguinte comando:
 source ./venv/bin/activate
 
 #### Etapa 2 
 
 No ambiente venv
 
-Rode o comando a seguir para instalar o Flask em seu virtualenv .
-pip install flask
+---Rode o comando a seguir para instalar o Flask em seu virtualenv .
+pip3.7 install flask
 
-conexão com o banco de dados MySQL :
-sudo apt-get install python3-dev libmysqlclient-dev
+---conexão com o banco de dados MySQL :
+sudo apt-get install python3.7-dev libmysqlclient-dev
 
-comando instalará a lib mysqlclient que existe para o Python:
-pip install mysqlclient
-
-comandos MySQL em uma aplicação Python:
-pip install flask-mysqldb
-
-Instale o pacote que se encontra no projeto:
+---Instale o pacote que se encontra no projeto:
 pip install -r requeriments_etp.txt
 
-caso ocorrer um erro durante a instalação, comente a linha que esta havendo e repita o processo.
+---caso ocorrer um erro durante a instalação, comente a linha que esta havendo e repita o processo.
 
 
 #### Etapa 3
-Alterar o ambiente de visão para desenvolvimento 
+---Alterar o ambiente de visão para desenvolvimento 
 export FLASK_ENV=development
 
 E rodar o projeto 
