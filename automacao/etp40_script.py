@@ -24,7 +24,7 @@ else:
 
 try:
     # Inicializando o navegador Selenium
-    path = '/static/driver/chromedriver'
+    #path = '/static/driver/chromedriver'
     driver = webdriver.Chrome()  
     print("O driver do Selenium foi localizado com sucesso.")
     coluna_b = df.iloc[:, 1] 

@@ -6,9 +6,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 # Lendo o arquivo CSV com o pandas
-df = pd.read_csv('/home/araujoroa2/Downloads/gerar_csv_94.csv', header=None)
+df = pd.read_csv('/home/araujo/Downloads/gerar_csv_94.csv', header=None)
 
 # Verificando se o DataFrame foi criado corretamente
 if not df.empty:
@@ -19,8 +21,18 @@ else:
     print("O arquivo CSV não pôde ser encontrado ou está vazio.")
 
 try:
+    #service = Service(ChromeDriverManager().install())  
+    #options = webdriver.ChromeOptions()
+    #driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    #try:
+    #    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    #except:
+    #    # Caso o WebDriverManager não funcione, especifique o caminho manualmente
+    #    chrome_driver_path = '/caminho/para/seu/chromedriver/executavel'
+    #    driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
+    
     # Inicializando o navegador Selenium
-    path = '/static/driver/chromedriver'
+    #path = '/static/driver/chromedriver'
     driver = webdriver.Chrome()  
     print("O driver do Selenium foi localizado com sucesso.")
     coluna_b = df.iloc[:, 1] 
@@ -46,7 +58,7 @@ try:
     campo_senha.click()
 
     # Agora, preencha o campo de senha com o valor desejado
-    campo_senha.send_keys('SATIC20232')
+    campo_senha.send_keys('ATIC20241')
 
     # Aguarde até que o botão esteja clicável antes de clicar nele
     botao_entrar = WebDriverWait(campo, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.br-button.is-primary')))

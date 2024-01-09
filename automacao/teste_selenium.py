@@ -38,13 +38,17 @@ class ImportAuto:
 
                 # Define algumas opções
                 options = webdriver.ChromeOptions()
-                # options.add_argument("--start-maximized")  # Inicia o navegador maximizado
-                options.add_argument("--headless=new")  # Inicia o navegador maximiza
+                #options.add_argument("--start-maximized")  # Inicia o navegador maximizado
+                #options.add_argument("--headless=new")  # Inicia o navegador maximiza
                 # driver = webdriver.Chrome()
+
+                # Adicione o caminho do executável do Chrome se estiver em um local não padrão
+                #options.binary_location = '/caminho/para/o/executavel/chrome'
+
                 
                 # Inicializa o driver do Chrome com as opções configuradas
-                driver = webdriver.Chrome(service=service, options=options)
-
+                #driver = webdriver.Chrome(service=service, options=options)
+                driver = webdriver.Chrome()
 
                 # print("O driver do Selenium foi localizado com sucesso.")
                 return driver
@@ -1295,11 +1299,11 @@ class ImportAuto:
 
             # Conectar com a página
             conexao_comprasnet(driver)
-
+            
             # Pagina de Login
             # Procedimento de Logar no ComprasNet
             processo_conexao_login(driver, usuario, senha)
-
+            
             # Pagina Inicial ComprasNet
             escolhar_processo_criar_etp(driver)
             time.sleep(5)
