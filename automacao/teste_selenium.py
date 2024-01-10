@@ -2,7 +2,7 @@ import time, re
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -32,7 +32,8 @@ class ImportAuto:
         def inicializar_drive():
             try:
                 # Inicializa o serviço do ChromeDriver
-                service = Service(ChromeDriverManager().install())  
+                #service = Service(ChromeDriverManager().install())  #Parou de funcinar
+                #service = ChromeService(ChromeDriverManager().install()) 
                 
                 # path = 'chromedriver'
 
