@@ -1,3 +1,5 @@
+{% import 'etp40/header.html' as header %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - ETP-DIGITAL</title>
+  <title>ETP-DIGITAL SYSTEM</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -15,7 +17,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,51 +43,52 @@
 
   <style>
     body {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        color: #333;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #333;
     }
-    
+
     h1 {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
-    
+
     p {
-        margin-bottom: 10px;
+      margin-bottom: 10px;
     }
-    
+
     strong {
-        font-weight: bold;
+      font-weight: bold;
     }
-    
+
     em {
-        font-style: italic;
+      font-style: italic;
     }
-    
+
     a {
-        color: #007bff;
-        text-decoration: none;
+      color: #007bff;
+      text-decoration: none;
     }
-    
+
     a:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
+
     .button {
 
-        display: inline-block;
-        padding: 10px 20px;
-        border: 2px solid #000;
-        background-color: #fff;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-        margin-right: 10px;
-        border-radius: 4px;
-  }
-</style>
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid #000;
+      background-color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 4px;
+    }
+  </style>
 
 </head>
 
@@ -94,8 +99,8 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="/" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">ETP-DIGITAL</span>
+        <img src="static/assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block" style="font-size: 130%;">ETP DIGITAL SYSTEM</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -169,7 +174,10 @@
 
             <li>
               <hr class="dropdown-divider">
-            </li>
+            </li>Documentos Importantes E Outros | ETP-DIGITAL
+
+ETP DIGITAL Manual IN 40_2020
+
 
             <li class="notification-item">
               <i class="bi bi-info-circle text-primary"></i>
@@ -191,124 +199,9 @@
 
         </li><!-- End Notification Nav -->
 
-        <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
+        {{ header.pagina_header('info_basico-nav', 'informacao', current_user) }}
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="static/assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
-
-        <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="static/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
 
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
@@ -319,16 +212,17 @@
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
- 
+
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>ETP DIGITAL</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
+          <li class="breadcrumb-item"><a href="/">Início</a></li>
+          <li class="breadcrumb-item active">Preenchimento obrigatório conforme § 8 do Art. 9 da IN 31 de 23 de Março de
+            2021</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -342,70 +236,83 @@
 
           </div><!-- End Budget Report -->
         </div>
-          <!-- Website Traffic -->
-          
+        <!-- Website Traffic -->
 
-          <!-- News & Updates Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-              <div style="margin-top: 33px" >
-                <a href="/etp40" class="button">ETP-DIGITAL 40</a>
-                  <!-- Chame a função do controlador -->
- 
-                <a href="/termo-de-uso-etptic" class="button">ETP-DIGITAL 94</a>
+        <!-- News & Updates Traffic -->
+        <div class="card">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+          <div style="margin-top: 33px">
+            <a href="/termo-de-uso-etp" class="button">ETP-DIGITAL /IN 40</a>
+            <a href="/termo-de-uso-etptic" class="button">ETP-DIGITAL TIC /IN 94</a>
+          </div>
+          <div class="card-body pb-0">
+
+            <h5 class="card-title">Documentos Importantes E Outros <span>| ETP-DIGITAL</span></h5>
+
+            <div class="news">
+
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-2.jpg" alt="">
+                <h4><a href="/download_etp40/IN_40_DE_22_DE_MAI_DE_2020.pdf" download>IN 40 </a>
+                </h4>
+                <p>Arquivo em PDF da Instrução Normativa N° 40/SGD/ME de 20 de Maio de 2020.</p>
               </div>
-            <div class="card-body pb-0">
-            
-              <h5 class="card-title">Documentos Importantes <span>| ETP-DIGITAL</span></h5>
 
-              <div class="news">
-                <div class="post-item clearfix">
-                  <img src="static/assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">ETP DIGITAL IN 40_2020</a></h4>
-                  <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
-                </div>
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-3.jpg" alt="">
+                <h4><a href="/download_etp40/INSTRUCAO_NORMATIVA_SGD_ME_N_94.pdf">IN 94</a></h4>
+                <p>Arquivo em PDF da Instrução Normativa N° 94/SGD/ME de 23 de Dezembro de 2022.</p>
+              </div>
 
-                <div class="post-item clearfix">
-                  <img src="static/assets/img/news-2.jpg" alt="">
-                  <h4><a href="#">ETP DIGITAL IN 40_2020.rtf</a></h4>
-                  <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
-                </div>
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-1.jpg" alt="">
+                <h4><a href="/download_etp40/ETP_DIGITAL_MANUAL_IN_40_2020.png" download> Manual do ETP DIGITAL Convencional</a></h4>
+                <p>Mapa Mental sobre a utilização do Sistema ETP DIGITAL Convencional.</p>
+              </div>
 
-                <div class="post-item clearfix">
-                  <img src="static/assets/img/news-3.jpg" alt="">
-                  <h4><a href="#">ETP DIGITAL Manual IN 40_2020.png</a></h4>
-                  <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
-                </div>
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-5.jpg" alt="">
+                <h4><a href="/download_etp94/ETP_DIGITAL_TIC_IN_94_2022.png">Manual do ETP DIGITAL TIC</a></h4>
+                <p>Mapa Mental sobre a utilização do Sistema ETP DIGITAL TIC, baseado na IN 94 de 23 de Dezembro de 2022.</p>
+              </div>
 
-                <div class="post-item clearfix">
-                  <img src="static/assets/img/news-4.jpg" alt="">
-                  <h4><a href="#">ETP DIGITAL Manual IN 40_2020.rtf</a></h4>
-                  <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                </div>
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-5.jpg" alt="">
+                <h4><a href="/download_etp94/ETP_DIGITA_ TIC _QUANDO_USAR.png">ETP DIGITAL TIC - Quando Usar para aquisição de bens e serviços de TIC</a></h4>
+                <p>Mapa Mental sobre os itens que se enquadram na utilização do Sistema ETP DIGITAL TIC, baseado na IN 94.</p>
+              </div>
 
-                <div class="post-item clearfix">
-                  <img src="static/assets/img/news-5.jpg" alt="">
-                  <h4><a href="#">ETP DIGITAL TIC IN 94_2022.png</a></h4>
-                  <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
-                </div>
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-4.jpg" alt="">
+                <h4><a href="/download_etp94/ETP_DIGITA_ TIC _QUANDO_NAO_USAR.png">ETP DIGITAL Convencional - Quando usar para aquisição de bens e serviços de TIC</a></h4>
+                <p>Mapa Mental sobre os itens que se enquadram na utilização do Sistema ETP DIGITAL Convencional (Exclusões da IN 94).</p>
+              </div>
 
-              </div><!-- End sidebar recent posts-->
+              <div class="post-item clearfix">
+                <img src="static/assets/img/news-4.jpg" alt="">
+                <h4><a href="/download_etp40/LEI_14133.pdf">LEI 14133</a></h4>
+                <p>Arquivo em PDF da nova Lei de Licitações de 1 de Abril de 2021.</p>
+              </div>
 
-            </div>
-          </div><!-- End News & Updates -->
 
-        </div><!-- End Right side columns -->
+            </div><!-- End sidebar recent posts-->
+
+          </div>
+        </div><!-- End News & Updates -->
+
+      </div><!-- End Right side columns -->
 
       </div>
     </section>
@@ -422,11 +329,12 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+     <!-- Designed by <a href="https://bootstrapmade.com/">TinkWink</a>-->
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -440,7 +348,7 @@
 
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
-<!-- index.html -->
+  <!-- index.html -->
 
 
 </body>

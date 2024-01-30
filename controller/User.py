@@ -26,6 +26,19 @@ class UserController():
                 return {}
         return {}
     
+    def process_form_data(data):
+        # Coloque a lógica de autenticação aqui
+        # Verifique as credenciais, id_form e etp
+        processed_data = {
+            'username': data.get('username'),
+            'password': data.get('password'),
+            'id_form': data.get('id_form'),
+            'etp': int(data.get('etp')),
+            # 'userAgent': data.get('userAgent')
+        }
+        return processed_data
+
+    
     def get_admin_login(self, user_id):
         self.user_model.id = user_id
 

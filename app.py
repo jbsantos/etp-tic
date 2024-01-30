@@ -1,19 +1,34 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request,url_for, redirect, render_template, Response, json, abort, session, request
+from flask import Flask, request,url_for, make_response, redirect, render_template,jsonify, Response, json, abort, session, request, send_file, send_from_directory, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user
 from functools import wraps
-#from bs4 import BeautifulSoup
-
+# para gerar pdf
+import pdfkit
+#gear csv
+import csv
+from bs4 import BeautifulSoup
+import time
+from automacao.teste_selenium import ImportAuto
 # config import
 from config import app_config, app_active
 
 # controllers
 from controller.User import UserController
+from controller.Etp40 import Etp40Controller
+from controller.Etp94 import Etp94Controller
 from controller.Product import ProductController
 from admin.Admin import start_views
 from flask_bootstrap import Bootstrap
+#Selenium
+import time, re
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 import os
 config = app_config[app_active]
 
@@ -71,25 +86,35 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            limpar_sessoes()
+            session['user_id'] = user_id
+        
         return render_template('/etp40/index.html')
     
     @app.route('/etp94')
     def etp94():
-        return render_template('/etp94/etp94.html')
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            #limpar_sessoes()
+            session['user_id'] = user_id
+            return render_template('/etp94/etp94.html')
+        else:
+            return render_template('/etp94/etp94.html')
     
     @app.route('/etp40')
     def etp40():
-    #     # Abrir o arquivo HTML e ler o seu conteúdo
-    #     with open('templates/etp40/aside.html', 'r') as file:
-    #         html = file.read()
-    #     soup = BeautifulSoup(html, 'html.parser')
-
-    # # Encontrar todos os elementos <a> e obter o valor do atributo href
-    #     href_values = [a['href'] for a in soup.find_all('a')]
-
-    #     print(str(href_values))
-    #     return render_template('resultado.html', href_values=href_values)
-        return render_template('/etp40/etp40.html')
+        
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            # limpar_sessoes()
+            session['user_id'] = user_id
+            return render_template('/etp40/etp40.html',)
+        else:
+            return render_template('/etp40/etp40.html')
+       
+        
     
     @app.route('/informacoes1-40',methods=['POST', 'GET'])
     def informacoes1_40():
@@ -158,7 +183,28 @@ def create_app(config_name):
     @app.route('/viabilidade16-40',methods=['POST', 'GET'])
     def viabilidade16_40():
         return render_template('etp40/16viabilidade-40.html') 
+ 
+    @app.route('/process_form',methods=['POST', 'GET'])
+    def login_selenium():
+        data = request.form  # Use .json diretamente para obter os dados
+
+        processed_data = UserController.process_form_data(data)
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
+
+        result = ImportAuto.import_automatic_etp(usuario, senha, id_form,etp)
+
+        print('chamou etp40', result,' ', session['8'])
+
+    @app.route('/pagina_selenium',methods=['POST', 'GET'])
+    def pagina_selenium():    
     
+        return 'OK' #render_template('etp40/login-selenium.html') 
+       
     @app.route('/salvar-conteudo', methods=['POST'])
     def salvar_conteudo():
         dados = request.get_json()
@@ -169,14 +215,320 @@ def create_app(config_name):
         
         return 'Conteúdo salvo com sucesso'
     
-    @app.route('/gerar_pdf',methods=['POST', 'GET'])
-    def gerar_pdf():
-        #return render_template('pdf_quill40.html') 
-        return render_template('etp40/session.html') 
+    @app.route('/gerar_csv', methods=['GET', 'POST'])
+    def gerar_csv():
+        carregar_dados = carregar_pdf()
+
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da necessidade',
+            '3': 'Área Requisitante',   
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da solução como um todo',
+            '7': 'Estimativa das Quantidades a serem contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem alcançados com a contratação',
+            '13': 'Providências a serem adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
+        
+        csv_data = []
+
+        for session_number in range(1, 17):
+            if str(session_number) in session:
+                content = session[str(session_number)]
+                content = remove_html_tags(content)  # Remove as tags HTML
+                if content.strip() == '':
+                    content = ' '
+                csv_data.append([quill_content[str(session_number)], content])
+        
+       
+        output_path = 'static/csv/etp40/etp40.csv'
+
+        csv_filename = output_path
+
+        # Cria o arquivo CSV
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(csv_data)
+  
+        
+        return send_file(csv_filename, as_attachment=False)
     
+    
+    def remove_html_tags(text):
+        soup = BeautifulSoup(text, 'html.parser')
+        return soup.get_text()
+    
+
+    @app.route('/baixar_pdf', methods=['POST', 'GET'])
+    def baixar_pdf():
+
+        carregar_dados = carregar_pdf()
+        quill_content = {}
+        # Exemplo de uso:
+
+        for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
+            conteudo_editor = session.get(str(etapa), '')
+            if etapa == 8:
+                input_value = request.args.get('valor')
+                if input_value is not None:
+                    conteudo_editor = input_value
+
+            if conteudo_editor is not None:
+                if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
+                    conteudo_editor = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor = ' '
+
+            quill_content[str(etapa)] = conteudo_editor
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp40/etp40.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 5)),
+            'Solução': list(range(5, 12)),
+            'Planejamento': list(range(12, 15)),
+            'Viabilidade': [15, 16]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da Solução Como um Todo',
+            '7': 'Estimativa das Quantidades a Serem Contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou Não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem Alcançados com a Contratação',
+            '13': 'Providências a Serem Adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
+
+                    if session_content.strip() == '':
+                        session_content = ' '
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+        
+
+
+        pdf_bytes = pdfkit.from_file(temp_file_path, False, options=options)
+        # Criar uma resposta com os bytes do PDF
+        response = make_response(pdf_bytes)
+        
+        # Definir o cabeçalho Content-Type para application/pdf
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
+        response.headers['Content-Disposition'] = 'attachment; filename=meu_pdf.pdf'
+        
+        return response
+
+    @app.route('/gerar_pdf', methods=['POST', 'GET'])
+    def gerar_pdf():
+            
+        quill_content = {}
+
+        for etapa in range(1, 17):  # Loop para percorrer as 16 sessões
+            conteudo_editor = session.get(str(etapa), '')
+            if etapa == 8:
+                input_value = request.args.get('valor')
+                if input_value is not None:
+                    conteudo_editor = input_value
+
+            if conteudo_editor is not None:
+                if conteudo_editor.strip() == '' or conteudo_editor.strip() == '<br>':
+                    conteudo_editor = ''  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                
+                session['editor_vazio'] =[str(etapa)]
+                conteudo_editor = ' '
+
+            quill_content[str(etapa)] = conteudo_editor
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp40/etp40.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 5)),
+            'Solução': list(range(5, 12)),
+            'Planejamento': list(range(12, 15)),
+            'Viabilidade': [15, 16]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Descrição dos Requisitos da Contratação',
+            '5': 'Levantamento de Mercado',
+            '6': 'Descrição da Solução Como um Todo',
+            '7': 'Estimativa das Quantidades a Serem Contratadas',
+            '8': 'Estimativa do Valor da Contratação',
+            '9': 'Justificativa para o Parcelamento ou Não da Solução',
+            '10': 'Contratações Correlatas e/ou Interdependentes',
+            '11': 'Alinhamento entre a Contratação e o Planejamento',
+            '12': 'Benefícios a serem Alcançados com a Contratação',
+            '13': 'Providências a Serem Adotadas',
+            '14': 'Possíveis Impactos Ambientais',
+            '15': 'Declaração de Viabilidade',
+            '16': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
+
+                    if session_content.strip() == '':
+                        session_content = ' '
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+
+        # timestamp = int(time.time())  # Obtém o timestamp atual
+        ultimo_id = 0
+        if current_user.is_active:
+
+                user_id = current_user.id
+                
+                 # salva no banco
+                result = Etp40Controller.save_etp40()
+                ultimo_id = Etp40Controller.ultimo_id_formulario()
+                ultimo_id = ultimo_id.id
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    os.remove(temp_file_path)
+
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    variavel = "Foi criado o ETP 40 nº " + str(ultimo_id)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
     @app.route('/profile',methods=['POST', 'GET'])
     def profile():
         return render_template('etp40/users-profile.html') 
+    
+    @app.route('/carregar_pdf',methods=['POST', 'GET'])
+    def carregar_pdf():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retomar_session_etp40(id_form)
+
+        return result
+    
+    @app.route('/retomar_dados',methods=['POST', 'GET'])
+    def retomar_dados():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp40Controller.retomar_session_etp40(id_form)
+
+        return render_template('etp40/1informacoes-40.html', status=status) 
+    
+    @app.route('/salvar_edicao',methods=['POST', 'GET'])
+    def salvar_edicao():
+        id_form = session['id_form']
+        result = Etp40Controller.salvar_edicao_etp40(id_form)
+
+        if current_user.is_active:
+                user_id = current_user.id
+                if result:
+                    
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    variavel = "Foi editado o ETP-40 nº " + str(id_form)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo a edição do ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+       
+    @app.route('/registre-se',methods=['POST', 'GET'])
+    def registre_se():
+        return render_template('etp40/pages-register.html') 
     
     @app.route('/rota1', methods=['POST', 'GET'])
     
@@ -206,8 +558,6 @@ def create_app(config_name):
 
          return render_template('rota2.html', conteudo=conteudo)
      
-     
-     
     @app.route('/rota3', methods=['POST', 'GET'])
     def rota3():
         if request.method == 'POST':
@@ -221,9 +571,7 @@ def create_app(config_name):
 
         return render_template('rota3.html', conteudo2=conteudo2)
             #return render_template('rota1.html')
-            
-            #return render_template('rota2.html')
-        #return render_template('rota2.html')
+
 
     @app.route('/ultima', methods=['POST'])
     def ultima():
@@ -234,7 +582,6 @@ def create_app(config_name):
         for sessao in sessoes:
             session.pop(sessao, None)
         return render_template('ultima.html')
-
     
     @app.route('/login/')
     def login():
@@ -254,7 +601,7 @@ def create_app(config_name):
                 return render_template('login.html', data={'status': 401, 'msg': 'Seu usuário não tem permissão para acessar o admin', 'type':2})
             else:
                 login_user(result)
-                return redirect('/admin')
+                return redirect('/')
         else:
             return render_template('login.html', data={'status': 401, 'msg': 'Dados de usuário incorretos', 'type': 1})
 
@@ -382,7 +729,6 @@ def create_app(config_name):
     def load_user(user_id):
         user = UserController()
         return user.get_admin_login(user_id)
-    
 
     @app.route('/minha_funcao')
     def minha_funcao():
@@ -396,7 +742,6 @@ def create_app(config_name):
         return codigo_html
 
     app.jinja_env.globals.update(minha_funcao=minha_funcao)
-
 
 # Registre a função no Jinja2
 
@@ -416,8 +761,14 @@ def create_app(config_name):
     # Rota para salvar o conteúdo do editor Quill em uma sessão específica
     @app.route('/salvar/<int:etapa>', methods=['POST'])
     def salvar(etapa):
+        print(etapa)
+        
         conteudo_editor = request.form.get('conteudo_editor')
-        print(conteudo_editor)
+        
+        if conteudo_editor is None:
+            conteudo_editor = request.form.get('inputValue')
+
+        conteudo_editor = remove_html_tags(conteudo_editor)
         session[str(etapa)] = conteudo_editor
         return 'OK'
 
@@ -425,253 +776,564 @@ def create_app(config_name):
     @app.route('/recuperar/<int:etapa>', methods=['GET'])
     def recuperar(etapa):
         conteudo_editor = session.get(str(etapa), '')
+        input_value = request.args.get('valor')
+
+        if input_value is not None:
+            conteudo_editor = input_value
+
         return conteudo_editor
+    
+    @app.route('/salvar_94/<int:etapa>', methods=['POST'])
+    def salvar_94(etapa):
+        conteudo_editor_94 = request.form.get('conteudo_editor_94')
+
+        if conteudo_editor_94 is None:
+            conteudo_editor_94 = request.form.get('inputValue_94')
+
+        print('salvar ' + conteudo_editor_94)
+        #etapa94 = str(etapa)
+        session[str(etapa)] = conteudo_editor_94
+        return 'OK'
+
+    # Rota para recuperar o conteúdo do editor Quill de uma sessão específica
+    @app.route('/recuperar_94/<int:etapa>', methods=['GET'])
+    def recuperar_94(etapa):
+        #etapa94 = str(etapa)
+
+        conteudo_editor_94 = session.get(str(etapa), '')
+        input_value_94 = request.args.get('valor')
+        print('entrou')
+        
+        print('vaxio' + str(input_value_94))
+        if input_value_94 is not None:
+            conteudo_editor_94 = input_value_94
+        
+        print('recupera conteudo_editor_94 ' + conteudo_editor_94)
+        return conteudo_editor_94
     
     @app.route('/editor_session')
     def editor_session():
         return render_template('etp40/editor_session.html')
 
     ##################################################################
+    @app.route('/download_etp40/<path:filename>')
+    def download_file_etp40(filename):
+        directory = 'templates/etp40/assets/documents/'
+        return send_from_directory(directory, filename, as_attachment=True)
+    
+    @app.route('/download_etp94/<path:filename>')
+    def download_file_etp94(filename):
+        directory = 'templates/etp94/assets/documents/'
+        return send_from_directory(directory, filename, as_attachment=True)
+
     @app.route('/termo-de-uso-etptic')
-    def quando_usar_ep94():
-        return render_template('/etp94/quando-usar-ept94.html')
+    def quando_usar_etp94():
+        if current_user.is_active:
+            return render_template('/etp94/quando-usar-etp94.html')
+        else: 
+            return render_template('login.html', data={'status': 200, 'msg': None, 'type': None})
+        
+    @app.route('/termo-de-uso-etp')
+    def quando_usar_etp40():
+        if current_user.is_active:
+            return render_template('/etp40/quando-usar-etp40.html')
+        else: 
+            return render_template('login.html', data={'status': 200, 'msg': None, 'type': None})
+        
     
     @app.route('/informacao1-94', methods=['POST', 'GET'])
     def informacao1_94():
-        if request.method == 'POST':
-            conteudoinformacao1 = request.form.get('conteudoinformacao1')
-            session['conteudoinformacao1'] = conteudoinformacao1
-            return redirect('/informacao1-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudoinformacao1 = session.get('conteudoinformacao1')
-
-        return render_template('etp94/1informacao-94.html', conteudoinformacao1=conteudoinformacao1)
+        return render_template('etp94/1informacao-94.html')
     
     @app.route('/necessidade2-94', methods=['POST', 'GET'])
     def necessidade2_94():
-        if request.method == 'POST':
-            conteudonecessidade2 = request.form.get('conteudonecessidade2')
-            session['conteudonecessidade2'] = conteudonecessidade2
-            return redirect('/necessidade2-94')
-
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade2 = session.get('conteudonecessidade2')
-
-        return render_template('etp94/2necessidade-94.html', conteudonecessidade2=conteudonecessidade2)
+        
+        return render_template('etp94/2necessidade-94.html')
     
     @app.route('/necessidade3-94', methods=['POST', 'GET'])
     def necessidade3_94():
-        if request.method == 'POST':
-            conteudonecessidade3 = request.form.get('conteudonecessidade3')
-            session['conteudonecessidade3'] = conteudonecessidade3
-            return redirect('/necessidade3-94')
-
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade3 = session.get('conteudonecessidade3')
-
-        return render_template('etp94/3necessidade-94.html', conteudonecessidade3=conteudonecessidade3)
+        
+        return render_template('etp94/3necessidade-94.html')
     
     @app.route('/necessidade4-94', methods=['POST', 'GET'])
     def necessidade4_94():
-        if request.method == 'POST':
-            conteudonecessidade4 = request.form.get('conteudonecessidade4')
-            session['conteudonecessidade4'] = conteudonecessidade4
-            return redirect('/necessidade4-94')
-
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade4 = session.get('conteudonecessidade4')
-
-        return render_template('etp94/4necessidade-94.html', conteudonecessidade4=conteudonecessidade4)
+        
+        return render_template('etp94/4necessidade-94.html')
     
     @app.route('/necessidade5-94', methods=['POST', 'GET'])
     def necessidade5_94():
-        if request.method == 'POST':
-            conteudonecessidade5 = request.form.get('conteudonecessidade5')
-            session['conteudonecessidade5'] = conteudonecessidade5
-            return redirect('/necessidade5-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade5 = session.get('conteudonecessidade5')
-
-        return render_template('etp94/5necessidade-94.html', conteudonecessidade5=conteudonecessidade5)
+        return render_template('etp94/5necessidade-94.html')
     
     @app.route('/necessidade6-94', methods=['POST', 'GET'])
     def necessidade6_94():
-        if request.method == 'POST':
-            conteudonecessidade6 = request.form.get('conteudonecessidade6')
-            session['conteudonecessidade6'] = conteudonecessidade6
-            return redirect('/necessidade6-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade6 = session.get('conteudonecessidade6')
-
-        return render_template('etp94/6necessidade-94.html', conteudonecessidade6=conteudonecessidade6)
+        return render_template('etp94/6necessidade-94.html')
     
     @app.route('/necessidade7-94', methods=['POST', 'GET'])
     def necessidade7_94():
-        if request.method == 'POST':
-            conteudonecessidade7 = request.form.get('conteudonecessidade7')
-            session['conteudonecessidade7'] = conteudonecessidade7
-            return redirect('/necessidade7-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudonecessidade7 = session.get('conteudonecessidade7')
-
-        return render_template('etp94/7necessidade-94.html', conteudonecessidade7=conteudonecessidade7)
+        return render_template('etp94/7necessidade-94.html')
     
     @app.route('/solucao8-94', methods=['POST', 'GET'])
     def solucao8_94():
-        if request.method == 'POST':
-            conteudosolucao8 = request.form.get('conteudosolucao8')
-            session['conteudosolucao8'] = conteudosolucao8
-            return redirect('/solucao8-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao8 = session.get('conteudosolucao8')
-
-        return render_template('etp94/8solucao-94.html', conteudosolucao8=conteudosolucao8)
+        return render_template('etp94/8solucao-94.html')
     
     @app.route('/solucao9-94', methods=['POST', 'GET'])
     def solucao9_94():
-        if request.method == 'POST':
-            conteudosolucao9 = request.form.get('conteudosolucao9')
-            session['conteudosolucao9'] = conteudosolucao9
-            return redirect('/solucao9-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao9 = session.get('conteudosolucao9')
-
-        return render_template('etp94/9solucao-94.html', conteudosolucao9=conteudosolucao9)
+        return render_template('etp94/9solucao-94.html')
     
     @app.route('/solucao10-94', methods=['POST', 'GET'])
     def solucao10_94():
-        if request.method == 'POST':
-            conteudosolucao10 = request.form.get('conteudosolucao10')
-            session['conteudosolucao10'] = conteudosolucao10
-            return redirect('/solucao10-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao10 = session.get('conteudosolucao10')
-
-        return render_template('etp94/10solucao-94.html', conteudosolucao10=conteudosolucao10)
+        return render_template('etp94/10solucao-94.html')
     
     @app.route('/solucao11-94', methods=['POST', 'GET'])
     def solucao11_94():
-        if request.method == 'POST':
-            conteudosolucao11 = request.form.get('conteudosolucao11')
-            session['conteudosolucao11'] = conteudosolucao11
-            return redirect('/solucao11-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao11 = session.get('conteudosolucao11')
-
-        return render_template('etp94/11solucao-94.html', conteudosolucao11=conteudosolucao11)
+        return render_template('etp94/11solucao-94.html')
     
     @app.route('/solucao12-94', methods=['POST', 'GET'])
     def solucao12_94():
-        if request.method == 'POST':
-            conteudosolucao12 = request.form.get('conteudosolucao12')
-            session['conteudosolucao12'] = conteudosolucao12
-            return redirect('/solucao12-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao12 = session.get('conteudosolucao12')
-
-        return render_template('etp94/12solucao-94.html', conteudosolucao12=conteudosolucao12)
+        return render_template('etp94/12solucao-94.html')
     
     @app.route('/solucao13-94', methods=['POST', 'GET'])
     def solucao13_94():
-        if request.method == 'POST':
-            conteudosolucao13 = request.form.get('conteudosolucao13')
-            session['conteudosolucao13'] = conteudosolucao13
-            return redirect('/solucao13-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao13 = session.get('conteudosolucao13')
-
-        return render_template('etp94/13solucao-94.html', conteudosolucao13=conteudosolucao13)
+        return render_template('etp94/13solucao-94.html')
     
     @app.route('/solucao14-94', methods=['POST', 'GET'])
     def solucao14_94():
-        if request.method == 'POST':
-            conteudosolucao14 = request.form.get('conteudosolucao14')
-            session['conteudosolucao14'] = conteudosolucao14
-            return redirect('/solucao14-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao14 = session.get('conteudosolucao14')
-
-        return render_template('etp94/14solucao-94.html', conteudosolucao14=conteudosolucao14)
+        return render_template('etp94/14solucao-94.html')
     
     @app.route('/solucao15-94', methods=['POST', 'GET'])
     def solucao15_94():
-        if request.method == 'POST':
-            conteudosolucao15 = request.form.get('conteudosolucao15')
-            session['conteudosolucao15'] = conteudosolucao15
-            return redirect('/solucao15-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudosolucao15 = session.get('conteudosolucao15')
-
-        return render_template('etp94/15solucao-94.html', conteudosolucao15=conteudosolucao15)
+        return render_template('etp94/15solucao-94.html')
     
     @app.route('/planejamento16-94', methods=['POST', 'GET'])
     def planejamento16_94():
-        if request.method == 'POST':
-            conteudoplanejamento16 = request.form.get('conteudoplanejamento16')
-            session['conteudoplanejamento16'] = conteudoplanejamento16
-            return redirect('/planejamento16-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudoplanejamento16 = session.get('conteudoplanejamento16')
-
-        return render_template('etp94/16planejamento-94.html', conteudoplanejamento16=conteudoplanejamento16)
+        return render_template('etp94/16planejamento-94.html')
     
     @app.route('/planejamento17-94', methods=['POST', 'GET'])
     def planejamento17_94():
-        if request.method == 'POST':
-            conteudoplanejamento17 = request.form.get('conteudoplanejamento17')
-            session['conteudoplanejamento17'] = conteudoplanejamento17
-            return redirect('/planejamento17-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudoplanejamento17 = session.get('conteudoplanejamento17')
-
-        return render_template('etp94/17planejamento-94.html', conteudoplanejamento17=conteudoplanejamento17)
+        return render_template('etp94/17planejamento-94.html')
        
     @app.route('/viabilidade18-94', methods=['POST', 'GET'])
     def viabilidade18_94():
-        if request.method == 'POST':
-            conteudoviabilidade18 = request.form.get('conteudoviabilidade18')
-            session['conteudoviabilidade18'] = conteudoviabilidade18
-            return redirect('/viabilidade18-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudoviabilidade18 = session.get('conteudoviabilidade18')
-
-        return render_template('etp94/18viabilidade-94.html', conteudoviabilidade18=conteudoviabilidade18)
+        return render_template('etp94/18viabilidade-94.html')
     
     @app.route('/viabilidade19-94', methods=['POST', 'GET'])
     def viabilidade19_94():
-        if request.method == 'POST':
-            conteudoviabilidade19 = request.form.get('conteudoviabilidade19')
-            session['conteudoviabilidade19'] = conteudoviabilidade19
-            return redirect('/viabilidade19-94')
 
-        # Verificar se a informação está armazenada na sessão
-        conteudoviabilidade19 = session.get('conteudoviabilidade19')
-
-        return render_template('etp94/19viabilidade-94.html', conteudoviabilidade19=conteudoviabilidade19)
+        return render_template('etp94/19viabilidade-94.html')
     
-    @app.route('/gerar-pdf-94',methods=['POST', 'GET'])
+    @app.route('/gerar_pdf_94',methods=['POST', 'GET'])
     def gerar_pdf_94():
-        return render_template('etp94/session.html')
-    
+            
+        quill_content = {}
+
+        for etapa in range(1, 20):
+            conteudo_editor_94 = session.get(str(etapa), '')
+            if etapa == 13:
+                input_value_94 = request.args.get('valor')
+                if input_value_94 is not None:
+                    conteudo_editor_94 = input_value_94
+
+            if conteudo_editor_94 is not None:
+                if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor_94 = ' '
+
+            quill_content[str(etapa)] = conteudo_editor_94
+
+        temp_file_path = 'temp.html'
+        #last_id+=1
+
+        #print(last_id,'last id 94 +1')
+        #output_path = 'static/pdf/etp94/etp94'+str(last_id)+'.pdf'
+        output_path = 'static/pdf/etp94/etp94.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 8)),
+            'Solução': list(range(8, 16)),
+            'Planejamento': list(range(16, 18)),
+            'Viabilidade': [18, 19]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
+
+                    if session_content.strip() == '':
+                        session_content = ' '
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+
+        # pdfkit.from_file(temp_file_path, output_path, options=options)
+
+        # os.remove(temp_file_path)
+        # timestamp = int(time.time())  # Obtém o timestamp atual
+        # return render_template('etp94/etp-pdf.html', timestamp=timestamp)   
+        if current_user.is_active:
+                user_id = current_user.id
+                
+                 # salva no banco
+                result = Etp94Controller.save_etp94()
+                ultimo_id = Etp94Controller.ultimo_id_formulario()
+               
+                    
+                        #caso seja positivo o resultado gerar o csv
+                if result:
+                    #gera  o pdf no local específico
+                    #pdfkit.from_file(temp_file_path, output_path, options=options)
+                    os.remove(temp_file_path)
+                    #gera o csv local específico
+
+                    #print(last_id,'last id 94 vai entra no csv')
+                    #gerar_csv_94(last_id)
+                    #fazer uma funcao para verificar se o usuario está logado
+                    # Limpa a sessão
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    ultimo_id = ultimo_id.id
+                        #caso seja positivo o resultado 
+                    variavel = "Foi criado o ETP 94 nº " + str(ultimo_id)
+                    flash(variavel)  # Armazena a variável para uso no próximo request
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo o ETP 40 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+
+
     @app.route('/editor-session')
     def editor_session_94():
         return render_template('etp94/editor_session.html')
+
+    @app.route('/gerar_csv_94', methods=['GET', 'POST'])
+    def gerar_csv_94():
+        carregar_dados = carregar_pdf_94()
+
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        
+        csv_data = []
+        
+        for session_number in range(1, 20):
+            if str(session_number) in session:
+                content = session[str(session_number)]
+                content = remove_html_tags(content)  # Remove as tags HTML
+                if content.strip() == '':
+                    content = ' '
+                csv_data.append([quill_content[str(session_number)], content])
+
+        output_path = 'static/csv/etp94/etp94.csv'
+        
+        csv_filename = output_path
+        
+        with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(csv_data)
+
+        return send_file(csv_filename, as_attachment=False)
+       
+    @app.route('/retomar_dados_94',methods=['POST', 'GET'])
+    def retomar_dados_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+        return render_template('etp94/1informacao-94.html', status=status) 
     
-    ##################################################################
+    @app.route('/salvar_edicao_94',methods=['POST', 'GET'])
+    def salvar_edicao_94():
+        id_form = session['id_form']
+        result = Etp94Controller.salvar_edicao_etp94(id_form)
+        
+        if current_user.is_active:
+                user_id = current_user.id
+                if result:
+                    
+                    limpar_sessoes()
+                # Define o objeto current_user novamente na sessão
+                    session['user_id'] = user_id
+                    variavel = "Foi editado o ETP-94 nº " + str(id_form)
+
+                    flash(variavel)  # Armazena a variável para uso no próximo request
+                    return redirect(url_for('admin.index'))
+                else: 
+                    print(result)
+                    return "Não foi salvo a edição do ETP 94 procure o administrador do sistema."
+
+        else:
+            return redirect('/registre-se')
+
+    @app.route('/carregar_pdf_94',methods=['POST', 'GET'])
+    def carregar_pdf_94():
+        status = ''
+        id_form = request.form.get('id_form')
+        session['id_form'] = id_form
+        status = request.form.get('status')
+        session['status'] = status
+        result = Etp94Controller.retomar_session_etp94(id_form)
+
+        return result
+    
+    @app.route('/baixar_pdf_94', methods=['POST', 'GET'])
+    def baixar_pdf_94():
+
+        carregar_dados = carregar_pdf_94()
+        quill_content = {}
+        # Exemplo de uso:
+
+        for etapa in range(1, 20):  # Loop para percorrer as 16 sessões
+            conteudo_editor_94 = session.get(str(etapa), '')
+            if etapa == 13:
+                input_value_94 = request.args.get('valor')
+                if input_value_94 is not None:
+                    conteudo_editor_94 = input_value_94
+
+            if conteudo_editor_94 is not None:
+                if conteudo_editor_94.strip() == '' or conteudo_editor_94.strip() == '<br>':
+                    conteudo_editor_94 = ' '  # Define como vazio se o conteúdo for vazio ou contiver apenas <br>
+            else:
+                conteudo_editor_94 = ' '
+
+            quill_content[str(etapa)] = conteudo_editor_94
+
+        temp_file_path = 'temp.html'
+
+        output_path = 'static/pdf/etp94/etp94.pdf'
+        sections = {
+            'Informações Básicas': [1],
+            'Necessidade': list(range(2, 8)),
+            'Solução': list(range(8, 16)),
+            'Planejamento': list(range(16, 18)),
+            'Viabilidade': [18, 19]
+        }
+        quill_content = {
+            '1': 'Informações Básicas',
+            '2': 'Descrição da Necessidade',
+            '3': 'Área Requisitante',
+            '4': 'Necessidades de Negócio',
+            '5': 'Necessidades Tecnológicas',
+            '6': 'Demais Requisitos Necessários e Suficientes à Escolha da Solução de TIC',
+            '7': 'Estimativa da Demanda - Quantidade de Bens e Serviço',
+            '8': 'Levantamento de Soluções',
+            '9': 'Análise Comparativa de Soluções',
+            '10': 'Registro de Soluções Consideradas Inviáveis',
+            '11': 'Análise Comparativa de Custos (TCO)',
+            '12': 'Descrição da Solução de TIC a Ser Contratada',
+            '13': 'Estimativa de Custo Total da Contratação',
+            '14': 'Justificativa Técnica da Escolha da Solução',
+            '15': 'Justificativa Econômica da Escolha da Solução',
+            '16': 'Benefícios a Serem Alcançados com a Contratação',
+            '17': 'Providências a Serem Adotadas',
+            '18': 'Declaração de Viabilidade',
+            '19': 'Responsáveis'
+        }
+        with open(temp_file_path, 'w', encoding='utf-8') as temp_file:
+            temp_file.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n')
+            temp_file.write('<style>body { background-color: #FFFFFF; }</style>')  # Definindo o estilo de fundo
+            temp_file.write('</head>\n<body>\n')
+            
+            for section_title, section_sessions in sections.items():
+                temp_file.write(f'<div><h1>{section_title}</h1>\n')
+                
+                for session_number in section_sessions:
+                    content = quill_content.get(str(session_number), '')
+                    session_content = session.get(str(session_number), '')
+                    
+                    # Substitui <br> por " "
+                    session_content = session_content.replace('<br>', ' ')
+
+                    if session_content.strip() == '':
+                        session_content = ' '
+                    
+                    temp_file.write(f'<h2>{session_number}. {content}</h2>\n')
+                    temp_file.write(f'<p>{session_content}</p>\n')
+                
+                temp_file.write('</div>\n')
+            
+            temp_file.write('</body>\n</html>')
+
+        options = {
+            'page-size': 'Letter',
+            'margin-top': '0.75in',
+            'margin-right': '0.75in',
+            'margin-bottom': '0.75in',
+            'margin-left': '0.75in',
+            'encoding': 'UTF-8',
+        }
+        
+
+
+        pdf_bytes = pdfkit.from_file(temp_file_path, False, options=options)
+        # Criar uma resposta com os bytes do PDF
+        response = make_response(pdf_bytes)
+        
+        # Definir o cabeçalho Content-Type para application/pdf
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        # Definir o cabeçalho Content-Disposition para realizar o download do arquivo
+        response.headers['Content-Disposition'] = 'attachment; filename=etp94.pdf'
+        
+        return response
+
+    @app.route('/retomar_dados_import',methods=['POST', 'GET'])
+    def retomar_dados_import():
+        data = request.form  # Use .json diretamente para obter os dados
+
+        processed_data = UserController.process_form_data(data)
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
+
+        result, detalhe = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)
+        # result = 'warning'
+        # print('chamou etp40', result,' ', detalhe)
+        
+        if result == 'success':
+            # return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso', 'retorno': str(detalhe), 'tag':'success' })
+        elif result == 'warning':
+            return  jsonify({'status': 'success', 'message': 'Processo Não Completado', 'retorno': str(detalhe), 'tag':'warning'})
+        else:
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo', 'error': str(detalhe)})
+    
+    @app.route('/retomar_dados_import_94',methods=['POST', 'GET'])
+    def retomar_dados_import_94():
+        data = request.form  # Use .json diretamente para obter os dados
+
+        processed_data = UserController.process_form_data(data)
+        print(processed_data)
+        
+        usuario = processed_data['username']
+        senha = processed_data['password']
+        id_form = processed_data['id_form']
+        etp= processed_data['etp']
+
+        result, detalhe = ImportAuto.import_automatic_etp(usuario, senha, id_form, etp)
+
+        #print('chamou etp94', result,' ', session['13'])
+        
+        if result == 'success':
+            #return 'ok' #render_template('etp94/1informacao-94.html', status=status)
+            return  jsonify({'status': 'success', 'message': 'Concluido com Sucesso', 'retorno': str(detalhe), 'tag':'success' })
+        elif result == 'warning':
+            return  jsonify({'status': 'success', 'message': 'Processo Não Completado', 'retorno': str(detalhe), 'tag':'warning'})
+        else:
+            return  jsonify({'status': 'error', 'message': 'Erro no Processo', 'error': str(detalhe)})
+       
+    @app.route('/deletar_etp94',methods=['POST', 'GET'])
+    def deletar_etp94():
+        id_form = request.form.get('id_form') 
+        # id_form = session['id_form']
+        result = Etp94Controller.deletar_etp94(id_form)
+
+        if result:
+            print('deletou') 
+
+        # return
+        return redirect(url_for('admin.index'))
+  
+    @app.route('/deletar_etp40',methods=['POST', 'GET'])
+    def deletar_etp40():
+        id_form = request.form.get('id_form') 
+        # id_form = session['id_form']
+        result = Etp40Controller.deletar_etp40(id_form)
+
+        if result:
+            print('deletou') 
+
+        # return
+        return redirect(url_for('admin.index'))
+
+    def limpar_sessoes():
+        session.clear()
+
 
     return app

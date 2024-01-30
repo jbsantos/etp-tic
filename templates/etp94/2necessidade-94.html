@@ -18,7 +18,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,14 +41,14 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
-    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body>
 
   <!-- ======= Header ======= -->
-  {{ header.pagina_header('necessidade-nav', 'necessidade') }}
+  {{ header.pagina_header('necessidade-nav', 'necessidade', current_user) }}
   <!-- ======= End Header ======= -->
 
   <!-- ======= Sidebar ======= -->
@@ -66,56 +68,49 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
+    {%if session['status'] =='editar'%}
 
-        <!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/informacao1-94','/salvar_edicao_94', '2', '/necessidade3-94') }}
+    <!-- ======= End Section ======= -->
+    {%else%}
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/informacao1-94', '/necessidade3-94', '2') }}
+    <!-- ======= End Section ======= -->
+    {%endif%}
+    <!-- ======= Section ======= 
+    {{ section.pagina_estatica('/informacao1-94', '/necessidade3-94','2') }}
+     ======= End Section ======= -->
 
-            <!-- ======= Section ======= -->
-            {{ section.pagina_estatica('/informacao1-94', '/necessidade3-94') }}
-            <!-- ======= End Section ======= -->
-        
-            <script>
-              document.addEventListener('DOMContentLoaded', function() {
-                const showTermsAndConditions = async () => {
-                      const { value: accept } = await Swal.fire({
-                              title: 'Preenchendo a Descrição da Necessidade',
-                              html: `
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const showTermsAndConditions = async () => {
+          const { value: accept } = await Swal.fire({
+            title: 'Preenchendo a Descrição da Necessidade',
+            html: `
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     
                                     <p> Neste item, você deve descrever a necessidade da compra/contratação, evidenciando o problema identificado e a real necessidade que ele gera, bem como o que se almeja alcançar com a contratação. (inciso I, art. 7°, IN 40/2020). De acordo com o art. 7°, §2°, este campo é obrigatório.</p>
                                 </div>
                             `,
-                                focusConfirm: false,
-                                showCancelButton: false,
-                                allowOutsideClick: false,
-                                input: 'checkbox',
-                                inputValue: 1,
-                                inputPlaceholder: 'Estou ciente.',
-                                confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
-                                inputValidator: (result) => {
-                                    return !result && 'Confirme a leitura';
-                                }
-                            });
-            
-                        };
-            
-                        showTermsAndConditions();
-                    });
-            </script>
-            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
-        
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    CKEDITOR.replace('editor');
-                });
-            </script>
+            focusConfirm: false,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            input: 'checkbox',
+            inputValue: 0,
+            inputPlaceholder: 'Estou ciente.',
+            confirmButtonText: 'Continue <i class="fa fa-arrow-right"></i>',
+            inputValidator: (result) => {
+              return !result && 'Confirme a leitura';
+            }
+          });
 
-          </div>
-        </div>
-    </section>
+        };
+
+        showTermsAndConditions();
+      });
+    </script>
+    <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 
   </main><!-- End #main -->
 
@@ -129,11 +124,11 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -147,7 +142,7 @@
 
   <!-- Template Main JS File -->
   <script src="static/assets/js/main.js"></script>
-<!-- index.html -->
+  <!-- index.html -->
 
 
 </body>

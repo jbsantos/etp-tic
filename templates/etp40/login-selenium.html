@@ -1,0 +1,48 @@
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<button type="button" id="btn-login">Fazer Login</button>
+
+<!-- Sua página_selenium.html -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.getElementById('btn-login').addEventListener('click', function() {
+    Swal.fire({
+      title: 'Login',
+      html: '<input type="text" id="username" class="swal2-input" placeholder="Usuário">' +
+            '<input type="password" id="password" class="swal2-input" placeholder="Senha">',
+      focusConfirm: false,
+      preConfirm: () => {
+        const username = Swal.getPopup().querySelector('#username').value;
+        const password = Swal.getPopup().querySelector('#password').value;
+
+        // Fazer a requisição AJAX para enviar os dados de login para o backend
+        $.ajax({
+          url: '/login', // Rota que receberá os dados de login no servidor (app.py)
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ 'username': username, 'password': password }),
+          success: function (response) {
+            console.log('Resposta do servidor:', response);
+            // Se a autenticação for bem-sucedida, redireciona para a página Selenium
+            if (response.status === 'success') {
+              window.location.href = '/pagina_selenium'; // Substitua '/pagina_selenium' pela rota correta do Selenium.
+            } else {
+              // Se a autenticação falhar, mostra uma mensagem de erro no SweetAlert2
+              Swal.fire('Erro', 'Login ou senha inválidos', 'error');
+            }
+          },
+          error: function (error) {
+            console.error('Erro ao enviar dados de login:', error);
+            Swal.fire('Erro', 'Ocorreu um erro no servidor', 'error');
+          },
+        });
+      }
+    });
+  });
+</script>
+
+  

@@ -47,7 +47,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  {{ header.pagina_header('planejamento-nav', 'beneficios') }}
+  {{ header.pagina_header('planejamento-nav', 'beneficios', current_user) }}
   <!-- ======= End Header ======= -->
 
 
@@ -58,32 +58,39 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Descrição</h1>
+      <h1>Benefícios a Serem Alcançados com a Contratação</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Elements</li>
+          <li class="breadcrumb-item"><a href="/etp94">Início</a></li>
+          <li class="breadcrumb-item">Planejamento</li>
+          <li class="breadcrumb-item active">Benefícios a Serem Alcançados com a Contratação</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/solucao11-40', '/planejamento13-40') }}
-    <!-- ======= End Section ======= -->
 
+  <!-- ======= Section ======= -->
+  {%if session['status'] =='editar'%}
+   
+  <!-- ======= Section ======= -->
+  {{ section.pagina_estatica('/solucao11-40','/salvar_edicao','12', '/planejamento13-40') }}
+  <!-- ======= End Section ======= -->
+  {%else%}
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/solucao11-40', '/planejamento13-40','12') }}
+    <!-- ======= End Section ======= -->
+  {%endif%}
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>ETP DIGITAL</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 

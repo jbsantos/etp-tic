@@ -1,0 +1,233 @@
+{% import 'etp94/aside.html' as macros %}
+{% import 'etp94/header.html' as header %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - ETP-DIGITAL</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/assets/img/favicon.png" rel="icon">
+  <link href="static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: May 30 2023 with Bootstrap v5.3.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+  <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  {{ header.pagina_header('info_basico-nav', 'informacao', current_user) }}
+  <!-- ======= End Header ======= -->
+  
+  <!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>ETP DIGITAL TIC Quando Usar</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+            <form id="confirmacao-form" action="/etp94" method="GET">
+              <div>
+
+                <div id="conteudo" style="height: 300px; overflow-y: auto; background-color: white;">
+                  <br />
+                  <div style="text-align: center;">
+                    <span style="display: inline-block;">DIGITAL TIC Quando Usar</span>
+                  </div>
+                  1. MATERIAIS E EQUIPAMENTOS DE TIC<br />
+                  São considerados recursos de TIC equipamentos e dispositivos baseados em técnica digital, com funções
+                  de coleta, tratamento, estruturação, armazenamento, comutação, transmissão, recuperação ou
+                  apresentação da informação, a exemplo de: desktops, notebooks, coletores de dados do tipo personal
+                  digital assistant - PDA, equipamentos de coleta de dados satelitais, monitores de vídeo, impressoras,
+                  impressoras térmicas, scanners de documentos, tablets, incluindo-se serviços de manutenção e suporte
+                  desses equipamentos;<br />
+                  <br />
+                  2. DESENVOLVIMENTO E SUSTENTAÇÃO DE SISTEMAS<br />
+                  São considerados recursos de TIC serviços de desenvolvimento, manutenção preventiva ou corretiva,
+                  sustentação, testes, inclusive de segurança, qualidade, engenharia de dados, customização e evolução
+                  de software e sistemas computacionais e aplicativos móveis, incluindo elaboração, manutenção e
+                  sustentação de painéis e outros produtos de Business Intelligence.<br />
+                  <br />
+                  3. HOSPEDAGEM DE SISTEMAS<br />
+                  São considerados recursos de TIC a disponibilização de sistemas, aplicativos ou sítios eletrônicos em
+                  servidores próprios ou de terceiros por meio de modelo de hosting, co-location ou outros.<br />
+                  <br />
+                  4. SUPORTE E ATENDIMENTO A USUÁRIO DE TIC<br />
+                  São considerados recursos de TIC os serviços de atendimento a requisições de suporte a infraestrutura
+                  de TIC, resolução de incidentes e investigação de problemas e suporte técnico de microinformática a
+                  usuários de TIC;<br />
+                  <br />
+                  5. INFRAESTRUTURA DE TIC<br />
+                  São considerados recursos de TIC os serviços associados ao conjunto de componentes técnicos, hardware,
+                  software, bancos de dados implantados, procedimentos e documentação técnica usados para disponibilizar
+                  informações, incluindo serviços de segurança digital (controle lógico e biométrico), certificação
+                  digital, operação e suporte técnico;<br />
+                  <br />
+                  6. COMUNICAÇÃO DE DADOS<br />
+                  São considerados recursos de TIC a transmissão digital de dados e informações entre dispositivos,
+                  sistemas e redes de comunicação, incluindo acesso à Internet (como links MPLS, WAN/LAN), soluções de
+                  videoconferência, de transmissão e recebimento de mensagens de texto (SMS) e de recebimento ou
+                  processamento de dados satelitais;<br />
+                  <br />
+                  7. SOFTWARE E APLICATIVOS<br />
+                  São considerados recursos de TIC programas de computador que realizam ou suportam o processamento de
+                  informações digitais, independente da forma de licenciamento (a exemplo de perpétuo, subscrição,
+                  cessão temporária);<br />
+                  <br />
+                  8.IMPRESSÃO E DIGITALIZAÇÃO<br />
+                  São considerados recursos de TIC serviços de impressão, cópia e digitalização de documentos;<br />
+                  <br />
+                  9.CONSULTORIA EM TIC<br />
+                  São considerados recursos de TIC serviços de consultoria e aconselhamento em TIC<br />
+                  <br />
+                  10. COMPUTAÇÃO EM NUVEM<br />
+                  São considerados recursos de TIC os serviços de computação em nuvem, tais como Infrastructure as a
+                  Service - IaaS, Platform as a Service - PaaS, Software as a Service - SaaS, DataBase as a Service -
+                  DBaaS, Device as a Service - DaaS, Containers as a Service - CaaS, Function as a Service - FaaS e
+                  BigData as a Service - BDaaS, serviços de orquestração de multi-nuvem, suporte e brokerage de
+                  nuvem.<br />
+                  <br />
+                  11. INTERNET DAS COISAS - loT<br />
+                  São considerados recursos de TIC apenas os dispositivos ou serviços que utilizem tecnologia loT
+                  conectados ou que integrem um ou mais sistemas de informação desenvolvidos ou mantidos pelo órgão,
+                  enviando, processando, recebendo ou armazenando dados.<br />
+                  <br />
+                  12. SEGURANÇA DA INFORMAÇÃO E PRIVACIDADE<br />
+                  São considerados recursos de TIC os serviços de avaliação e testes de segurança (a exemplo de testes
+                  de intrusão, pentest, simulação de adversários), gestão de vulnerabilidades e tratamento de
+                  incidentes, Security as a Service - SECaaS, segurança de redes, Serviço de Monitoria de eventos de
+                  segurança - SOC e serviços técnicos de consultoria em segurança da informação e privacidade;<br />
+                  <br />
+                  13.ANÁLISE DE DADOS, APRENDIZADO DE MÁQUINA E INTELIGÊNCIA ARTIFICIAL<br />
+                  São considerados recursos de TIC os serviços de Inteligência de Negócio (Business Intelligence),
+                  Inteligência Artificial, Aprendizado de Máquina, Big Data, governança de dados, arquitetura de dados e
+                  soluções de geoprocessamento.<br />
+                  <br />
+                  <br />
+
+
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <span style="display: inline-block;">
+                  <button type="submit" id="proxima-rota" class="swal2-confirm swal2-styled">
+                    Concordo
+                  </button>
+                  {% if request.path != '/' %}
+
+                  <a href="/" class="swal2-confirm swal2-styled" style="text-decoration: none;">
+                    Voltar
+                  </a>
+                  {% endif %}
+                </span>
+              </div>
+            </form>
+
+            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+            <script>
+              document.getElementById('confirmacao-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                Swal.fire({
+                  title: 'Confirmação',
+                  text: 'Você leu e entendeu o conteúdo?',
+                  icon: 'question',
+                  showCancelButton: true,
+                  confirmButtonText: 'Sim',
+                  cancelButtonText: 'Não'
+                }).then(function (result) {
+                  if (result.isConfirmed) {
+                    document.getElementById('confirmacao-form').submit();
+                  }
+                });
+              });
+            </script>
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                CKEDITOR.replace('editor');
+              });
+            </script>
+
+
+            <script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
+
+
+          </div>
+        </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>ETP DIGITAL</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="static/assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="static/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/quill/quill.min.js"></script>
+  <script src="static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="static/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+  <!-- index.html -->
+
+
+</body>
+
+</html>

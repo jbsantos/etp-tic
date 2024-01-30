@@ -47,7 +47,7 @@
 <body>
 
   <!-- ======= Header ======= -->
-  {{ header.pagina_header('viabilidade-nav', 'declaracao') }}
+  {{ header.pagina_header('viabilidade-nav', 'declaracao', current_user) }}
   <!-- ======= End Header ======= -->
 
 
@@ -58,19 +58,27 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Descrição</h1>
+      <h1>Declaração de Viabilidade</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Elements</li>
+          <li class="breadcrumb-item"><a href="/etp40">Início</a></li>
+          <li class="breadcrumb-item">Viabilidade</li>
+          <li class="breadcrumb-item active">Declaração de Viabilidade</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <!-- ======= Section ======= -->
-    {{ section.pagina_estatica('/planejamento14-40', '/viabilidade16-40') }}
-    <!-- ======= End Section ======= -->
 
+  <!-- ======= Section ======= -->
+  {%if session['status'] =='editar'%}
+   
+  <!-- ======= Section ======= -->
+  {{ section.pagina_estatica('/planejamento14-40','/salvar_edicao','15', '/viabilidade16-40') }}
+  <!-- ======= End Section ======= -->
+  {%else%}
+    <!-- ======= Section ======= -->
+    {{ section.pagina_estatica('/planejamento14-40', '/viabilidade16-40','15') }}
+    <!-- ======= End Section ======= -->
+  {%endif%}
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
@@ -83,7 +91,6 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 
@@ -96,9 +103,16 @@
             const { value: accept } = await Swal.fire({
                 title: 'Declarando a Viabilidade',
                 html: `
-                <div style="max-height: 400px; overflow-y: auto;">
+                <div style="max-height: 400px; overflow-y: auto; align: left; ">
                     
                     <p> É obrigatório que você declare expressamente se a contratação é viável e razoável (ou  não), justificando com base nos elementos colhidos durante os Estudos Preliminares.(inciso  XIII, art. 7°, IN 40/2020). De acordo com o art. 7°, §2° </p>
+                    <p> Selecionar: <br/>
+                        1. Viável<br/>
+                        2. Viável com Restrições<br/>
+                        3. Inviável<br />
+                </div>
+                <div style="color: red; text-align: center;">
+                            Obs: A informação dos responsáveis deve ser feito de forma direta no próprio site do COMPRASNET.
                 </div>
             `,
                 focusConfirm: false,
